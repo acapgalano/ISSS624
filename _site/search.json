@@ -1,12 +1,5 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "ISSS624",
-    "section": "",
-    "text": "In this webpage, I am going to share with you my learning journey of geospatial analytics.\n\n1 + 1\n\n[1] 2"
-  },
-  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
@@ -14,17 +7,31 @@
     "text": "1 + 1\n\n[1] 2"
   },
   {
-    "objectID": "Hands-on_Ex1.html",
-    "href": "Hands-on_Ex1.html",
+    "objectID": "Hands-on_Ex0.html",
+    "href": "Hands-on_Ex0.html",
     "title": "Hands-on Exercise 1",
     "section": "",
     "text": "This is the overview paragraph."
   },
   {
-    "objectID": "Hands-on_Ex1.html#getting-started",
-    "href": "Hands-on_Ex1.html#getting-started",
+    "objectID": "Hands-on_Ex0.html#getting-started",
+    "href": "Hands-on_Ex0.html#getting-started",
     "title": "Hands-on Exercise 1",
     "section": "Getting Started",
     "text": "Getting Started\nThis is the getting started paragraph."
+  },
+  {
+    "objectID": "Hands-on_Ex1/Hands-on_Ex1.html",
+    "href": "Hands-on_Ex1/Hands-on_Ex1.html",
+    "title": "Hands-on Exercise 1: Geospatial Data Wrangling with R",
+    "section": "",
+    "text": "In this hands-on exercise, I learn how to import and wrangle geospatial data using appropriate R packages.\nGetting Started\nThe code chunk below installs and loads sf and tidyverse packages into R environment.\n\npacman::p_load(sf, tidyverse)\n\nImporting Geospatial Data\nImporting Polygon Feature Data\n\nmpsz <- st_read(dsn = \"data/geospatial\", layer = \"MP14_SUBZONE_WEB_PL\")\n\nReading layer `MP14_SUBZONE_WEB_PL' from data source \n  `C:\\acapgalano\\ISSS624\\Hands-on_Ex1\\data\\geospatial' using driver `ESRI Shapefile'\nSimple feature collection with 323 features and 15 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: 2667.538 ymin: 15748.72 xmax: 56396.44 ymax: 50256.33\nProjected CRS: SVY21"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ISSS624",
+    "section": "",
+    "text": "In this webpage, I am going to share with you my learning journey of geospatial analytics.\n\n1 + 1\n\n[1] 2"
   }
 ]

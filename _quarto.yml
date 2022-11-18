@@ -7,8 +7,10 @@ website:
     left:
       - text: Hands-on Exercises
         menu:
+          - text: Hands-on Exercise 0
+            href: Hands-on_Ex0.qmd
           - text: Hands-on Exercise 1
-            href: Hands-on_Ex1.qmd
+            href: Hands-on_Ex1/Hands-on_Ex1.qmd
     right:
       - href: index.qmd
         text: Home
