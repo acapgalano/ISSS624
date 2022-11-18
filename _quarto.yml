@@ -7,10 +7,12 @@ website:
     left:
       - text: Hands-on Exercises
         menu:
-          - text: Hands-on Exercise 0
+          - text: Hands-on Exercise 0 (Introduction to Quarto)
             href: Hands-on_Ex0.qmd
-          - text: Hands-on Exercise 1
+          - text: Hands-on Exercise 1.1 (Geospatial Data Wrangling with R)
             href: Hands-on_Ex1/Hands-on_Ex1.qmd
+          - text: Hands-on Exercise 1.2 (Choropleth Mapping with R)
+            href: Hands-on_Ex1/Hands-on_Ex2.qmd
     right:
       - href: index.qmd
         text: Home
@@ -18,7 +20,8 @@ website:
 
 format:
   html:
-    theme: cosmo
+    backgroundcolor: '#ffc5c0'
+    theme: journal
     css: styles.css
     toc: true
 
