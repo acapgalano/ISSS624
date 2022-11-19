@@ -11,8 +11,12 @@ website:
             href: Hands-on_Ex0.qmd
           - text: Hands-on Exercise 1.1 (Geospatial Data Wrangling with R)
             href: Hands-on_Ex1/Hands-on_Ex1.qmd
-          - text: Hands-on Exercise 1.2 (Choropleth Mapping with R)
+          - text: Hands-on Exercise 1.2 (Chloropleth Mapping with R)
             href: Hands-on_Ex1/Hands-on_Ex2.qmd
+      - text: In-class Exercises
+        menu: 
+          - text: In-class Exercise 1 (Spatial Weights and Applications)
+            href: In-class_Ex/In-class_Ex1/In-class_Ex1.qmd
     right:
       - href: index.qmd
         text: Home

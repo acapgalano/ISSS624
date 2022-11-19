@@ -2,7 +2,7 @@
 title: "ISSS624"
 ---
 
-Welcome to ISSS624 Geospatial Analytics Applications!
+Welcome to ISSS624 Geospatial Analytics Applications! 🌻
 
 ![](intro_map.jpeg){fig-align="center"}
 

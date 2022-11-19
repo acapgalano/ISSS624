@@ -2,8 +2,12 @@
 title: "About"
 ---
 
-About this site
+::: panel-tabset
+## Course
 
-```{r}
-1 + 1
-```
+ISSS624 Applied Geospatial Analytics
+
+## Professor
+
+## Student
+:::
