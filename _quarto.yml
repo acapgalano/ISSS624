@@ -10,9 +10,11 @@ website:
           - text: Hands-on Exercise 0 (Introduction to Quarto)
             href: Hands-on_Ex0.qmd
           - text: Hands-on Exercise 1.1 (Geospatial Data Wrangling with R)
-            href: Hands-on_Ex1/Hands-on_Ex1.qmd
+            href: Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1-1.qmd
           - text: Hands-on Exercise 1.2 (Chloropleth Mapping with R)
-            href: Hands-on_Ex1/Hands-on_Ex2.qmd
+            href: Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1-2.qmd
+          - text: Hands-on Exercise 2 (Global and Local Measures of Spatial Autocorrelation)
+            href: Hands-on_Ex/Hands-on_Ex2/Hands-on_Ex2.qmd
       - text: In-class Exercises
         menu: 
           - text: In-class Exercise 1 (Spatial Weights and Applications)
