@@ -452,6 +452,9 @@ w_sum_gdppc
 ```
 
 ```{r}
+w_sum_gdppc.res <- as.data.frame(w_sum_gdppc)
+colnames(w_sum_gdppc.res) <- c("NAME_3", "w_sum GDPPC")
+
 hunan <- left_join(hunan, w_sum_gdppc.res)
 
 gdppc <- qtm(hunan, "GDPPC")
