@@ -102,6 +102,11 @@ While row-standardization is the most intuitive way to summarize the neighbors\'
 **"B"** stands for ***basic binary encoding***. It was used in the previous exercise.
 :::
 
+```{r}
+rswm_q <- nb2listw(wm_q,style="W", zero.policy = TRUE)
+rswm_q
+```
+
 ### Global Spatial Autocorrelation: Moran's I
 
 The package `spdep` provides a function [`moran.test()`](https://r-spatial.github.io/spdep/reference/moran.test.html "Moran's I test for spatial autocorrelation") to simply perform Moran's I statistics.
