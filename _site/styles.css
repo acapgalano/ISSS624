@@ -1,1 +1,36 @@
 /* css styles */
+
+.callout{
+  background-color: #D3D3D3;
+}
+
+.callout-header{
+  font-weight: bold;
+  background-color: #FFFFFF;
+}
+
+.callout-caption-container{
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.callout-caution.callout-caption-container{
+  color: #fd7e14;  
+}
+
+.callout-icon{
+  vertical-align: center;
+}
+
+.sourceCode{
+  background-color: #FFFFFF;
+}
+
+div.sourceCode{
+  border: 3px solid #ff8086;
+  background-color: #FFFFFF;
+}
+
+.cell-output{
+  background-color: #ff8086;
+}

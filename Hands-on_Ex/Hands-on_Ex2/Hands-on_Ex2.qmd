@@ -21,7 +21,7 @@ The two datasets to be used in this exercise are:
 
 Using the data above, we are tasked to determine the spatial patterns of selected development indicators in Hunan, China.
 
-### Setting the analytical tools 
+### Setting the analytical tools
 
 As done in In-class Exercise 1, we load the necessary packages as shown below.
 
@@ -31,13 +31,13 @@ pacman::p_load(sf, tidyverse, spdep, tmap)
 
 ## Getting the Data Into the R Environment
 
-### Importing shapefile 
+### Importing shapefile
 
 ```{r}
 hunan <- st_read(dsn = "data/geospatial", layer = "Hunan")
 ```
 
-### Importing CSV file 
+### Importing CSV file
 
 ```{r}
 hunan2012 <- read_csv("data/aspatial/Hunan_2012.csv")
@@ -97,7 +97,7 @@ In a the previous exercise, we used the function `nb2listw()` to assign the weig
 ::: callout-caution
 ## Take Note!
 
-While row-standardization is the most intuitive way to summarize the neighbors\' values, it has the drawback of polygons along the edges of the study area will base their lagged values on fewer polygons thus potentially over- or under-estimating the true nature of the spatial autocorrelation in the data. For this example, `style=“W”` is used for simplicity but note that other more robust options are available, notably `style=“B”`.
+While row-standardization is the most intuitive way to summarize the neighbors' values, it has the drawback of polygons along the edges of the study area will base their lagged values on fewer polygons thus potentially over- or under-estimating the true nature of the spatial autocorrelation in the data. For this example, `style=“W”` is used for simplicity but note that other more robust options are available, notably `style=“B”`.
 
 **"B"** stands for ***basic binary encoding***. It was used in the previous exercise.
 :::
@@ -133,7 +133,7 @@ Where:
 -   $W$ is the sum of all $w_{ij}$
 :::
 
-### Implementing Maron's I test 
+### Implementing Maron's I test
 
 ```{r}
 moran.test(hunan$GDPPC, listw = rswm_q, zero.policy = TRUE, na.action = na.omit)
@@ -143,7 +143,7 @@ moran.test(hunan$GDPPC, listw = rswm_q, zero.policy = TRUE, na.action = na.omit)
 
 Given that the Moran I statistic value is 0.300749970, we know that the observations tend to be similar. The p-value dictates that we reject the null hypothesis, and verify the randomness and normality of the data.
 
-#### Computing Monte Carlo Moran's I 
+#### Computing Monte Carlo Moran's I
 
 When doubting the assumptions of Moran I, we can use Monte Carlo's simulation to verify. The code chunk below performs a permutation test for Moran's I statistic by using the function `moran.mc()` of `spdep`. A total of 1000 simulations are performed.
 
@@ -211,7 +211,7 @@ geary.test(hunan$GDPPC, listw = rswm_q)
 
 Geary's C statistic has a value of 0.6907223 which suggests that the observations tend to be similar.
 
-#### Computing Monte Carlo Geary's C 
+#### Computing Monte Carlo Geary's C
 
 ```{r}
 set.seed(1234)
@@ -220,7 +220,7 @@ bperm
 
 ```
 
-#### Visualizing the Monte Carlo Geary's C 
+#### Visualizing the Monte Carlo Geary's C
 
 ```{r}
 mean(bperm$res[1:999])
@@ -245,7 +245,7 @@ The simulations seems to be normally distributed.
 
 ## Spatial Correlogram
 
-Spatial correlograms are great to examine patterns of spatial autocorrelation. They show how correlated pairs of spatial observations are when you increase the distance (lag) between them - they are plots of some index of autocorrelation (Moran\'s I or Geary\'s c) against distance.
+Spatial correlograms are great to examine patterns of spatial autocorrelation. They show how correlated pairs of spatial observations are when you increase the distance (lag) between them - they are plots of some index of autocorrelation (Moran's I or Geary's c) against distance.
 
 ### Computing for Moran's I correlogram
 
@@ -281,7 +281,7 @@ print(GC_corr)
 
 ## Cluster and Outlier Analysis
 
-### Computing local Moran's I 
+### Computing local Moran's I
 
 The function `localmoran()` of the `spdep` package computes $I_i$ values, given a set of $z_i$ values and a `listw` object providing neighbor weighting information for the polygon associated with the $z_i$ values.
 
@@ -315,7 +315,7 @@ tm_shape(hunan.localMI) + tm_fill(col = "Ii", style = "pretty", palette = "RdPu"
 tm_shape(hunan.localMI) + tm_fill(col = "Pr.Ii", breaks=c(-Inf, 0.001, 0.01, 0.05, 0.1, Inf),  palette="-Reds", title = "local Moran's I p-values") + tm_borders(alpha = 0.5) + tm_layout(legend.width = 0.4, legend.height = 0.5)
 ```
 
-#### Mapping both local Moran's I values and p-values 
+#### Mapping both local Moran's I values and p-values
 
 The choropleth shows there is evidence for both positive and negative $l_i$ values. However, it is useful to consider the p-values for each of these values, as consider above.
 
@@ -345,7 +345,7 @@ nci <- moran.plot(hunan$GDPPC, rswm_q, labels = as.character(hunan$County), xlab
 
 By using the interpretation figure above, we can determine the quadrant representations of the scatterplot.
 
-### Plotting Moran scatterplot with standardized variable 
+### Plotting Moran scatterplot with standardized variable
 
 ```{r}
 hunan$Z.GDPPC <- scale(hunan$GDPPC) %>% as.vector 
@@ -429,7 +429,7 @@ LISAmap <- tm_shape(hunan.localMI) +
 tmap_arrange(gdppc, LISAmap, asp=1, ncol=2)
 ```
 
-## Hot Spot and Cold Spot Area Analysis 
+## Hot Spot and Cold Spot Area Analysis
 
 Beside detecting cluster and outliers, localised spatial statistics can be also used to detect hot spot and/or cold spot areas.
 
@@ -449,7 +449,7 @@ There are two type of distance-based proximity matrix, they are:
 
 -   adaptive distance weight matrix
 
-### Deriving the centroid 
+### Deriving the centroid
 
 ```{r}
 longitude <- map_dbl(hunan$geometry, ~st_centroid(.x)[[1]])
@@ -492,7 +492,7 @@ knn_lw <- nb2listw(knn, style = 'B')
 summary(knn_lw)
 ```
 
-## Computing $G_i$ statistics 
+## Computing $G_i$ statistics
 
 ### $G_i$ statistics using fixed distance
 

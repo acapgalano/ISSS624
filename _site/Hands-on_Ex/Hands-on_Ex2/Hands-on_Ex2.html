@@ -419,7 +419,7 @@ Take Note!
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>While row-standardization is the most intuitive way to summarize the neighbors' values, it has the drawback of polygons along the edges of the study area will base their lagged values on fewer polygons thus potentially over- or under-estimating the true nature of the spatial autocorrelation in the data. For this example, <code>style=“W”</code> is used for simplicity but note that other more robust options are available, notably <code>style=“B”</code>.</p>
+<p>While row-standardization is the most intuitive way to summarize the neighbors’ values, it has the drawback of polygons along the edges of the study area will base their lagged values on fewer polygons thus potentially over- or under-estimating the true nature of the spatial autocorrelation in the data. For this example, <code>style=“W”</code> is used for simplicity but note that other more robust options are available, notably <code>style=“B”</code>.</p>
 <p><strong>“B”</strong> stands for <strong><em>basic binary encoding</em></strong>. It was used in the previous exercise.</p>
 </div>
 </div>
@@ -658,7 +658,7 @@ alternative hypothesis: greater</code></pre>
 </section>
 <section id="spatial-correlogram" class="level2">
 <h2 class="anchored" data-anchor-id="spatial-correlogram">Spatial Correlogram</h2>
-<p>Spatial correlograms are great to examine patterns of spatial autocorrelation. They show how correlated pairs of spatial observations are when you increase the distance (lag) between them - they are plots of some index of autocorrelation (Moran's I or Geary's c) against distance.</p>
+<p>Spatial correlograms are great to examine patterns of spatial autocorrelation. They show how correlated pairs of spatial observations are when you increase the distance (lag) between them - they are plots of some index of autocorrelation (Moran’s I or Geary’s c) against distance.</p>
 <section id="computing-for-morans-i-correlogram" class="level3">
 <h3 class="anchored" data-anchor-id="computing-for-morans-i-correlogram">Computing for Moran’s I correlogram</h3>
 <p>Fortunately, the <code>spdep</code> package provides a function <code>sp.correlogram()</code>. Using the argument <code>order</code> we set the lag to 6.</p>
