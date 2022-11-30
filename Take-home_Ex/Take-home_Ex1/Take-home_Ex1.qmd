@@ -1,0 +1,606 @@
+---
+title: "Take-home Exercise 1"
+editor: visual
+execute:
+  warning: FALSE
+---
+
+# Overview
+
+## Setting the Scene 
+
+![Image of Nigerian child drinking from water point courtesy of [©UNICEFNigeria/2020](https://www.unicef.org/nigeria/press-releases/nearly-one-third-nigerian-children-do-not-have-enough-water-meet-their-daily-needs "Nearly one third of Nigerian children do not have enough water to meet their daily needs - UNICEF")](images/water.jpg){fig-align="center"}
+
+Back in March 2021, UNICEF reported that 1 in 5 children worldwide do not have enough water.
+
+Globally, more than 1.42 billion people, including 450 million children, live in areas of high, or extremely high, water vulnerability, according to a new analysis released by UNICEF. T
+
+Water is an important resource to mankind. Clean and accessible water is critical to human health. It provides a healthy environment, a sustainable economy, reduces poverty and ensures peace and security. Yet over 40% of the global population does not have access to sufficient clean water. By 2025, 1.8 billion people will be living in countries or regions with absolute water scarcity, according to UN-Water. The lack of water poses a major threat to several sectors, including food security. Agriculture uses about 70% of the world\'s accessible freshwater.
+
+Developing countries are most affected by water shortages and poor water quality. Up to 80% of illnesses in the developing world are linked to inadequate water and sanitation. Despite technological advancement, providing clean water to the rural community is still a major development issues in many countries globally, especially countries in the Africa continent.
+
+The mission of the Water Point Data Exchange (WPdx) is to unlock the potential of water point data to improve rural water services through evidence-based decision-making.
+
+The WPdx Data Standard was collaboratively designed for data collection from rural areas at the water point or small water scheme level. The core parameters included in the WPdx Data Standard are parameters which are commonly measured by governments, non-governmental organizations, and researchers to enable easy sharing without changing the types of data typically collected. The WPdx Data Standard is managed and updated on an as-needed basis by a [Global Working Group](https://www.waterpointdata.org/about/#wpdxworkinggroup). Please check out the entire [WPdx Data Standard](https://www.waterpointdata.org/wp-content/uploads/2021/04/WPDx_Data_Standard.pdf).
+
+The WPdx Data Repository is a cloud-based data library that enables sharing of global data that is compliant with the WPdx Data Standard. Data is fully open and free to access. Data is machine readable via an API. The repository includes an online data playground for analysis and visualization. To visit the WPdx Global Data Repository, please see [here](https://data.waterpointdata.org/dataset/Water-Point-Data-Exchange-WPDx-Basic-/jfkt-jmqa/data). An enhanced subset of the data, [WPdx+](https://data.waterpointdata.org/dataset/Water-Point-Data-Exchange-Plus-WPdx-/eqje-vguj/data) is also available. Please [click here](https://www.waterpointdata.org/2021/10/07/introducing-wpdx-plus/) to learn more about two datasets.
+
+## Class Objectives
+
+In culmination of the first four chapters of ["R for Geospatial Data Science and Analytics"](https://r4gdsa.netlify.app/ "R for Geospatial Data Science and Analytics by Dr. Kam Tin Seong") and first two lessons of ISSS624, this is my submission for [Take-home Exercise 1](https://isss624-ay2022-23nov.netlify.app/take-home_ex01 "ISSS624 - Take-home Exercise 1: Geospatial Analytics for Social Good"). The following objectives were accomplished in this Take-home Exercise:
+
+-   Using appropriate sf method, import the shapefile into R and save it in a simple feature data frame format.
+
+-   Using appropriate tidyr and dplyr methods, derive the proportion of functional and non-functional water point at LGA level.
+
+-   Combining the geospatial and aspatial data frame into simple feature data frame.
+
+-   Performing outliers/clusters analysis by using appropriate local measures of spatial association methods.
+
+-   Performing hotspot areas analysis by using appropriate local measures of spatial association methods.
+
+### Thematic Mapping
+
+-   Plot maps to show the spatial distribution of functional and non-functional water point rate at LGA level by using appropriate thematic mapping technique provided by tmap package.
+
+### Analytical Mapping
+
+-   Plot hotspot areas and outliers/clusters maps of functional and non0functional water point rate at LGA level by using appropriate thematic mapping technique provided by tmap package.
+
+# Getting Started
+
+Before we can start doing any sort of analyses, the first step is acquiring the data.
+
+## Acquiring the Data
+
+There are two important geospatial datasets to access which will be expounded upon below.
+
+### Administrative Boundaries of Nigeria 
+
+First we have the Level-2 Administrative Boundary (A.K.A. Local Government Area) of Nigeria, as sourced from [geoBoundaries](https://www.geoboundaries.org/ "geoBoundaries"). The screenshot attached shows where to acquire the dataset.
+
+![Screenshot of Nigeria's ADM2 boundary polygon features GIS data source from [geoBoundaries](https://www.geoboundaries.org/ "geoBoundaries")](images/geoboundaries.PNG){fig-align="center"}
+
+The downloaded ZIP file will contain GIS data for the regular and simplified boundaries. For the purpose of this study, we will not use the simplified data. All related files were renamed to "*geoBoundaries*" for simplicity's sake.
+
+### Water Point Data 
+
+To be able to analyze the water points of different areas, we'll need the data from [Water Point Data Exchange (WPdx)](https://www.waterpointdata.org/about/) as mentioned previously. There are two versions, WPdx-Basic and WPdx+. For this take-home exercise, we are making use of WPdx+.
+
+![Screenshot of Water Point Data Exchange Plus data source from [https://data.waterpointdata.org/](https://data.waterpointdata.org/dataset/Water-Point-Data-Exchange-Plus-WPdx-/eqje-vguj/data "Water Point Data Exchange - Plus (WPdx+)")](images/waterpoint.png){fig-align="center"}
+
+The site allows us to export the data in different file formats. For this exercise, I downloaded the Shapefile for familiarity. To simplify the filename, all related files were renamed to "*geo_export*".
+
+## Loading in the Required Packages
+
+To get started on coding with R, we need to first load the necessary packages that will help us with the processes. In the code chunk below, `p_load()` of the **`pacman`** package is used to install and load the following R packages into R environment:
+
+-   `sf` -
+-   `tidyverse` -
+-   `tmap` -
+-   `spedep` -
+
+```{r}
+pacman::p_load(sf, tidyverse, tmap, spdep)
+```
+
+## Importing the Geospatial Data
+
+### Importing the LGA boundary data of Nigeria
+
+Using the `st_read()` function of the **`sf`** package, the code chunk below creates a simple features data table from the *geoBoundaries* shapefile.
+
+```{r}
+#| eval: false
+nga_bounds <- st_read(dsn = "data", layer = "geoBoundaries", crs = 4326)
+```
+
+![](images/paste-444F979D.png)
+
+Nigeria has 774 local government areas (LGAs). The terms "LGA", "shape", "polygon","region" and "features" will be used interchangeable from this point forward in the take-home exercise.
+
+### Importing the water point data of Nigeria
+
+Similarly above, we once again use `st_read()` to import the *geo_export* shapefile. However, this time we need to use the `filter()` function to make sure that we only extract the data related to Nigeria. The code snippet `filter(clean_coun == "Nigeria")` does just this, where 'clean_coun' is the column from the data table referring to the country name and `==` asks for the records set as "Nigeria".
+
+```{r}
+#| eval: false
+nga_wp <- st_read(dsn = "data", layer = "geo_export", crs = 4326) %>% filter(clean_coun == "Nigeria")
+```
+
+![](images/paste-CF955801.png)
+
+::: callout-note
+## CODE REVIEW!
+
+What does **`%>%`** do?
+
+It's an operator that is part of the **`dplyr`** package that passes the left-hand side of the operator as the first argument of the function on the right-hand side.
+:::
+
+We end up with a data table containing 95,008 records and 73 variables. The geometry type is POINT, meaning each record is a point relative to the coordinate system. The records refer to different water points in Nigeria with different descriptions such as status, water source, usage capacity, etc.
+
+## Data Wrangling 
+
+Data is very raw and isn't perfect. Sometimes some magic needs to be done to shape the data into something that is usable for the analytical process. In this section, we try to collate the individual water point data to usable attributes that describe the ratio of functional water points per LGA.
+
+In the previous section we ended up with a data table that has 73 variables. That sounds like a lot because it is! Since the objective of this exercise is only related to the functionality of different water points, we are mostly interested in the different statuses of each water point.
+
+### Checking and replacing N/A values in 'status_cle'
+
+Since our primary focus is the status of each water point, we need to take a look at the variable 'status_cle'. It would be very problematic if there were empty values. To check we use the code chunk below:
+
+```{r}
+#| eval: false
+sum(is.na(nga_wp$status_cle))
+```
+
+![](images/paste-DFEE866C.png)
+
+This code chunk adds up all the cells in 'status_cle' that return TRUE from the `is.na()` function. The result tells us that there are 10,656 missing cells. That's a lot! What do we do with them?
+
+The code chunk below uses `mutate()` to replace the current 'status_cle' column with one where `replace_na()` is applied. The function `replace_na` replaces N/A values in a column with the second argument, in this case "Unknown".
+
+```{r}
+#| eval: false
+nga_wp <- nga_wp %>% mutate(status_cle = replace_na(status_cle, "Unknown"))
+```
+
+By running the previous code chunk we can verify that there are no more N/A values.
+
+```{r}
+#| eval: false
+sum(is.na(nga_wp$status_cle))
+```
+
+![](images/paste-2F631CF8.png)
+
+### Regionalizing water point data 
+
+So we have the individual water points, but how do we translate it in such a way that we can compare it for each LGA?
+
+#### Translating to Functional and Non-Functional
+
+First, the code chunk below makes use of `unique()` to output the set of all unique values in the column.
+
+```{r}
+#| eval: false
+unique(nga_wp$status_cle)
+```
+
+![](images/paste-43243EEB.png)
+
+The output shows that there are 7 different status values. However, some of them fall under the same status umbrella of either 'Functional' or 'Non-Functional', they just contain extra information.
+
+```{r}
+#| eval: false
+wpt_functional <- nga_wp %>% filter(status_cle %in% c("Functional", "Functional but not in use", "Functional but needs repair"))
+```
+
+![](images/paste-21BD4C2E.png)
+
+The code chunk above extracts all the records that have the following statuses: "Functional", "Functional but not in use", and "Functional but needs repair" using the `filter()` function as saves to `'wpt_functional'`.
+
+```{r}
+#| eval: false
+wpt_nonfunctional <- nga_wp %>% filter(status_cle %in% c("Abandoned/Decommissioned", "Abandoned", "Non-Functional", "Non functional due to dry season", "Non-Functional due to dry season"))
+```
+
+![](images/paste-3A2BF171.png)
+
+Similarly, the code chunk above extracts all the records that have the following statuses: "Abandoned/Decommissioned", "Abandoned", "Non-Functional", "Non functional due to dry season", and "Non-Functional due to dry season" and saves them to `'wpt_nonfunctional'`.
+
+```{r}
+#| eval: false
+wpt_unknown <- nga_wp %>% filter(status_cle == "Unknown")
+```
+
+![](images/paste-91B8DF93.png)
+
+Lastly, we do the same for all records with the status "Unknown" and save it to `'wpt_unknown'`.
+
+#### Performing point-in-polygon count
+
+This is where the magic happens. Since we know the individual water points (as point data), we can see where they overlap with the polygons (LGAs) to determine regional data. The function `st_intersects()` returns true if two geometries intersect, meaning if the water point is found within the polygon boundary of an LGA, it will return true. The function `lengths()` gives the number of true values (or count) returned from `st_intersects()`.
+
+New columns are then added to our original boundary data `'nga_bounds'` which dictate the count of total, functional, non-functional, and unknown water points per LGA.
+
+```{r}
+#| eval: false
+nga_wp_final <- nga_bounds %>% mutate(`total_wpt` = lengths(st_intersects(nga_bounds, nga_wp))) %>% mutate(`wpt_functional` = lengths(st_intersects(nga_bounds, wpt_functional))) %>% mutate(`wpt_nonfunctional` = lengths(st_intersects(nga_bounds, wpt_nonfunctional))) %>% mutate(`wpt_unknown` = lengths(st_intersects(nga_bounds, wpt_unknown)))
+```
+
+![](images/paste-E6CDAF8B.png)
+
+#### Getting the percentage of functional and non-functional water points
+
+Not all regions are made equal. It wouldn't make sense to compare the number of water points in a smaller region to a bigger region because it's possible that larger land area would contribute to having more water points. To give a better analysis of the collective water point status per region, we can get the percentage or ratio of functional and non-functional water points.
+
+The code chunk below adds two new columns to our dataframe, which contain the percentage of functional and non-functional water points.
+
+```{r}
+#| eval: false
+nga_wp_final <- nga_wp_final %>% mutate(`pct_functional` = `wpt_functional`/`total_wpt`) %>% mutate(`pct_nonfunctional` = `wpt_nonfunctional`/`total_wpt`)
+```
+
+Unfortunately, some of the regions either don't have water points or their data is not recorded. Because of this, performing the division above to get the percentages may lead to NaN values when getting the percentages. A sample is shown for the LGA "Abadam".
+
+![](images/paste-D904E767.png)
+
+To fix this, we replace the NaN values with a value of 0 using the code chunk below. The function `replace_na()` which was used earlier for empty cells, also works for NaN values.
+
+```{r}
+#| eval: false
+nga_wp_final <- nga_wp_final %>% mutate(pct_functional = replace_na(pct_functional, 0)) %>% mutate(pct_nonfunctional= replace_na(pct_nonfunctional, 0))
+```
+
+![](images/paste-A5FDEDCC.png)
+
+## Projecting the CRS 
+
+Since the source of our boundary file was an international source, the CRS in use is **geographic**. What this means is the points are plotted on the earth's surface, which is ellipsoid. We need transform the data to the appropriate **projected** CRS, which will be plotted on a flat surface.
+
+```{r}
+#| eval: false
+st_crs(nga_wp_final)
+```
+
+![](images/paste-FEBC9389.png)
+
+The code chunk below uses `st_transform` to transform `'nga_wp_final'` to [EPSG Code 26392](https://epsg.io/26392#:~:text=Minna%20%2F%20Nigeria%20Mid%20Belt%20%2D%20EPSG%3A26392), which is one of the projected coordinate reference systems used for Nigeria.
+
+```{r}
+#| eval: false
+nga_wp_final <- st_transform(nga_wp_final, crs = 26392)
+```
+
+Checking if the CRS changed, we have the results below.
+
+```{r}
+#| eval: false
+st_crs(nga_wp_final)
+```
+
+![](images/paste-EA0AFD44.png)
+
+## Saving the Analytical Data Table
+
+Now that we've completed adjusting our data, we can save the new dataset as an RDS file. RDS files are data files native to R.
+
+```{r}
+#| eval: false
+write_rds(nga_wp_final, "data/nga_wp_final.rds")
+```
+
+We can now reload the dataset back to R using `read_rds`.
+
+```{r}
+nga_wp_final <- read_rds("data/nga_wp_final.rds")
+```
+
+# Exploratory Data Analysis 
+
+```{r}
+ggplot(nga_wp_final, aes(pct_functional)) + geom_histogram(binwidth=0.1)
+```
+
+```{r}
+summary(nga_wp_final$pct_functional)
+```
+
+```{r}
+ggplot(nga_wp_final, aes(pct_nonfunctional)) + geom_histogram(binwidth=0.1)
+```
+
+```{r}
+tmap_mode ("plot")
+fun <- tm_shape (nga_wp_final) +
+  tm_fill("pct_functional",
+          style = "jenks",
+          n=6,
+          title = "Functional (%)") +
+  tm_layout(main.title = "Distribution of Functional Water Points (%) by LGA",
+            main.title.position = "center",
+            main.title.size = 0.7,
+            main.title.fontface = "bold",
+            legend.height = 0.45, 
+            legend.width = 0.35,
+            frame = TRUE) +
+  tm_borders(alpha = 0.5)
+
+nfun <- tm_shape (nga_wp_final) +
+  tm_fill("pct_nonfunctional",
+          style = "jenks",
+          n=6,
+          title = "Non-Functional (%)") +
+  tm_layout(main.title = "Distribution of Non-Functional Water Points(%) by LGA",
+            main.title.position = "center",
+            main.title.size = 0.7,
+            main.title.fontface = "bold",
+            legend.height = 0.45, 
+            legend.width = 0.35,
+            frame = TRUE) +
+  tm_borders(alpha = 0.5)
+
+tmap_arrange (fun, nfun, ncol = 2, asp = 1)
+```
+
+# Geospatial Autocorrelation
+
+## Defining the Spatial Weights Matrix
+
+### Getting the centroids
+
+Since we are using polygons, we need to define centroids, which are the points geometric centers of polygons. These are the values that will determine "distance" between the features. The code chunk below uses `st_centroid()` to create a POINT type spatial dataframe containing all the centroids of our LGAs or features as computed from the `st_geometry()` values.
+
+```{r}
+coords <- st_centroid(st_geometry(nga_wp_final))
+coords
+```
+
+### Getting the adaptive distance weights matrix 
+
+```{r}
+knn <- knn2nb(knearneigh(coords, k=8))
+knn
+```
+
+```{r}
+knn_lw <- nb2listw(knn, style = 'B')
+summary(knn_lw)
+```
+
+### Visualizing the spatial weights matrix
+
+```{r}
+plot(nga_wp_final$geometry, border="lightgrey", main="Adaptive Distance (8)")
+plot(knn, coords, add=TRUE, col="red", length=0.08)
+```
+
+## Global Spatial Autocorrelation
+
+### Computing Moran's I statistic for `'pct_functional'`
+
+```{r}
+moran.test(nga_wp_final$pct_functional, listw=knn_lw, zero.policy = TRUE, na.action=na.omit)
+```
+
+### Computing Moran's I statistic for `'pct_nonfunctional'`
+
+```{r}
+moran.test(nga_wp_final$pct_nonfunctional, listw=knn_lw, zero.policy = TRUE, na.action=na.omit)
+```
+
+### Plotting Moran I's spatial correlogram for `'pct_functional'`
+
+```{r}
+MI_corr <- sp.correlogram(knn, 
+                          nga_wp_final$pct_functional, 
+                          order=5, 
+                          method="I", 
+                          style="W")
+plot(MI_corr)
+```
+
+### Plotting Moran I's spatial correlogram for `'pct_nonfunctional'`
+
+```{r}
+MI_corr <- sp.correlogram(knn, 
+                          nga_wp_final$pct_nonfunctional, 
+                          order=5, 
+                          method="I", 
+                          style="W")
+plot(MI_corr)
+```
+
+## Cluster and Outlier Analysis 
+
+### Computing local Moran's I for `'pct_functional'` and `'pct_nonfunctional'` 
+
+```{r}
+localMI_fun <- localmoran(nga_wp_final$pct_functional, knn_lw)
+localMI_nonfun <- localmoran(nga_wp_final$pct_nonfunctional, knn_lw)
+```
+
+```{r}
+head(localMI_fun)
+```
+
+```{r}
+head(localMI_nonfun)
+```
+
+### Mapping local Moran's I values and p-values for `'pct_functional'`
+
+```{r}
+nga_wp_final.localMI_fun <- cbind(nga_wp_final,localMI_fun) %>% rename(Pr.Ii = Pr.z....E.Ii..)
+```
+
+```{r}
+localMI.map <- tm_shape(nga_wp_final.localMI_fun) +
+  tm_fill(col = "Ii", 
+          style = "pretty", 
+          title = "local moran statistics") +
+  tm_borders(alpha = 0.5)
+
+pvalue.map <- tm_shape(nga_wp_final.localMI_fun) +
+  tm_fill(col = "Pr.Ii", 
+          breaks=c(-Inf, 0.001, 0.01, 0.05, 0.1, Inf),
+          palette="-Blues", 
+          title = "local Moran's I p-values") +
+  tm_borders(alpha = 0.5)
+
+tmap_arrange(localMI.map, pvalue.map, asp=1, ncol=2)
+```
+
+### Mapping local Moran's I values and p-values for `'pct_nonfunctional'` 
+
+```{r}
+nga_wp_final.localMI_nonfun <- cbind(nga_wp_final,localMI_nonfun) %>% rename(Pr.Ii = Pr.z....E.Ii..)
+```
+
+```{r}
+localMI.map <- tm_shape(nga_wp_final.localMI_nonfun) +
+  tm_fill(col = "Ii", 
+          style = "pretty", 
+          title = "local moran statistics") +
+  tm_borders(alpha = 0.5)
+
+pvalue.map <- tm_shape(nga_wp_final.localMI_nonfun) +
+  tm_fill(col = "Pr.Ii", 
+          breaks=c(-Inf, 0.001, 0.01, 0.05, 0.1, Inf),
+          palette="-Blues", 
+          title = "local Moran's I p-values") +
+  tm_borders(alpha = 0.5)
+
+tmap_arrange(localMI.map, pvalue.map, asp=1, ncol=2)
+```
+
+### Mapping local Moran's I values for `'pct_functional'` and `'pct_nonfunctional'`  with p-value \> 0.05
+
+```{r}
+
+localMI_fun.map <- tm_shape(nga_wp_final.localMI_fun)+ tm_fill("white") + tm_borders("grey", lwd = 0.5, alpha = 0.5) + tm_shape(nga_wp_final.localMI_fun[nga_wp_final.localMI_fun$Pr.Ii < 0.05,]) + tm_fill(col = "Ii", 
+          style = "pretty", 
+          title = "local moran statistics") + tm_borders(alpha = 0.5)
+
+localMI_nonfun.map <-  tm_shape(nga_wp_final.localMI_nonfun)+ tm_fill("white") + tm_borders("grey", lwd = 0.5, alpha = 0.5) + tm_shape(nga_wp_final.localMI_nonfun[nga_wp_final.localMI_nonfun$Pr.Ii < 0.05,]) + tm_fill(col = "Ii", 
+          style = "pretty", 
+          title = "local moran statistics") + tm_borders(alpha = 0.5)
+
+tmap_arrange(localMI_fun.map, localMI_nonfun.map, asp=1, ncol=2)
+```
+
+### Creating a LISA cluster map for `'pct_functional'` 
+
+#### Creating a Moran scatterplot for `'pct_functional'`
+
+```{r}
+nga_wp_final$Z.pct_functional <- scale(nga_wp_final$pct_functional) %>% as.vector 
+
+mscat_fun <- moran.plot(nga_wp_final$Z.pct_functional, knn_lw,labels=as.character(nga_wp_final$shapeName), xlab = "Functional Water Points (%)", ylab = "Spatially Lagged Functional Water Points (%)")
+```
+
+#### Creating a Moran scatterplot for `'pct_nonfunctional'` 
+
+```{r}
+nga_wp_final$Z.pct_nonfunctional <- scale(nga_wp_final$pct_nonfunctional) %>% as.vector 
+
+mscat_nonfun <- moran.plot(nga_wp_final$Z.pct_nonfunctional, knn_lw,labels=as.character(nga_wp_final$shapeName), xlab = "Functional Water Points (%)", ylab = "Spatially Lagged Functional Water Points (%)")
+```
+
+#### Preparing LISA map classes for `'pct_functional'`  and `'pct_nonfunctional'`
+
+`lag.listw()` uses the first argument, the spatial weights matrix, to create a spatially lagged variable of the second argument.
+
+```{r}
+quadrant <- vector(mode="numeric",length=nrow(localMI_fun))
+signif <- 0.05 
+
+# Functional 
+nga_wp_final$lag_pct_functional <- lag.listw(knn_lw, nga_wp_final$pct_functional)
+
+DV <- nga_wp_final$lag_pct_functional - mean(nga_wp_final$lag_pct_functional)  
+
+LM_I <- localMI_fun[,1]   
+
+quadrant[DV <0 & LM_I>0] <- 1
+quadrant[DV >0 & LM_I<0] <- 2
+quadrant[DV <0 & LM_I<0] <- 3  
+quadrant[DV >0 & LM_I>0] <- 4    
+quadrant[localMI_fun[,5]>signif] <- 0
+
+nga_wp_final.localMI_fun$quadrant <- quadrant
+
+# Non-Functional
+
+nga_wp_final$lag_pct_nonfunctional <- lag.listw(knn_lw, nga_wp_final$pct_nonfunctional)
+
+DV <- nga_wp_final$lag_pct_nonfunctional - mean(nga_wp_final$lag_pct_nonfunctional)  
+
+LM_I <- localMI_nonfun[,1]   
+
+quadrant[DV <0 & LM_I>0] <- 1
+quadrant[DV >0 & LM_I<0] <- 2
+quadrant[DV <0 & LM_I<0] <- 3  
+quadrant[DV >0 & LM_I>0] <- 4    
+quadrant[localMI_fun[,5]>signif] <- 0
+
+nga_wp_final.localMI_nonfun$quadrant <- quadrant
+```
+
+#### Plotting the LISA for `'pct_functional'` and `'pct_nonfunctional'`
+
+```{r}
+colors <- c("#ffffff", "#2c7bb6", "#abd9e9", "#fdae61", "#d7191c")
+clusters <- c("insignificant", "low-low", "low-high", "high-low", "high-high")
+
+lisa_fun.map <- tm_shape(nga_wp_final.localMI_fun) +
+  tm_fill(col = "quadrant", 
+          style = "cat", 
+          palette = colors[c(sort(unique(quadrant)))+1], 
+          labels = clusters[c(sort(unique(quadrant)))+1],
+          popup.vars = c("")) +
+  tm_view(set.zoom.limits = c(11,17)) +
+  tm_borders(alpha=0.5)
+
+lisa_nonfun.map <- tm_shape(nga_wp_final.localMI_nonfun) +
+  tm_fill(col = "quadrant", 
+          style = "cat", 
+          palette = colors[c(sort(unique(quadrant)))+1], 
+          labels = clusters[c(sort(unique(quadrant)))+1],
+          popup.vars = c("")) +
+  tm_view(set.zoom.limits = c(11,17)) +
+  tm_borders(alpha=0.5)
+  
+tmap_arrange(lisa_fun.map, lisa_nonfun.map, asp=1, ncol=2)
+```
+
+## Hot and Cold Spots Analysis 
+
+### Computing $G_i$ statistics 
+
+```{r}
+gi.adaptive <- localG(nga_wp_final$pct_functional, knn_lw)
+nga_wp_final.gi_fun <- cbind(nga_wp_final, as.matrix(gi.adaptive)) %>% rename(gstat_adaptive = as.matrix.gi.adaptive.)
+
+gi.adaptive <- localG(nga_wp_final$pct_nonfunctional, knn_lw)
+nga_wp_final.gi_nonfun <- cbind(nga_wp_final, as.matrix(gi.adaptive)) %>% rename(gstat_adaptive = as.matrix.gi.adaptive.)
+```
+
+### Mapping $G_i$ statistics 
+
+```{r}
+
+pct_functional<- qtm(nga_wp_final, "pct_functional")
+
+Gimap_fun <- tm_shape(nga_wp_final.gi_fun) + 
+  tm_fill(col = "gstat_adaptive", 
+          style = "pretty", 
+          palette="-RdBu", 
+          title = "local Gi") + 
+  tm_borders(alpha = 0.5)
+
+tmap_arrange(pct_functional, 
+             Gimap_fun, 
+             asp=1, 
+             ncol=2)
+```
+
+### Mapping $G_i$ statistics 
+
+```{r}
+pct_functional<- qtm(nga_wp_final, "pct_nonfunctional")
+
+Gimap_fun <- tm_shape(nga_wp_final.gi_nonfun) + 
+  tm_fill(col = "gstat_adaptive", 
+          style = "pretty", 
+          palette="-RdBu", 
+          title = "local Gi") + 
+  tm_borders(alpha = 0.5)
+
+tmap_arrange(pct_functional, 
+             Gimap_fun, 
+             asp=1, 
+             ncol=2)
+```

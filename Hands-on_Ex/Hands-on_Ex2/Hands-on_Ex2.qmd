@@ -389,6 +389,7 @@ quadrant[DV <0 & C_mI<0] <- 2
 quadrant[DV <0 & C_mI>0] <- 1
 quadrant[DV >0 & C_mI<0] <- 3
 
+
 # Non-significan Moran in category 0
 quadrant[localMI[,5]>signif] <- 0
 ```

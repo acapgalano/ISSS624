@@ -1,5 +1,17 @@
 /* css styles */
 
+.quarto-title{
+  color: #ff8086;
+}
+
+blockquote{
+  border-left: .3rem solid #ff8086;
+}
+
+.blockquote{
+  color: #ff8086;
+}
+
 .callout{
   background-color: #D3D3D3;
 }
@@ -33,4 +45,5 @@ div.sourceCode{
 
 .cell-output{
   background-color: #ff8086;
+  border-radius: .25rem;
 }

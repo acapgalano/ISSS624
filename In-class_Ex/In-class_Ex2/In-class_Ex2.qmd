@@ -1,0 +1,64 @@
+---
+title: "In-class Exercise 2"
+editor: visual
+execute:
+  warning: FALSE
+---
+
+### Loading the required packages
+
+```{r}
+pacman::p_load(sf, tidyverse, tmap, spdep, funModeling)
+```
+
+::: callout-important
+## LEVEL UP!
+
+**NEW LIBRARY UNLOCKED: `funModeling`**
+:::
+
+### Importing geospatial data
+
+#### Importing water point geospatial data
+
+```{r}
+#| eval: false
+wp <- st_read(dsn = "data/geospatial" , layer = "geo_export", crs = 4326) %>% filter(clean_coun == "Nigeria")
+
+wp_nga <- write_rds(wp, "data/geospatial/wp_nga.rds")
+```
+
+After rds made, can delete old GB data. (Github has a limit)
+
+Use eval: false to display code without running it!
+
+#### Importing boundary data
+
+```{r}
+#| eval: false
+nga <- st_read(dsn = "data/geospatial" , layer = "geoBounds", crs = 4326) 
+```
+
+### Data Wrangling
+
+#### Extracting the necessary data
+
+```{r}
+#| eval: false
+wp_nga <- read_rds("data/geospatial/wp_nga.rds") %>% mutate(status_cle = replace_na(status_cle, "Unknown"))
+```
+
+```{r}
+#| eval: false
+freq(data = wp_nga, input = 'status_cle')
+```
+
+```{r}
+#| eval: false
+wpt_functional <- wp_nga %>% filter(status_cle %in% c("Functional", "Functional but not in use", "Functional but needs repair"))
+```
+
+```{r}
+#| eval: false
+nga_wp <- nga %>% mutate(`total wpt` = lengths(st_intersects(nga, wpt_)))
+```
