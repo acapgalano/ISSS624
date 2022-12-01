@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>ISSS624 - Take-home Exercise 1</title>
+<title>ISSS624 - Take-home Exercise 1: Geospatial Analytics for Social Good</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -212,11 +212,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
   <ul class="collapse">
   <li><a href="#setting-the-scene" id="toc-setting-the-scene" class="nav-link" data-scroll-target="#setting-the-scene">Setting the Scene</a></li>
-  <li><a href="#class-objectives" id="toc-class-objectives" class="nav-link" data-scroll-target="#class-objectives">Class Objectives</a>
-  <ul class="collapse">
-  <li><a href="#thematic-mapping" id="toc-thematic-mapping" class="nav-link" data-scroll-target="#thematic-mapping">Thematic Mapping</a></li>
-  <li><a href="#analytical-mapping" id="toc-analytical-mapping" class="nav-link" data-scroll-target="#analytical-mapping">Analytical Mapping</a></li>
-  </ul></li>
+  <li><a href="#class-objectives" id="toc-class-objectives" class="nav-link" data-scroll-target="#class-objectives">Class Objectives</a></li>
   </ul></li>
   <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting Started</a>
   <ul class="collapse">
@@ -233,27 +229,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </ul></li>
   <li><a href="#data-wrangling" id="toc-data-wrangling" class="nav-link" data-scroll-target="#data-wrangling">Data Wrangling</a>
   <ul class="collapse">
-  <li><a href="#checking-and-replacing-na-values-in-status_cle" id="toc-checking-and-replacing-na-values-in-status_cle" class="nav-link" data-scroll-target="#checking-and-replacing-na-values-in-status_cle">Checking and replacing N/A values in ‘status_cle’</a></li>
+  <li><a href="#checking-and-replacing-na-values-in-status_cle" id="toc-checking-and-replacing-na-values-in-status_cle" class="nav-link" data-scroll-target="#checking-and-replacing-na-values-in-status_cle">Checking and replacing N/A values in <code>'status_cle'</code></a></li>
   <li><a href="#regionalizing-water-point-data" id="toc-regionalizing-water-point-data" class="nav-link" data-scroll-target="#regionalizing-water-point-data">Regionalizing water point data</a></li>
   </ul></li>
-  <li><a href="#projecting-the-crs" id="toc-projecting-the-crs" class="nav-link" data-scroll-target="#projecting-the-crs">Projecting the CRS</a></li>
+  <li><a href="#projecting-the-coordinate-reference-system" id="toc-projecting-the-coordinate-reference-system" class="nav-link" data-scroll-target="#projecting-the-coordinate-reference-system">Projecting the Coordinate Reference System</a></li>
   <li><a href="#saving-the-analytical-data-table" id="toc-saving-the-analytical-data-table" class="nav-link" data-scroll-target="#saving-the-analytical-data-table">Saving the Analytical Data Table</a></li>
   </ul></li>
-  <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis">Exploratory Data Analysis</a></li>
+  <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis">Exploratory Data Analysis</a>
+  <ul class="collapse">
+  <li><a href="#distribution-of-functional-water-point" id="toc-distribution-of-functional-water-point" class="nav-link" data-scroll-target="#distribution-of-functional-water-point">Distribution of Functional Water Point (%)</a></li>
+  <li><a href="#distribution-of-non-functional-water-point" id="toc-distribution-of-non-functional-water-point" class="nav-link" data-scroll-target="#distribution-of-non-functional-water-point">Distribution of Non-Functional Water Point (%)</a></li>
+  <li><a href="#mapping-the-distribution-of-function-and-non-functional-water-points" id="toc-mapping-the-distribution-of-function-and-non-functional-water-points" class="nav-link" data-scroll-target="#mapping-the-distribution-of-function-and-non-functional-water-points">Mapping the Distribution of Function and Non-Functional Water Points</a></li>
+  </ul></li>
   <li><a href="#geospatial-autocorrelation" id="toc-geospatial-autocorrelation" class="nav-link" data-scroll-target="#geospatial-autocorrelation">Geospatial Autocorrelation</a>
   <ul class="collapse">
   <li><a href="#defining-the-spatial-weights-matrix" id="toc-defining-the-spatial-weights-matrix" class="nav-link" data-scroll-target="#defining-the-spatial-weights-matrix">Defining the Spatial Weights Matrix</a>
   <ul class="collapse">
   <li><a href="#getting-the-centroids" id="toc-getting-the-centroids" class="nav-link" data-scroll-target="#getting-the-centroids">Getting the centroids</a></li>
-  <li><a href="#getting-the-adaptive-distance-weights-matrix" id="toc-getting-the-adaptive-distance-weights-matrix" class="nav-link" data-scroll-target="#getting-the-adaptive-distance-weights-matrix">Getting the adaptive distance weights matrix</a></li>
-  <li><a href="#visualizing-the-spatial-weights-matrix" id="toc-visualizing-the-spatial-weights-matrix" class="nav-link" data-scroll-target="#visualizing-the-spatial-weights-matrix">Visualizing the spatial weights matrix</a></li>
+  <li><a href="#creating-neighbors-list-using-adaptive-distance" id="toc-creating-neighbors-list-using-adaptive-distance" class="nav-link" data-scroll-target="#creating-neighbors-list-using-adaptive-distance">Creating neighbors list using adaptive distance</a></li>
+  <li><a href="#creating-the-binary-spatial-weights-matrix" id="toc-creating-the-binary-spatial-weights-matrix" class="nav-link" data-scroll-target="#creating-the-binary-spatial-weights-matrix">Creating the binary spatial weights matrix</a></li>
+  <li><a href="#visualizing-the-adaptive-distance-based-neighbors" id="toc-visualizing-the-adaptive-distance-based-neighbors" class="nav-link" data-scroll-target="#visualizing-the-adaptive-distance-based-neighbors">Visualizing the adaptive distance-based neighbors</a></li>
   </ul></li>
-  <li><a href="#global-spatial-autocorrelation" id="toc-global-spatial-autocorrelation" class="nav-link" data-scroll-target="#global-spatial-autocorrelation">Global Spatial Autocorrelation</a>
+  <li><a href="#global-spatial-autocorrelation-morans-i" id="toc-global-spatial-autocorrelation-morans-i" class="nav-link" data-scroll-target="#global-spatial-autocorrelation-morans-i">Global Spatial Autocorrelation: Moran’s I</a>
   <ul class="collapse">
   <li><a href="#computing-morans-i-statistic-for-pct_functional" id="toc-computing-morans-i-statistic-for-pct_functional" class="nav-link" data-scroll-target="#computing-morans-i-statistic-for-pct_functional">Computing Moran’s I statistic for <code>'pct_functional'</code></a></li>
   <li><a href="#computing-morans-i-statistic-for-pct_nonfunctional" id="toc-computing-morans-i-statistic-for-pct_nonfunctional" class="nav-link" data-scroll-target="#computing-morans-i-statistic-for-pct_nonfunctional">Computing Moran’s I statistic for <code>'pct_nonfunctional'</code></a></li>
-  <li><a href="#plotting-moran-is-spatial-correlogram-for-pct_functional" id="toc-plotting-moran-is-spatial-correlogram-for-pct_functional" class="nav-link" data-scroll-target="#plotting-moran-is-spatial-correlogram-for-pct_functional">Plotting Moran I’s spatial correlogram for <code>'pct_functional'</code></a></li>
-  <li><a href="#plotting-moran-is-spatial-correlogram-for-pct_nonfunctional" id="toc-plotting-moran-is-spatial-correlogram-for-pct_nonfunctional" class="nav-link" data-scroll-target="#plotting-moran-is-spatial-correlogram-for-pct_nonfunctional">Plotting Moran I’s spatial correlogram for <code>'pct_nonfunctional'</code></a></li>
+  <li><a href="#plotting-moran-is-spatial-correlogram-for-pct_functional-and-pct_nonfunctional" id="toc-plotting-moran-is-spatial-correlogram-for-pct_functional-and-pct_nonfunctional" class="nav-link" data-scroll-target="#plotting-moran-is-spatial-correlogram-for-pct_functional-and-pct_nonfunctional">Plotting Moran I’s spatial correlogram for <code>'pct_functional'</code> and <code>'pct_nonfunctional'</code></a></li>
   </ul></li>
   <li><a href="#cluster-and-outlier-analysis" id="toc-cluster-and-outlier-analysis" class="nav-link" data-scroll-target="#cluster-and-outlier-analysis">Cluster and Outlier Analysis</a>
   <ul class="collapse">
@@ -266,8 +267,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#hot-and-cold-spots-analysis" id="toc-hot-and-cold-spots-analysis" class="nav-link" data-scroll-target="#hot-and-cold-spots-analysis">Hot and Cold Spots Analysis</a>
   <ul class="collapse">
   <li><a href="#computing-g_i-statistics" id="toc-computing-g_i-statistics" class="nav-link" data-scroll-target="#computing-g_i-statistics">Computing <span class="math inline">\(G_i\)</span> statistics</a></li>
-  <li><a href="#mapping-g_i-statistics" id="toc-mapping-g_i-statistics" class="nav-link" data-scroll-target="#mapping-g_i-statistics">Mapping <span class="math inline">\(G_i\)</span> statistics</a></li>
-  <li><a href="#mapping-g_i-statistics-1" id="toc-mapping-g_i-statistics-1" class="nav-link" data-scroll-target="#mapping-g_i-statistics-1">Mapping <span class="math inline">\(G_i\)</span> statistics</a></li>
+  <li><a href="#mapping-g_i-statistics-for-pct_functional" id="toc-mapping-g_i-statistics-for-pct_functional" class="nav-link" data-scroll-target="#mapping-g_i-statistics-for-pct_functional">Mapping <span class="math inline">\(G_i\)</span> statistics for <code>'pct_functional'</code></a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -278,7 +278,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Take-home Exercise 1</h1>
+<h1 class="title">Take-home Exercise 1: Geospatial Analytics for Social Good</h1>
 </div>
 
 
@@ -294,6 +294,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="overview" class="level1">
 <h1>Overview</h1>
+<p>The use of geospatial analytics can be beneficial in addressing different complex problems in society. As a sample use case, we will be apply different local and global measures of spatial autocorrelation to reveal spatial patterns in the status of water points in the country of Nigeria.</p>
 <section id="setting-the-scene" class="level2">
 <h2 class="anchored" data-anchor-id="setting-the-scene">Setting the Scene</h2>
 <div class="quarto-figure quarto-figure-center">
@@ -302,36 +303,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p></p><figcaption class="figure-caption">Image of Nigerian child drinking from water point courtesy of <a href="https://www.unicef.org/nigeria/press-releases/nearly-one-third-nigerian-children-do-not-have-enough-water-meet-their-daily-needs" title="Nearly one third of Nigerian children do not have enough water to meet their daily needs - UNICEF">©UNICEFNigeria/2020</a></figcaption><p></p>
 </figure>
 </div>
-<p>Back in March 2021, UNICEF reported that 1 in 5 children worldwide do not have enough water.</p>
-<p>Globally, more than 1.42 billion people, including 450 million children, live in areas of high, or extremely high, water vulnerability, according to a new analysis released by UNICEF. T</p>
-<p>Water is an important resource to mankind. Clean and accessible water is critical to human health. It provides a healthy environment, a sustainable economy, reduces poverty and ensures peace and security. Yet over 40% of the global population does not have access to sufficient clean water. By 2025, 1.8 billion people will be living in countries or regions with absolute water scarcity, according to UN-Water. The lack of water poses a major threat to several sectors, including food security. Agriculture uses about 70% of the world's accessible freshwater.</p>
-<p>Developing countries are most affected by water shortages and poor water quality. Up to 80% of illnesses in the developing world are linked to inadequate water and sanitation. Despite technological advancement, providing clean water to the rural community is still a major development issues in many countries globally, especially countries in the Africa continent.</p>
-<p>The mission of the Water Point Data Exchange (WPdx) is to unlock the potential of water point data to improve rural water services through evidence-based decision-making.</p>
-<p>The WPdx Data Standard was collaboratively designed for data collection from rural areas at the water point or small water scheme level. The core parameters included in the WPdx Data Standard are parameters which are commonly measured by governments, non-governmental organizations, and researchers to enable easy sharing without changing the types of data typically collected. The WPdx Data Standard is managed and updated on an as-needed basis by a <a href="https://www.waterpointdata.org/about/#wpdxworkinggroup">Global Working Group</a>. Please check out the entire <a href="https://www.waterpointdata.org/wp-content/uploads/2021/04/WPDx_Data_Standard.pdf">WPdx Data Standard</a>.</p>
-<p>The WPdx Data Repository is a cloud-based data library that enables sharing of global data that is compliant with the WPdx Data Standard. Data is fully open and free to access. Data is machine readable via an API. The repository includes an online data playground for analysis and visualization. To visit the WPdx Global Data Repository, please see <a href="https://data.waterpointdata.org/dataset/Water-Point-Data-Exchange-WPDx-Basic-/jfkt-jmqa/data">here</a>. An enhanced subset of the data, <a href="https://data.waterpointdata.org/dataset/Water-Point-Data-Exchange-Plus-WPdx-/eqje-vguj/data">WPdx+</a> is also available. Please <a href="https://www.waterpointdata.org/2021/10/07/introducing-wpdx-plus/">click here</a> to learn more about two datasets.</p>
+<blockquote class="blockquote">
+<p><em>“The sea, once it casts its spell, holds one in its net of wonder forever. Water and air, the two essential fluids on which all life depends, have become global garbage cans. <strong>We forget that the water cycle and life cycle are one.</strong>”</em> - Jacques Yves Coseau, Famous Oceanographer</p>
+</blockquote>
+<p>Water is the root of all life, and yet access to such an important resource is not universally met. Inaccessibility to water negatively impacts health and other aspects of life. According to <a href="https://www.unicef.org/wash/water" title="Water, Sanitation and Hygiene (WASH) | UNICEF - Water">UNICEF</a>, 785 million people today do not have basic access to water and back in March 2021 it was reported that 1 in 5 children worldwide do not have enough water. How are children supposed to areas where water is not readily available?</p>
+<p>The figures in Nigeria report that a staggering 26.5 million children are experiencing high or extremely high water vulnerability. This means water sources are scarce or are of poor quality.</p>
+<p>The <a href="https://www.waterpointdata.org/about/">Water Point Data Exchange (WPdx)</a> is a data collection project with the goal of encouraging evidence-based decision-making that improves rural water services using water point data. Using core parameters that are commonly measured by governments, non-governmental organizations, and researchers are set by the <a href="https://www.waterpointdata.org/wp-content/uploads/2021/04/WPDx_Data_Standard.pdf">WPdx Data Standard</a>. The data can be found in the WPdx Data Repository.</p>
 </section>
 <section id="class-objectives" class="level2">
 <h2 class="anchored" data-anchor-id="class-objectives">Class Objectives</h2>
 <p>In culmination of the first four chapters of <a href="https://r4gdsa.netlify.app/" title="R for Geospatial Data Science and Analytics by Dr. Kam Tin Seong">“R for Geospatial Data Science and Analytics”</a> and first two lessons of ISSS624, this is my submission for <a href="https://isss624-ay2022-23nov.netlify.app/take-home_ex01" title="ISSS624 - Take-home Exercise 1: Geospatial Analytics for Social Good">Take-home Exercise 1</a>. The following objectives were accomplished in this Take-home Exercise:</p>
 <ul>
-<li><p>Using appropriate sf method, import the shapefile into R and save it in a simple feature data frame format.</p></li>
-<li><p>Using appropriate tidyr and dplyr methods, derive the proportion of functional and non-functional water point at LGA level.</p></li>
-<li><p>Combining the geospatial and aspatial data frame into simple feature data frame.</p></li>
-<li><p>Performing outliers/clusters analysis by using appropriate local measures of spatial association methods.</p></li>
-<li><p>Performing hotspot areas analysis by using appropriate local measures of spatial association methods.</p></li>
+<li><p>Use the appropriate <strong><code>sf</code></strong> methods, import the geospatial data into R and save it in a simple feature data frame format.</p></li>
+<li><p>Use the appropriate <strong><code>tidyr</code></strong> and <strong><code>dplyr</code></strong> methods, derive the proportion of functional and non-functional water point at LGA level.</p></li>
+<li><p>Perform outliers/clusters analysis using appropriate local measures of spatial association methods.</p></li>
+<li><p>Perform hotspot area analysis by using appropriate local measures of spatial association methods.</p></li>
+<li><p>Plot maps to show the spatial distribution of functional and non-functional water point rate at LGA level by using appropriate thematic mapping technique provided by the <strong><code>tmap</code></strong> package.</p></li>
+<li><p>Plot hotspot areas and outliers/clusters maps of functional and non-functional water point rate at LGA level by using appropriate thematic mapping technique provided by the <strong><code>tmap</code></strong> package.</p></li>
 </ul>
-<section id="thematic-mapping" class="level3">
-<h3 class="anchored" data-anchor-id="thematic-mapping">Thematic Mapping</h3>
-<ul>
-<li>Plot maps to show the spatial distribution of functional and non-functional water point rate at LGA level by using appropriate thematic mapping technique provided by tmap package.</li>
-</ul>
-</section>
-<section id="analytical-mapping" class="level3">
-<h3 class="anchored" data-anchor-id="analytical-mapping">Analytical Mapping</h3>
-<ul>
-<li>Plot hotspot areas and outliers/clusters maps of functional and non0functional water point rate at LGA level by using appropriate thematic mapping technique provided by tmap package.</li>
-</ul>
-</section>
 </section>
 </section>
 <section id="getting-started" class="level1">
@@ -353,7 +342,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="water-point-data" class="level3">
 <h3 class="anchored" data-anchor-id="water-point-data">Water Point Data</h3>
-<p>To be able to analyze the water points of different areas, we’ll need the data from <a href="https://www.waterpointdata.org/about/">Water Point Data Exchange (WPdx)</a> as mentioned previously. There are two versions, WPdx-Basic and WPdx+. For this take-home exercise, we are making use of WPdx+.</p>
+<p>To be able to analyze the water points of different areas, we’ll need the data from <a href="https://www.waterpointdata.org/about/">Water Point Data Exchange (WPdx) Repository</a> as mentioned previously. There are two versions, WPdx-Basic and WPdx+. For this take-home exercise, we are making use of WPdx+.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/waterpoint.png" class="img-fluid figure-img"></p>
@@ -367,10 +356,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="loading-in-the-required-packages">Loading in the Required Packages</h2>
 <p>To get started on coding with R, we need to first load the necessary packages that will help us with the processes. In the code chunk below, <code>p_load()</code> of the <strong><code>pacman</code></strong> package is used to install and load the following R packages into R environment:</p>
 <ul>
-<li><code>sf</code> -</li>
-<li><code>tidyverse</code> -</li>
-<li><code>tmap</code> -</li>
-<li><code>spedep</code> -</li>
+<li><a href="https://cran.r-project.org/web/packages/sf/index.html"><strong><code>sf</code></strong></a> - support for simple features, a standardized way to encode spatial vector data</li>
+<li><a href="https://www.tidyverse.org/packages/"><strong><code>tidyverse</code></strong></a> - core packages for data analyses</li>
+<li><a href="https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html"><strong><code>tmap</code></strong></a> - used for thematic plotting of maps</li>
+<li><a href="https://cran.r-project.org/web/packages/spdep/index.html"><strong><code>spedep</code></strong></a> - a library for creating spacial weights</li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(sf, tidyverse, tmap, spdep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -384,7 +373,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>nga_bounds <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="at">dsn =</span> <span class="st">"data"</span>, <span class="at">layer =</span> <span class="st">"geoBoundaries"</span>, <span class="at">crs =</span> <span class="dv">4326</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><img src="images/paste-444F979D.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/paste-444F979D.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 <p>Nigeria has 774 local government areas (LGAs). The terms “LGA”, “shape”, “polygon”,“region” and “features” will be used interchangeable from this point forward in the take-home exercise.</p>
 </section>
 <section id="importing-the-water-point-data-of-nigeria" class="level3">
@@ -393,8 +386,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>nga_wp <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="at">dsn =</span> <span class="st">"data"</span>, <span class="at">layer =</span> <span class="st">"geo_export"</span>, <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(clean_coun <span class="sc">==</span> <span class="st">"Nigeria"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><img src="images/paste-CF955801.png" class="img-fluid"></p>
-<div class="callout-note callout callout-style-default callout-captioned">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/paste-CF955801.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -413,17 +410,21 @@ CODE REVIEW!
 </section>
 <section id="data-wrangling" class="level2">
 <h2 class="anchored" data-anchor-id="data-wrangling">Data Wrangling</h2>
-<p>Data is very raw and isn’t perfect. Sometimes some magic needs to be done to shape the data into something that is usable for the analytical process. In this section, we try to collate the individual water point data to usable attributes that describe the ratio of functional water points per LGA.</p>
+<p>Data, when collected, is very raw and isn’t perfect. Sometimes some magic needs to be done to shape the data into something that is usable for the analytical process. In this section, we try to collate the individual water point data to usable attributes that describe the ratio of functional water points per LGA.</p>
 <p>In the previous section we ended up with a data table that has 73 variables. That sounds like a lot because it is! Since the objective of this exercise is only related to the functionality of different water points, we are mostly interested in the different statuses of each water point.</p>
 <section id="checking-and-replacing-na-values-in-status_cle" class="level3">
-<h3 class="anchored" data-anchor-id="checking-and-replacing-na-values-in-status_cle">Checking and replacing N/A values in ‘status_cle’</h3>
-<p>Since our primary focus is the status of each water point, we need to take a look at the variable ‘status_cle’. It would be very problematic if there were empty values. To check we use the code chunk below:</p>
+<h3 class="anchored" data-anchor-id="checking-and-replacing-na-values-in-status_cle">Checking and replacing N/A values in <code>'status_cle'</code></h3>
+<p>Since our primary focus is the status of each water point, we need to take a look at the variable <code>'status_cle'</code>. It would be very problematic if there were empty values. To check we use the code chunk below:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(nga_wp<span class="sc">$</span>status_cle))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><img src="images/paste-DFEE866C.png" class="img-fluid"></p>
-<p>This code chunk adds up all the cells in ‘status_cle’ that return TRUE from the <code>is.na()</code> function. The result tells us that there are 10,656 missing cells. That’s a lot! What do we do with them?</p>
-<p>The code chunk below uses <code>mutate()</code> to replace the current ‘status_cle’ column with one where <code>replace_na()</code> is applied. The function <code>replace_na</code> replaces N/A values in a column with the second argument, in this case “Unknown”.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/paste-DFEE866C.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+<p>This code chunk adds up all the cells in <code>'status_cle'</code> that return TRUE from the <code>is.na()</code> function. The result tells us that there are 10,656 missing cells. That’s a lot! What do we do with them?</p>
+<p>The code chunk below uses <code>mutate()</code> to replace the current <code>'status_cle'</code>column with one where <code>replace_na()</code> is applied. The function <code>replace_na</code> replaces N/A values in a column with the second argument, in this case “Unknown”.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>nga_wp <span class="ot">&lt;-</span> nga_wp <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">status_cle =</span> <span class="fu">replace_na</span>(status_cle, <span class="st">"Unknown"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -442,32 +443,52 @@ CODE REVIEW!
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(nga_wp<span class="sc">$</span>status_cle)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><img src="images/paste-43243EEB.png" class="img-fluid"></p>
-<p>The output shows that there are 7 different status values. However, some of them fall under the same status umbrella of either ‘Functional’ or ‘Non-Functional’, they just contain extra information.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/paste-43243EEB.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+<p>The output shows that there are 7 different status values. However, some of them fall under the same status umbrella of either “Functional” or “Non-Functional”, they just contain extra information.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>wpt_functional <span class="ot">&lt;-</span> nga_wp <span class="sc">%&gt;%</span> <span class="fu">filter</span>(status_cle <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Functional"</span>, <span class="st">"Functional but not in use"</span>, <span class="st">"Functional but needs repair"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><img src="images/paste-21BD4C2E.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/paste-21BD4C2E.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 <p>The code chunk above extracts all the records that have the following statuses: “Functional”, “Functional but not in use”, and “Functional but needs repair” using the <code>filter()</code> function as saves to <code>'wpt_functional'</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>wpt_nonfunctional <span class="ot">&lt;-</span> nga_wp <span class="sc">%&gt;%</span> <span class="fu">filter</span>(status_cle <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Abandoned/Decommissioned"</span>, <span class="st">"Abandoned"</span>, <span class="st">"Non-Functional"</span>, <span class="st">"Non functional due to dry season"</span>, <span class="st">"Non-Functional due to dry season"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><img src="images/paste-3A2BF171.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/paste-3A2BF171.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 <p>Similarly, the code chunk above extracts all the records that have the following statuses: “Abandoned/Decommissioned”, “Abandoned”, “Non-Functional”, “Non functional due to dry season”, and “Non-Functional due to dry season” and saves them to <code>'wpt_nonfunctional'</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>wpt_unknown <span class="ot">&lt;-</span> nga_wp <span class="sc">%&gt;%</span> <span class="fu">filter</span>(status_cle <span class="sc">==</span> <span class="st">"Unknown"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><img src="images/paste-91B8DF93.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/paste-91B8DF93.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 <p>Lastly, we do the same for all records with the status “Unknown” and save it to <code>'wpt_unknown'</code>.</p>
 </section>
 <section id="performing-point-in-polygon-count" class="level4">
 <h4 class="anchored" data-anchor-id="performing-point-in-polygon-count">Performing point-in-polygon count</h4>
-<p>This is where the magic happens. Since we know the individual water points (as point data), we can see where they overlap with the polygons (LGAs) to determine regional data. The function <code>st_intersects()</code> returns true if two geometries intersect, meaning if the water point is found within the polygon boundary of an LGA, it will return true. The function <code>lengths()</code> gives the number of true values (or count) returned from <code>st_intersects()</code>.</p>
+<p>This is where the magic happens. Since we know the individual water points (as POINT data), we can see where they overlap with the polygons (LGAs) to determine regional data. The function <code>st_intersects()</code> returns true if two geometries intersect, meaning if the water point is found within the polygon boundary of an LGA, it will return true. The function <code>lengths()</code> gives the number of true values (or count) returned from <code>st_intersects()</code>.</p>
 <p>New columns are then added to our original boundary data <code>'nga_bounds'</code> which dictate the count of total, functional, non-functional, and unknown water points per LGA.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>nga_wp_final <span class="ot">&lt;-</span> nga_bounds <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="st">`</span><span class="at">total_wpt</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">lengths</span>(<span class="fu">st_intersects</span>(nga_bounds, nga_wp))) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="st">`</span><span class="at">wpt_functional</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">lengths</span>(<span class="fu">st_intersects</span>(nga_bounds, wpt_functional))) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="st">`</span><span class="at">wpt_nonfunctional</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">lengths</span>(<span class="fu">st_intersects</span>(nga_bounds, wpt_nonfunctional))) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="st">`</span><span class="at">wpt_unknown</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">lengths</span>(<span class="fu">st_intersects</span>(nga_bounds, wpt_unknown)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><img src="images/paste-E6CDAF8B.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/paste-E6CDAF8B.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </section>
 <section id="getting-the-percentage-of-functional-and-non-functional-water-points" class="level4">
 <h4 class="anchored" data-anchor-id="getting-the-percentage-of-functional-and-non-functional-water-points">Getting the percentage of functional and non-functional water points</h4>
@@ -477,22 +498,34 @@ CODE REVIEW!
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>nga_wp_final <span class="ot">&lt;-</span> nga_wp_final <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="st">`</span><span class="at">pct_functional</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">wpt_functional</span><span class="st">`</span><span class="sc">/</span><span class="st">`</span><span class="at">total_wpt</span><span class="st">`</span>) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="st">`</span><span class="at">pct_nonfunctional</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">wpt_nonfunctional</span><span class="st">`</span><span class="sc">/</span><span class="st">`</span><span class="at">total_wpt</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Unfortunately, some of the regions either don’t have water points or their data is not recorded. Because of this, performing the division above to get the percentages may lead to NaN values when getting the percentages. A sample is shown for the LGA “Abadam”.</p>
-<p><img src="images/paste-D904E767.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/paste-D904E767.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 <p>To fix this, we replace the NaN values with a value of 0 using the code chunk below. The function <code>replace_na()</code> which was used earlier for empty cells, also works for NaN values.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>nga_wp_final <span class="ot">&lt;-</span> nga_wp_final <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">pct_functional =</span> <span class="fu">replace_na</span>(pct_functional, <span class="dv">0</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">pct_nonfunctional=</span> <span class="fu">replace_na</span>(pct_nonfunctional, <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><img src="images/paste-A5FDEDCC.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/paste-A5FDEDCC.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </section>
 </section>
 </section>
-<section id="projecting-the-crs" class="level2">
-<h2 class="anchored" data-anchor-id="projecting-the-crs">Projecting the CRS</h2>
-<p>Since the source of our boundary file was an international source, the CRS in use is <strong>geographic</strong>. What this means is the points are plotted on the earth’s surface, which is ellipsoid. We need transform the data to the appropriate <strong>projected</strong> CRS, which will be plotted on a flat surface.</p>
+<section id="projecting-the-coordinate-reference-system" class="level2">
+<h2 class="anchored" data-anchor-id="projecting-the-coordinate-reference-system">Projecting the Coordinate Reference System</h2>
+<p>Since the source of our boundary file was an international source, the CRS in use is <strong>geographic</strong>. What this means is the points are plotted on the earth’s surface, which is ellipsoid. We need transform the data to the appropriate <strong>projected</strong> CRS, which will be plotted on a flat surface. Different countries also use different projected CRSs.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(nga_wp_final)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><img src="images/paste-FEBC9389.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/paste-FEBC9389.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 <p>The code chunk below uses <code>st_transform</code> to transform <code>'nga_wp_final'</code> to <a href="https://epsg.io/26392#:~:text=Minna%20%2F%20Nigeria%20Mid%20Belt%20%2D%20EPSG%3A26392">EPSG Code 26392</a>, which is one of the projected coordinate reference systems used for Nigeria.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>nga_wp_final <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(nga_wp_final, <span class="at">crs =</span> <span class="dv">26392</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -501,15 +534,19 @@ CODE REVIEW!
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(nga_wp_final)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><img src="images/paste-EA0AFD44.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/paste-EA0AFD44.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </section>
 <section id="saving-the-analytical-data-table" class="level2">
 <h2 class="anchored" data-anchor-id="saving-the-analytical-data-table">Saving the Analytical Data Table</h2>
-<p>Now that we’ve completed adjusting our data, we can save the new dataset as an RDS file. RDS files are data files native to R.</p>
+<p>Now that we’ve completed adjusting our data, we can save the new dataset as an RDS file. RDS files are data files native to R. The code chunk below saves our spatial dataframe ‘nga_wp_final’ into an RDS file called “nga_wp_final.rds”.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(nga_wp_final, <span class="st">"data/nga_wp_final.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We can now reload the dataset back to R using <code>read_rds</code>.</p>
+<p>We can now reload the dataset back to R using <code>read_rds</code> as shown in the code chunk below.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>nga_wp_final <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/nga_wp_final.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -517,71 +554,72 @@ CODE REVIEW!
 </section>
 <section id="exploratory-data-analysis" class="level1">
 <h1>Exploratory Data Analysis</h1>
+<section id="distribution-of-functional-water-point" class="level2">
+<h2 class="anchored" data-anchor-id="distribution-of-functional-water-point">Distribution of Functional Water Point (%)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(nga_wp_final, <span class="fu">aes</span>(pct_functional)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth=</span><span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(nga_wp_final, <span class="fu">aes</span>(pct_functional)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"#ffb7b1"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">binwidth=</span><span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(nga_wp_final<span class="sc">$</span>pct_functional)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
- 0.0000  0.3261  0.4741  0.4984  0.6699  1.0000 </code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(nga_wp_final, <span class="fu">aes</span>(pct_nonfunctional)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth=</span><span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span> (<span class="st">"plot"</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>fun <span class="ot">&lt;-</span> <span class="fu">tm_shape</span> (nga_wp_final) <span class="sc">+</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">"pct_functional"</span>,</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">style =</span> <span class="st">"jenks"</span>,</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">n=</span><span class="dv">6</span>,</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">title =</span> <span class="st">"Functional (%)"</span>) <span class="sc">+</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Distribution of Functional Water Points (%) by LGA"</span>,</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">main.title.position =</span> <span class="st">"center"</span>,</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">main.title.size =</span> <span class="fl">0.7</span>,</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">main.title.fontface =</span> <span class="st">"bold"</span>,</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.height =</span> <span class="fl">0.45</span>, </span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.width =</span> <span class="fl">0.35</span>,</span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">frame =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>)</span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>nfun <span class="ot">&lt;-</span> <span class="fu">tm_shape</span> (nga_wp_final) <span class="sc">+</span></span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">"pct_nonfunctional"</span>,</span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>          <span class="at">style =</span> <span class="st">"jenks"</span>,</span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>          <span class="at">n=</span><span class="dv">6</span>,</span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>          <span class="at">title =</span> <span class="st">"Non-Functional (%)"</span>) <span class="sc">+</span></span>
-<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Distribution of Non-Functional Water Points(%) by LGA"</span>,</span>
-<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>            <span class="at">main.title.position =</span> <span class="st">"center"</span>,</span>
-<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>            <span class="at">main.title.size =</span> <span class="fl">0.7</span>,</span>
-<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>            <span class="at">main.title.fontface =</span> <span class="st">"bold"</span>,</span>
-<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.height =</span> <span class="fl">0.45</span>, </span>
-<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.width =</span> <span class="fl">0.35</span>,</span>
-<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>            <span class="at">frame =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>)</span>
-<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span> (fun, nfun, <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">asp =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
 </section>
+<section id="distribution-of-non-functional-water-point" class="level2">
+<h2 class="anchored" data-anchor-id="distribution-of-non-functional-water-point">Distribution of Non-Functional Water Point (%)</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(nga_wp_final, <span class="fu">aes</span>(pct_nonfunctional)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"#ffb7b1"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">binwidth=</span><span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="1152"></p>
+</div>
+</div>
+</section>
+<section id="mapping-the-distribution-of-function-and-non-functional-water-points" class="level2">
+<h2 class="anchored" data-anchor-id="mapping-the-distribution-of-function-and-non-functional-water-points">Mapping the Distribution of Function and Non-Functional Water Points</h2>
+<p>The function <code>qtm()</code> is a handy function that stands for “quick thematic mapping” and provides an easy way of visualizing geospatial data by default. To see the distribution of both functional and non-functional water point percentages, we run the code chunk below. By setting the <code>'fill'</code> argument as either <code>'pct_functional'</code> or <code>'pct_nonfunctional'</code>, we can create a chloropleth mapping of the corresponding attribute.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Functional Water Point Distribution</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>pct_functional.map <span class="ot">&lt;-</span> <span class="fu">qtm</span>(nga_wp_final, <span class="at">fill =</span> <span class="st">"pct_functional"</span>, <span class="at">fill.palette =</span> <span class="st">"RdPu"</span>, <span class="at">fill.title =</span> <span class="st">"Percentage (%)"</span>, <span class="at">borders =</span> <span class="st">"black"</span>, <span class="at">title =</span> <span class="st">"Distribution of Functional Water Points (%)"</span>) <span class="sc">+</span> <span class="fu">tm_legend</span>(<span class="at">legend.height =</span> <span class="fl">0.25</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Non-Functional Water Point Distribution</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>pct_nonfunctional.map <span class="ot">&lt;-</span> <span class="fu">qtm</span>(nga_wp_final, <span class="at">fill =</span> <span class="st">"pct_nonfunctional"</span>, <span class="at">fill.palette =</span> <span class="st">"RdPu"</span>, <span class="at">fill.title =</span> <span class="st">"Percentage (%)"</span>, <span class="at">borders =</span> <span class="st">"black"</span>, <span class="at">title =</span> <span class="st">"Distribution of Non-Functional Water Points (%)"</span>) <span class="sc">+</span> <span class="fu">tm_legend</span>(<span class="at">legend.height =</span> <span class="fl">0.25</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span> (pct_functional.map, pct_nonfunctional.map, <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">asp =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="1152"></p>
+</div>
+</div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+FIRST IMPRESSIONS!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Based on the default chloropleth mapping of the percentages without spatial lag, there are a few observations that can be made:</p>
+<ul>
+<li><p>The northern area seems to have a higher percentage of functional water points since the left mapping has purple shades, while the right mapping has the lightest pink shades.</p></li>
+<li><p>The northeastern area where both mappings contain the lightest pink shades probably have unknown water point values. This seems to indicate that something should be done to be able to check the status of water points in that area.</p></li>
+<li><p>While it can’t be fully concluded, but it does make sense that the colors for each LGA are inversely proportional.</p></li>
+</ul>
+</div>
+</div>
+</section>
+</section>
 <section id="geospatial-autocorrelation" class="level1">
 <h1>Geospatial Autocorrelation</h1>
+<p>Spatial autocorrelation is the term used to describe the presence of systematic spatial variation in a variable and positive spatial autocorrelation, which is most often encountered in practical situations, is the tendency for areas or sites that are close together to have similar values. Using different spatial autocorrelation statistical measures, we can determine different spatial patterns.</p>
 <section id="defining-the-spatial-weights-matrix" class="level2">
 <h2 class="anchored" data-anchor-id="defining-the-spatial-weights-matrix">Defining the Spatial Weights Matrix</h2>
+<p>Before we can compute for the different statistical measures though, we need to define the neighbors of each feature and their relationship defined by spatial weights.</p>
+<p>There are different ways to construct the spatial weights matrix and it depends on how neighbors are defined. For this study, we will be using adaptive distance-based spatial weights.</p>
 <section id="getting-the-centroids" class="level3">
 <h3 class="anchored" data-anchor-id="getting-the-centroids">Getting the centroids</h3>
-<p>Since we are using polygons, we need to define centroids, which are the points geometric centers of polygons. These are the values that will determine “distance” between the features. The code chunk below uses <code>st_centroid()</code> to create a POINT type spatial dataframe containing all the centroids of our LGAs or features as computed from the <code>st_geometry()</code> values.</p>
+<p>Since distance is being measured and we are using polygons, we need to define centroids, which are the points geometric centers of polygons. These are the values that will determine “distance” between the features. The code chunk below uses <code>st_centroid()</code> to create a POINT type spatial dataframe containing all the centroids of our LGAs or features as computed from the <code>st_geometry()</code> values.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">st_centroid</span>(<span class="fu">st_geometry</span>(nga_wp_final))</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>coords</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">st_centroid</span>(<span class="fu">st_geometry</span>(nga_wp_final))</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>coords</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Geometry set for 774 features 
 Geometry type: POINT
@@ -592,11 +630,12 @@ First 5 geometries:</code></pre>
 </div>
 </div>
 </section>
-<section id="getting-the-adaptive-distance-weights-matrix" class="level3">
-<h3 class="anchored" data-anchor-id="getting-the-adaptive-distance-weights-matrix">Getting the adaptive distance weights matrix</h3>
+<section id="creating-neighbors-list-using-adaptive-distance" class="level3">
+<h3 class="anchored" data-anchor-id="creating-neighbors-list-using-adaptive-distance">Creating neighbors list using adaptive distance</h3>
+<p>Using the function <code>knn2nb()</code> we can turn the list of k-neareset points from <code>knearneigh()</code> to a list of neighbors per feature. The argument <code>'k'</code> sets the number of neighbors. The code chunk defines 8 neighboring LGAs for each LGA.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>knn <span class="ot">&lt;-</span> <span class="fu">knn2nb</span>(<span class="fu">knearneigh</span>(coords, <span class="at">k=</span><span class="dv">8</span>))</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>knn</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>knn <span class="ot">&lt;-</span> <span class="fu">knn2nb</span>(<span class="fu">knearneigh</span>(coords, <span class="at">k=</span><span class="dv">8</span>))</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>knn</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Neighbour list object:
 Number of regions: 774 
@@ -606,9 +645,28 @@ Average number of links: 8
 Non-symmetric neighbours list</code></pre>
 </div>
 </div>
+<div class="callout-important callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+CODE REVIEW!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The function <code>knearneigh()</code> has the argument <code>'longlat'</code> . We know that the projected coordinate system we are using doesn’t make use of longitude and latitude values. Why aren’t we setting <code>'longlat'</code> to FALSE?</p>
+<p><img src="images/paste-F6CA718E.png" class="img-fluid"></p>
+<p>According to the R documentation, if <code>'x'</code> is a SpatialPoints object, the value is taken from the object itself. Since ‘coords’ is a SpatialPoints object, there is no need to specify a FALSE value.</p>
+</div>
+</div>
+</section>
+<section id="creating-the-binary-spatial-weights-matrix" class="level3">
+<h3 class="anchored" data-anchor-id="creating-the-binary-spatial-weights-matrix">Creating the binary spatial weights matrix</h3>
+<p>The previous code chunk only creates a list of neighbors. We need to use <code>nb2listw()</code> to create the spatial weight matrix. The argument <code>'style'</code> dictates the encoding. In this case, we use basic binary encoding as represented by the value “B”.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>knn_lw <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(knn, <span class="at">style =</span> <span class="st">'B'</span>)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(knn_lw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>knn_lw <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(knn, <span class="at">style =</span> <span class="st">'B'</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(knn_lw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Characteristics of weights list object:
 Neighbour list object:
@@ -633,23 +691,48 @@ B 774 599076 6192 11152 201942</code></pre>
 </div>
 </div>
 </section>
-<section id="visualizing-the-spatial-weights-matrix" class="level3">
-<h3 class="anchored" data-anchor-id="visualizing-the-spatial-weights-matrix">Visualizing the spatial weights matrix</h3>
+<section id="visualizing-the-adaptive-distance-based-neighbors" class="level3">
+<h3 class="anchored" data-anchor-id="visualizing-the-adaptive-distance-based-neighbors">Visualizing the adaptive distance-based neighbors</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(nga_wp_final<span class="sc">$</span>geometry, <span class="at">border=</span><span class="st">"lightgrey"</span>, <span class="at">main=</span><span class="st">"Adaptive Distance (8)"</span>)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(knn, coords, <span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">col=</span><span class="st">"red"</span>, <span class="at">length=</span><span class="fl">0.08</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(nga_wp_final<span class="sc">$</span>geometry, <span class="at">border=</span><span class="st">"lightgrey"</span>, <span class="at">main=</span><span class="st">"Adaptive Distance-based Neighbors of Nigeria LGAs"</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(knn, coords, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">cex =</span> <span class="fl">0.4</span>, <span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">col=</span><span class="st">"#FF5A5A"</span>, <span class="at">length=</span><span class="fl">0.08</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
+<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
 </section>
 </section>
-<section id="global-spatial-autocorrelation" class="level2">
-<h2 class="anchored" data-anchor-id="global-spatial-autocorrelation">Global Spatial Autocorrelation</h2>
+<section id="global-spatial-autocorrelation-morans-i" class="level2">
+<h2 class="anchored" data-anchor-id="global-spatial-autocorrelation-morans-i">Global Spatial Autocorrelation: Moran’s I</h2>
+<div class="callout-important callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+LESSON REVIEW!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Moran’s I</strong> is a measure that describes how features differ from the values in the <strong>study area as a whole</strong>. It is defined as:</p>
+<p><span class="math display">\[
+I = \dfrac{N}{W}\dfrac{\displaystyle\sum^N_{j=1}W_{ij}(x_i-\bar{x})(x_j-\bar{x})}{\displaystyle\sum^N_{i=1}(x_i-\bar{x})^2}
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><p><span class="math inline">\(N\)</span> is the numbe of spatial units</p></li>
+<li><p><span class="math inline">\(x\)</span> is the variable</p></li>
+<li><p><span class="math inline">\(\bar{x}\)</span> is the mean of x</p></li>
+<li><p><span class="math inline">\(w_{ij}\)</span> is a matrix of spatial weights with zeroes on the diagonal</p></li>
+<li><p><span class="math inline">\(W\)</span> is the sum of all <span class="math inline">\(w_{ij}\)</span></p></li>
+</ul>
+</div>
+</div>
+<p>The package <strong><code>spdep</code></strong> provides a function <a href="https://r-spatial.github.io/spdep/reference/moran.test.html" title="Moran's I test for spatial autocorrelation"><code>moran.test()</code></a> to simply perform Moran's I statistics. The first test is the variable, the argument <code>'listw'</code> contains the spatial weights matrix, and <code>'zero.policy'</code> and <code>'na.action'</code> just determine what to do for features without neighbors and N/A variable values.</p>
 <section id="computing-morans-i-statistic-for-pct_functional" class="level3">
 <h3 class="anchored" data-anchor-id="computing-morans-i-statistic-for-pct_functional">Computing Moran’s I statistic for <code>'pct_functional'</code></h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">moran.test</span>(nga_wp_final<span class="sc">$</span>pct_functional, <span class="at">listw=</span>knn_lw, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>, <span class="at">na.action=</span>na.omit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">moran.test</span>(nga_wp_final<span class="sc">$</span>pct_functional, <span class="at">listw=</span>knn_lw, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>, <span class="at">na.action=</span>na.omit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Moran I test under randomisation
@@ -664,11 +747,12 @@ Moran I statistic       Expectation          Variance
      0.5271813748     -0.0012936611      0.0002876224 </code></pre>
 </div>
 </div>
+<p>Based on the results, the p-value being less than <span class="math inline">\(2.2e^{-16}\)</span> , which is below 0.05, dictates that we can <strong>reject</strong> the null hypothesis stating that the variable <code>'pct_functional'</code> is randomly distributed and do not depend on each other. The Moran I value of <strong>0.5271813748</strong> being statistically significant and positive dictates that <code>'pct_functional'</code> values are clustered similarly.</p>
 </section>
 <section id="computing-morans-i-statistic-for-pct_nonfunctional" class="level3">
 <h3 class="anchored" data-anchor-id="computing-morans-i-statistic-for-pct_nonfunctional">Computing Moran’s I statistic for <code>'pct_nonfunctional'</code></h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">moran.test</span>(nga_wp_final<span class="sc">$</span>pct_nonfunctional, <span class="at">listw=</span>knn_lw, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>, <span class="at">na.action=</span>na.omit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">moran.test</span>(nga_wp_final<span class="sc">$</span>pct_nonfunctional, <span class="at">listw=</span>knn_lw, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>, <span class="at">na.action=</span>na.omit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Moran I test under randomisation
@@ -683,133 +767,159 @@ Moran I statistic       Expectation          Variance
      0.4613158941     -0.0012936611      0.0002875562 </code></pre>
 </div>
 </div>
+<p>Based on the results, the p-value being less than <span class="math inline">\(2.2e^{-16}\)</span> , which is below 0.05, dictates that we can <strong>reject</strong> the null hypothesis stating that the variable <code>'pct_nonfunctional'</code> is randomly distributed and do not depend on each other. The Moran I value of <strong>0.4613158941</strong> being statistically significant and positive dictates that <code>'pct_nonfunctional'</code> values are clustered similarly.</p>
 </section>
-<section id="plotting-moran-is-spatial-correlogram-for-pct_functional" class="level3">
-<h3 class="anchored" data-anchor-id="plotting-moran-is-spatial-correlogram-for-pct_functional">Plotting Moran I’s spatial correlogram for <code>'pct_functional'</code></h3>
+<section id="plotting-moran-is-spatial-correlogram-for-pct_functional-and-pct_nonfunctional" class="level3">
+<h3 class="anchored" data-anchor-id="plotting-moran-is-spatial-correlogram-for-pct_functional-and-pct_nonfunctional">Plotting Moran I’s spatial correlogram for <code>'pct_functional'</code> and <code>'pct_nonfunctional'</code></h3>
+<p>Spatial correlograms are great to examine patterns of spatial autocorrelation. In this case, they show the Moran’s I when you increase the distance (spatial lag) between them.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>MI_corr <span class="ot">&lt;-</span> <span class="fu">sp.correlogram</span>(knn, </span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>                          nga_wp_final<span class="sc">$</span>pct_functional, </span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">order=</span><span class="dv">5</span>, </span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">method=</span><span class="st">"I"</span>, </span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">style=</span><span class="st">"W"</span>)</span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(MI_corr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>MI_corr_fun <span class="ot">&lt;-</span> <span class="fu">sp.correlogram</span>(knn, </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>                          nga_wp_final<span class="sc">$</span>pct_functional, </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">order=</span><span class="dv">5</span>, </span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">method=</span><span class="st">"I"</span>, </span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">style=</span><span class="st">"B"</span>)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>MI_corr_nonfun <span class="ot">&lt;-</span> <span class="fu">sp.correlogram</span>(knn, </span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>                          nga_wp_final<span class="sc">$</span>pct_nonfunctional, </span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>                          <span class="at">order=</span><span class="dv">5</span>, </span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>                          <span class="at">method=</span><span class="st">"I"</span>, </span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>                          <span class="at">style=</span><span class="st">"B"</span>)</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(MI_corr_fun, <span class="at">main =</span> <span class="st">"Functional"</span>)</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(MI_corr_nonfun, <span class="at">main =</span> <span class="st">"Non-Functional"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="672"></p>
+<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
-</section>
-<section id="plotting-moran-is-spatial-correlogram-for-pct_nonfunctional" class="level3">
-<h3 class="anchored" data-anchor-id="plotting-moran-is-spatial-correlogram-for-pct_nonfunctional">Plotting Moran I’s spatial correlogram for <code>'pct_nonfunctional'</code></h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>MI_corr <span class="ot">&lt;-</span> <span class="fu">sp.correlogram</span>(knn, </span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>                          nga_wp_final<span class="sc">$</span>pct_nonfunctional, </span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">order=</span><span class="dv">5</span>, </span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">method=</span><span class="st">"I"</span>, </span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">style=</span><span class="st">"W"</span>)</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(MI_corr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" width="672"></p>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(MI_corr_fun)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Spatial correlogram for nga_wp_final$pct_functional 
+method: Moran's I
+           estimate expectation    variance standard deviate Pr(I) two sided
+1 (774)  5.2718e-01 -1.2937e-03  2.8762e-04           31.161       &lt; 2.2e-16
+2 (774)  4.2140e-01 -1.2937e-03  1.3391e-04           36.527       &lt; 2.2e-16
+3 (774)  3.5315e-01 -1.2937e-03  8.3863e-05           38.705       &lt; 2.2e-16
+4 (774)  2.6765e-01 -1.2937e-03  6.0645e-05           34.535       &lt; 2.2e-16
+5 (774)  2.2873e-01 -1.2937e-03  4.7707e-05           33.303       &lt; 2.2e-16
+           
+1 (774) ***
+2 (774) ***
+3 (774) ***
+4 (774) ***
+5 (774) ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(MI_corr_nonfun)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Spatial correlogram for nga_wp_final$pct_nonfunctional 
+method: Moran's I
+           estimate expectation    variance standard deviate Pr(I) two sided
+1 (774)  4.6132e-01 -1.2937e-03  2.8756e-04           27.281       &lt; 2.2e-16
+2 (774)  3.2860e-01 -1.2937e-03  1.3388e-04           28.511       &lt; 2.2e-16
+3 (774)  2.2169e-01 -1.2937e-03  8.3844e-05           24.352       &lt; 2.2e-16
+4 (774)  1.2965e-01 -1.2937e-03  6.0631e-05           16.817       &lt; 2.2e-16
+5 (774)  7.1147e-02 -1.2937e-03  4.7696e-05           10.489       &lt; 2.2e-16
+           
+1 (774) ***
+2 (774) ***
+3 (774) ***
+4 (774) ***
+5 (774) ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </section>
 </section>
 <section id="cluster-and-outlier-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="cluster-and-outlier-analysis">Cluster and Outlier Analysis</h2>
+<p>Local Indicators of Spatial Association or LISA are statistical methods that indicate the existence of significant clustering in the spatial arrangement of a given variable around a feature.</p>
 <section id="computing-local-morans-i-for-pct_functional-and-pct_nonfunctional" class="level3">
 <h3 class="anchored" data-anchor-id="computing-local-morans-i-for-pct_functional-and-pct_nonfunctional">Computing local Moran’s I for <code>'pct_functional'</code> and <code>'pct_nonfunctional'</code></h3>
+<p>The function <code>localmoran()</code> of the <strong><code>spdep</code></strong> package computes <span class="math inline">\(I_i\)</span> values, given a set of <span class="math inline">\(z_i\)</span> values and a <code>listw</code> object providing neighbor weighting information for the polygon associated with the <span class="math inline">\(z_i\)</span> values.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>localMI_fun <span class="ot">&lt;-</span> <span class="fu">localmoran</span>(nga_wp_final<span class="sc">$</span>pct_functional, knn_lw)</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>localMI_nonfun <span class="ot">&lt;-</span> <span class="fu">localmoran</span>(nga_wp_final<span class="sc">$</span>pct_nonfunctional, knn_lw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Functional </span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>localMI_fun <span class="ot">&lt;-</span> <span class="fu">localmoran</span>(nga_wp_final<span class="sc">$</span>pct_functional, knn_lw, <span class="at">na.action =</span> na.omit, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Non-functional</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>localMI_nonfun <span class="ot">&lt;-</span> <span class="fu">localmoran</span>(nga_wp_final<span class="sc">$</span>pct_nonfunctional, knn_lw, <span class="at">na.action =</span> na.omit, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(localMI_fun)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(localMI_fun, <span class="at">n =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          Ii         E.Ii      Var.Ii       Z.Ii Pr(z != E(Ii))
 1  2.5100432 -0.001328196  1.01853344  2.4884177   1.283129e-02
 2  2.5545352 -0.001431708  1.09789794  2.4393507   1.471368e-02
 3 33.9550743 -0.043926357 33.50573077  5.8736303   4.263537e-09
 4 -0.6153427 -0.001593282  1.22177539 -0.5552588   5.787177e-01
-5  0.2676861 -0.000065655  0.05035578  1.1931846   2.327971e-01
-6  3.2496101 -0.003795002  2.90931709  1.9074037   5.646833e-02</code></pre>
+5  0.2676861 -0.000065655  0.05035578  1.1931846   2.327971e-01</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(localMI_nonfun)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(localMI_nonfun, <span class="at">n =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         Ii         E.Ii    Var.Ii     Z.Ii Pr(z != E(Ii))
 1  5.407157 -0.006784813  5.199415 2.374304   1.758207e-02
 2  4.964822 -0.004189178  3.211341 2.772853   5.556728e-03
 3 23.376412 -0.030241154 23.106738 4.869339   1.119723e-06
 4  1.735812 -0.013188412 10.098598 0.550376   5.820615e-01
-5  7.139931 -0.006117971  4.688784 3.300166   9.662752e-04
-6  4.593069 -0.007507087  5.752397 1.918173   5.508904e-02</code></pre>
+5  7.139931 -0.006117971  4.688784 3.300166   9.662752e-04</code></pre>
 </div>
 </div>
 </section>
 <section id="mapping-local-morans-i-values-and-p-values-for-pct_functional" class="level3">
 <h3 class="anchored" data-anchor-id="mapping-local-morans-i-values-and-p-values-for-pct_functional">Mapping local Moran’s I values and p-values for <code>'pct_functional'</code></h3>
+<p>The code chunk below save the local Moran values for <code>'pct_functional'</code> to our main spatial dataframe ‘nga_wp_final’ using the function <code>cbind()</code> which combines two dataframes.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>nga_wp_final.localMI_fun <span class="ot">&lt;-</span> <span class="fu">cbind</span>(nga_wp_final,localMI_fun) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">Pr.Ii =</span> Pr.z....E.Ii..)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>nga_wp_final.localMI_fun <span class="ot">&lt;-</span> <span class="fu">cbind</span>(nga_wp_final,localMI_fun) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">Pr.Ii =</span> Pr.z....E.Ii..)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Using the different <strong><code>tmap</code></strong> functions, we can map the local Moran’s I values and p-values for <code>'pct_functional'</code> using the code chunk below.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>localMI.map <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(nga_wp_final.localMI_fun) <span class="sc">+</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">"Ii"</span>, </span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">style =</span> <span class="st">"pretty"</span>, </span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">title =</span> <span class="st">"local moran statistics"</span>) <span class="sc">+</span></span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>)</span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>pvalue.map <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(nga_wp_final.localMI_fun) <span class="sc">+</span></span>
-<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">"Pr.Ii"</span>, </span>
-<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">breaks=</span><span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, <span class="fl">0.001</span>, <span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="fl">0.1</span>, <span class="cn">Inf</span>),</span>
-<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette=</span><span class="st">"-Blues"</span>, </span>
-<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">title =</span> <span class="st">"local Moran's I p-values"</span>) <span class="sc">+</span></span>
-<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>)</span>
-<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span>(localMI.map, pvalue.map, <span class="at">asp=</span><span class="dv">1</span>, <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>localMI.map <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(nga_wp_final.localMI_fun) <span class="sc">+</span> <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">"Ii"</span>, <span class="at">style =</span> <span class="st">"pretty"</span>, <span class="at">palette =</span> <span class="st">"PiYG"</span>, <span class="at">title =</span> <span class="st">"local Moran's I"</span>) <span class="sc">+</span> <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>)<span class="sc">+</span> <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Functional Water Point (%)"</span>, <span class="at">main.title.size =</span> <span class="fl">0.9</span>, <span class="at">title =</span> <span class="st">"Local Moran's I values"</span>, <span class="at">title.size =</span> <span class="fl">0.7</span>, <span class="at">legend.width =</span> <span class="fl">0.3</span>, <span class="at">legend.height =</span> <span class="fl">0.25</span>)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>pvalue.map <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(nga_wp_final.localMI_fun) <span class="sc">+</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">"Pr.Ii"</span>, <span class="at">breaks=</span><span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, <span class="fl">0.001</span>, <span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="fl">0.1</span>, <span class="cn">Inf</span>),<span class="at">palette=</span><span class="st">"-RdPu"</span>, <span class="at">title =</span> <span class="st">"p-values"</span>) <span class="sc">+</span> <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>)<span class="sc">+</span> <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Functional Water Point (%)"</span>, <span class="at">main.title.size =</span> <span class="fl">0.9</span>, <span class="at">title =</span> <span class="st">"Local Moran's I p-values"</span>, <span class="at">title.size =</span> <span class="fl">0.7</span>, <span class="at">legend.width =</span> <span class="fl">0.3</span>, <span class="at">legend.height =</span> <span class="fl">0.25</span>)</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span>(localMI.map, pvalue.map, <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid" width="672"></p>
+<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
 </section>
 <section id="mapping-local-morans-i-values-and-p-values-for-pct_nonfunctional" class="level3">
 <h3 class="anchored" data-anchor-id="mapping-local-morans-i-values-and-p-values-for-pct_nonfunctional">Mapping local Moran’s I values and p-values for <code>'pct_nonfunctional'</code></h3>
+<p>Similar code chunks are used for <code>'pct_nonfunctional'</code> as shown below.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>nga_wp_final.localMI_nonfun <span class="ot">&lt;-</span> <span class="fu">cbind</span>(nga_wp_final,localMI_nonfun) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">Pr.Ii =</span> Pr.z....E.Ii..)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>nga_wp_final.localMI_nonfun <span class="ot">&lt;-</span> <span class="fu">cbind</span>(nga_wp_final,localMI_nonfun) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">Pr.Ii =</span> Pr.z....E.Ii..)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>localMI.map <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(nga_wp_final.localMI_nonfun) <span class="sc">+</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">"Ii"</span>, </span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">style =</span> <span class="st">"pretty"</span>, </span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">title =</span> <span class="st">"local moran statistics"</span>) <span class="sc">+</span></span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>)</span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>pvalue.map <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(nga_wp_final.localMI_nonfun) <span class="sc">+</span></span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">"Pr.Ii"</span>, </span>
-<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">breaks=</span><span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, <span class="fl">0.001</span>, <span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="fl">0.1</span>, <span class="cn">Inf</span>),</span>
-<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette=</span><span class="st">"-Blues"</span>, </span>
-<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">title =</span> <span class="st">"local Moran's I p-values"</span>) <span class="sc">+</span></span>
-<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>)</span>
-<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span>(localMI.map, pvalue.map, <span class="at">asp=</span><span class="dv">1</span>, <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>localMI.map <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(nga_wp_final.localMI_nonfun) <span class="sc">+</span> <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">"Ii"</span>, <span class="at">style =</span> <span class="st">"pretty"</span>, <span class="at">palette =</span> <span class="st">"PiYG"</span>, <span class="at">title =</span> <span class="st">"local Moran's I"</span>) <span class="sc">+</span> <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>)<span class="sc">+</span> <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Non-Functional Water Point (%)"</span>, <span class="at">main.title.size =</span> <span class="fl">0.9</span>, <span class="at">title =</span> <span class="st">"Local Moran's I values"</span>, <span class="at">title.size =</span> <span class="fl">0.7</span>, <span class="at">legend.width =</span> <span class="fl">0.3</span>, <span class="at">legend.height =</span> <span class="fl">0.25</span>)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>pvalue.map <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(nga_wp_final.localMI_nonfun) <span class="sc">+</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">"Pr.Ii"</span>, <span class="at">breaks=</span><span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, <span class="fl">0.001</span>, <span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="fl">0.1</span>, <span class="cn">Inf</span>),<span class="at">palette=</span><span class="st">"-RdPu"</span>, <span class="at">title =</span> <span class="st">"p-values"</span>) <span class="sc">+</span> <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>)<span class="sc">+</span> <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Non-Functional Water Point (%)"</span>, <span class="at">main.title.size =</span> <span class="fl">0.9</span>, <span class="at">title =</span> <span class="st">"Local Moran's I p-values"</span>, <span class="at">title.size =</span> <span class="fl">0.7</span>, <span class="at">legend.width =</span> <span class="fl">0.3</span>, <span class="at">legend.height =</span> <span class="fl">0.25</span>)</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span>(localMI.map, pvalue.map, <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid" width="672"></p>
+<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
 </section>
 <section id="mapping-local-morans-i-values-for-pct_functional-and-pct_nonfunctional-with-p-value-0.05" class="level3">
 <h3 class="anchored" data-anchor-id="mapping-local-morans-i-values-for-pct_functional-and-pct_nonfunctional-with-p-value-0.05">Mapping local Moran’s I values for <code>'pct_functional'</code> and <code>'pct_nonfunctional'</code> with p-value &gt; 0.05</h3>
+<p>It’s a bit difficult to clearly compare the local Moran’s I values and p-values based on the chloropleth mapping. By using <code>nga_wp_final.localMI_fun[nga_wp_final.localMI_fun$Pr.Ii &lt; 0.05,]</code> as the argument of <code>tm_shape()</code> , we are telling R to color the features that have p-values greater than 0.05. This means these are the LGAs with local Moran I values for <code>'pct_functional'</code> or <code>'pct_nonfunctional'</code> that are statistically significant.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>localMI_fun.map <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(nga_wp_final.localMI_fun)<span class="sc">+</span> <span class="fu">tm_fill</span>(<span class="st">"white"</span>) <span class="sc">+</span> <span class="fu">tm_borders</span>(<span class="st">"grey"</span>, <span class="at">lwd =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">tm_shape</span>(nga_wp_final.localMI_fun[nga_wp_final.localMI_fun<span class="sc">$</span>Pr.Ii <span class="sc">&lt;</span> <span class="fl">0.05</span>,]) <span class="sc">+</span> <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">"Ii"</span>, </span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">style =</span> <span class="st">"pretty"</span>, </span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">title =</span> <span class="st">"local moran statistics"</span>) <span class="sc">+</span> <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>)</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>localMI_nonfun.map <span class="ot">&lt;-</span>  <span class="fu">tm_shape</span>(nga_wp_final.localMI_nonfun)<span class="sc">+</span> <span class="fu">tm_fill</span>(<span class="st">"white"</span>) <span class="sc">+</span> <span class="fu">tm_borders</span>(<span class="st">"grey"</span>, <span class="at">lwd =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">tm_shape</span>(nga_wp_final.localMI_nonfun[nga_wp_final.localMI_nonfun<span class="sc">$</span>Pr.Ii <span class="sc">&lt;</span> <span class="fl">0.05</span>,]) <span class="sc">+</span> <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">"Ii"</span>, </span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">style =</span> <span class="st">"pretty"</span>, </span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">title =</span> <span class="st">"local moran statistics"</span>) <span class="sc">+</span> <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>)</span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span>(localMI_fun.map, localMI_nonfun.map, <span class="at">asp=</span><span class="dv">1</span>, <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>localMI_fun.map <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(nga_wp_final.localMI_fun)<span class="sc">+</span> <span class="fu">tm_fill</span>(<span class="st">"white"</span>) <span class="sc">+</span> <span class="fu">tm_borders</span>(<span class="st">"grey"</span>, <span class="at">lwd =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">tm_shape</span>(nga_wp_final.localMI_fun[nga_wp_final.localMI_fun<span class="sc">$</span>Pr.Ii <span class="sc">&lt;</span> <span class="fl">0.05</span>,]) <span class="sc">+</span> <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">"Ii"</span>, <span class="at">style =</span> <span class="st">"pretty"</span>,  <span class="at">title =</span> <span class="st">"local Moran's I"</span>, <span class="at">palette =</span> <span class="st">"RdPu"</span>) <span class="sc">+</span> <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Functional Water Point (%)"</span>, <span class="at">main.title.size =</span> <span class="fl">0.9</span>, <span class="at">title =</span> <span class="st">"Local Moran's I values"</span>, <span class="at">title.size =</span> <span class="fl">0.7</span>, <span class="at">legend.width =</span> <span class="fl">0.3</span>, <span class="at">legend.height =</span> <span class="fl">0.25</span>)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>localMI_nonfun.map <span class="ot">&lt;-</span>  <span class="fu">tm_shape</span>(nga_wp_final.localMI_nonfun)<span class="sc">+</span> <span class="fu">tm_fill</span>(<span class="st">"white"</span>) <span class="sc">+</span> <span class="fu">tm_borders</span>(<span class="st">"grey"</span>, <span class="at">lwd =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">tm_shape</span>(nga_wp_final.localMI_nonfun[nga_wp_final.localMI_nonfun<span class="sc">$</span>Pr.Ii <span class="sc">&lt;</span> <span class="fl">0.05</span>,]) <span class="sc">+</span> <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">"Ii"</span>, <span class="at">style =</span> <span class="st">"pretty"</span>,<span class="at">title =</span> <span class="st">"local Moran's I"</span>, <span class="at">palette =</span> <span class="st">"RdPu"</span>) <span class="sc">+</span> <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Non-Functional Water Point (%)"</span>, <span class="at">main.title.size =</span> <span class="fl">0.9</span>, <span class="at">title =</span> <span class="st">"Local Moran's I values"</span>, <span class="at">title.size =</span> <span class="fl">0.7</span>, <span class="at">legend.width =</span> <span class="fl">0.3</span>, <span class="at">legend.height =</span> <span class="fl">0.25</span>)</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span>(localMI_fun.map, localMI_nonfun.map, <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid" width="672"></p>
+<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
 </section>
@@ -818,91 +928,116 @@ Moran I statistic       Expectation          Variance
 <section id="creating-a-moran-scatterplot-for-pct_functional" class="level4">
 <h4 class="anchored" data-anchor-id="creating-a-moran-scatterplot-for-pct_functional">Creating a Moran scatterplot for <code>'pct_functional'</code></h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>nga_wp_final<span class="sc">$</span>Z.pct_functional <span class="ot">&lt;-</span> <span class="fu">scale</span>(nga_wp_final<span class="sc">$</span>pct_functional) <span class="sc">%&gt;%</span> as.vector </span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>mscat_fun <span class="ot">&lt;-</span> <span class="fu">moran.plot</span>(nga_wp_final<span class="sc">$</span>Z.pct_functional, knn_lw,<span class="at">labels=</span><span class="fu">as.character</span>(nga_wp_final<span class="sc">$</span>shapeName), <span class="at">xlab =</span> <span class="st">"Functional Water Points (%)"</span>, <span class="at">ylab =</span> <span class="st">"Spatially Lagged Functional Water Points (%)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>nga_wp_final<span class="sc">$</span>Z.pct_functional <span class="ot">&lt;-</span> <span class="fu">scale</span>(nga_wp_final<span class="sc">$</span>pct_functional) <span class="sc">%&gt;%</span> as.vector </span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>mscat_fun <span class="ot">&lt;-</span> <span class="fu">moran.plot</span>(nga_wp_final<span class="sc">$</span>Z.pct_functional, knn_lw,<span class="at">labels=</span><span class="fu">as.character</span>(nga_wp_final<span class="sc">$</span>shapeName), <span class="at">xlab =</span> <span class="st">"Functional Water Points (%)"</span>, <span class="at">ylab =</span> <span class="st">"Spatially Lagged Functional Water Points (%)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid" width="672"></p>
+<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
 </section>
 <section id="creating-a-moran-scatterplot-for-pct_nonfunctional" class="level4">
 <h4 class="anchored" data-anchor-id="creating-a-moran-scatterplot-for-pct_nonfunctional">Creating a Moran scatterplot for <code>'pct_nonfunctional'</code></h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>nga_wp_final<span class="sc">$</span>Z.pct_nonfunctional <span class="ot">&lt;-</span> <span class="fu">scale</span>(nga_wp_final<span class="sc">$</span>pct_nonfunctional) <span class="sc">%&gt;%</span> as.vector </span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>mscat_nonfun <span class="ot">&lt;-</span> <span class="fu">moran.plot</span>(nga_wp_final<span class="sc">$</span>Z.pct_nonfunctional, knn_lw,<span class="at">labels=</span><span class="fu">as.character</span>(nga_wp_final<span class="sc">$</span>shapeName), <span class="at">xlab =</span> <span class="st">"Functional Water Points (%)"</span>, <span class="at">ylab =</span> <span class="st">"Spatially Lagged Functional Water Points (%)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>nga_wp_final<span class="sc">$</span>Z.pct_nonfunctional <span class="ot">&lt;-</span> <span class="fu">scale</span>(nga_wp_final<span class="sc">$</span>pct_nonfunctional) <span class="sc">%&gt;%</span> as.vector </span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>mscat_nonfun <span class="ot">&lt;-</span> <span class="fu">moran.plot</span>(nga_wp_final<span class="sc">$</span>Z.pct_nonfunctional, knn_lw,<span class="at">labels=</span><span class="fu">as.character</span>(nga_wp_final<span class="sc">$</span>shapeName), <span class="at">xlab =</span> <span class="st">"Functional Water Points (%)"</span>, <span class="at">ylab =</span> <span class="st">"Spatially Lagged Functional Water Points (%)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid" width="672"></p>
+<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
 </section>
 <section id="preparing-lisa-map-classes-for-pct_functional-and-pct_nonfunctional" class="level4">
 <h4 class="anchored" data-anchor-id="preparing-lisa-map-classes-for-pct_functional-and-pct_nonfunctional">Preparing LISA map classes for <code>'pct_functional'</code> and <code>'pct_nonfunctional'</code></h4>
-<p><code>lag.listw()</code> uses the first argument, the spatial weights matrix, to create a spatially lagged variable of the second argument.</p>
+<p>The code chunk below prepares the LISA cluster map. The function <code>lag.listw()</code> uses the first argument, the spatial weights matrix, to create a spatially lagged variable of the second argument. The next code snippet following centers the lagged variable to its mean using <span class="math inline">\(x-\bar{x}\)</span> which is basically the deviation.</p>
+<p>The four lines of quadrant code define the low-low (1), low-high (2), high-low (3) and high-high (4) categories. The fifth line after places non-significant Moran in the category 0.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>quadrant <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="at">mode=</span><span class="st">"numeric"</span>,<span class="at">length=</span><span class="fu">nrow</span>(localMI_fun))</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>signif <span class="ot">&lt;-</span> <span class="fl">0.05</span> </span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Functional </span></span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>nga_wp_final<span class="sc">$</span>lag_pct_functional <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(knn_lw, nga_wp_final<span class="sc">$</span>pct_functional)</span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>DV <span class="ot">&lt;-</span> nga_wp_final<span class="sc">$</span>lag_pct_functional <span class="sc">-</span> <span class="fu">mean</span>(nga_wp_final<span class="sc">$</span>lag_pct_functional)  </span>
-<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>LM_I <span class="ot">&lt;-</span> localMI_fun[,<span class="dv">1</span>]   </span>
-<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>quadrant[DV <span class="sc">&lt;</span><span class="dv">0</span> <span class="sc">&amp;</span> LM_I<span class="sc">&gt;</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>quadrant[DV <span class="sc">&gt;</span><span class="dv">0</span> <span class="sc">&amp;</span> LM_I<span class="sc">&lt;</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a>quadrant[DV <span class="sc">&lt;</span><span class="dv">0</span> <span class="sc">&amp;</span> LM_I<span class="sc">&lt;</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">3</span>  </span>
-<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>quadrant[DV <span class="sc">&gt;</span><span class="dv">0</span> <span class="sc">&amp;</span> LM_I<span class="sc">&gt;</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">4</span>    </span>
-<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>quadrant[localMI_fun[,<span class="dv">5</span>]<span class="sc">&gt;</span>signif] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a>nga_wp_final.localMI_fun<span class="sc">$</span>quadrant <span class="ot">&lt;-</span> quadrant</span>
-<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Non-Functional</span></span>
-<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-21"><a href="#cb49-21" aria-hidden="true" tabindex="-1"></a>nga_wp_final<span class="sc">$</span>lag_pct_nonfunctional <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(knn_lw, nga_wp_final<span class="sc">$</span>pct_nonfunctional)</span>
-<span id="cb49-22"><a href="#cb49-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-23"><a href="#cb49-23" aria-hidden="true" tabindex="-1"></a>DV <span class="ot">&lt;-</span> nga_wp_final<span class="sc">$</span>lag_pct_nonfunctional <span class="sc">-</span> <span class="fu">mean</span>(nga_wp_final<span class="sc">$</span>lag_pct_nonfunctional)  </span>
-<span id="cb49-24"><a href="#cb49-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-25"><a href="#cb49-25" aria-hidden="true" tabindex="-1"></a>LM_I <span class="ot">&lt;-</span> localMI_nonfun[,<span class="dv">1</span>]   </span>
-<span id="cb49-26"><a href="#cb49-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-27"><a href="#cb49-27" aria-hidden="true" tabindex="-1"></a>quadrant[DV <span class="sc">&lt;</span><span class="dv">0</span> <span class="sc">&amp;</span> LM_I<span class="sc">&gt;</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb49-28"><a href="#cb49-28" aria-hidden="true" tabindex="-1"></a>quadrant[DV <span class="sc">&gt;</span><span class="dv">0</span> <span class="sc">&amp;</span> LM_I<span class="sc">&lt;</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb49-29"><a href="#cb49-29" aria-hidden="true" tabindex="-1"></a>quadrant[DV <span class="sc">&lt;</span><span class="dv">0</span> <span class="sc">&amp;</span> LM_I<span class="sc">&lt;</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">3</span>  </span>
-<span id="cb49-30"><a href="#cb49-30" aria-hidden="true" tabindex="-1"></a>quadrant[DV <span class="sc">&gt;</span><span class="dv">0</span> <span class="sc">&amp;</span> LM_I<span class="sc">&gt;</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">4</span>    </span>
-<span id="cb49-31"><a href="#cb49-31" aria-hidden="true" tabindex="-1"></a>quadrant[localMI_fun[,<span class="dv">5</span>]<span class="sc">&gt;</span>signif] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb49-32"><a href="#cb49-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-33"><a href="#cb49-33" aria-hidden="true" tabindex="-1"></a>nga_wp_final.localMI_nonfun<span class="sc">$</span>quadrant <span class="ot">&lt;-</span> quadrant</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>quadrant <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="at">mode=</span><span class="st">"numeric"</span>,<span class="at">length=</span><span class="fu">nrow</span>(localMI_fun))</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>signif <span class="ot">&lt;-</span> <span class="fl">0.05</span> </span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Functional </span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>nga_wp_final<span class="sc">$</span>lag_pct_functional <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(knn_lw, nga_wp_final<span class="sc">$</span>pct_functional)</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>DV <span class="ot">&lt;-</span> nga_wp_final<span class="sc">$</span>lag_pct_functional <span class="sc">-</span> <span class="fu">mean</span>(nga_wp_final<span class="sc">$</span>lag_pct_functional)  </span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>LM_I <span class="ot">&lt;-</span> localMI_fun[,<span class="dv">1</span>]   </span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>quadrant[DV <span class="sc">&lt;</span><span class="dv">0</span> <span class="sc">&amp;</span> LM_I<span class="sc">&gt;</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>quadrant[DV <span class="sc">&gt;</span><span class="dv">0</span> <span class="sc">&amp;</span> LM_I<span class="sc">&lt;</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a>quadrant[DV <span class="sc">&lt;</span><span class="dv">0</span> <span class="sc">&amp;</span> LM_I<span class="sc">&lt;</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">3</span>  </span>
+<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a>quadrant[DV <span class="sc">&gt;</span><span class="dv">0</span> <span class="sc">&amp;</span> LM_I<span class="sc">&gt;</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">4</span>    </span>
+<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>quadrant[localMI_fun[,<span class="dv">5</span>]<span class="sc">&gt;</span>signif] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a>nga_wp_final.localMI_fun<span class="sc">$</span>quadrant <span class="ot">&lt;-</span> quadrant</span>
+<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-19"><a href="#cb50-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Non-Functional</span></span>
+<span id="cb50-20"><a href="#cb50-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-21"><a href="#cb50-21" aria-hidden="true" tabindex="-1"></a>nga_wp_final<span class="sc">$</span>lag_pct_nonfunctional <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(knn_lw, nga_wp_final<span class="sc">$</span>pct_nonfunctional)</span>
+<span id="cb50-22"><a href="#cb50-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-23"><a href="#cb50-23" aria-hidden="true" tabindex="-1"></a>DV <span class="ot">&lt;-</span> nga_wp_final<span class="sc">$</span>lag_pct_nonfunctional <span class="sc">-</span> <span class="fu">mean</span>(nga_wp_final<span class="sc">$</span>lag_pct_nonfunctional)  </span>
+<span id="cb50-24"><a href="#cb50-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-25"><a href="#cb50-25" aria-hidden="true" tabindex="-1"></a>LM_I <span class="ot">&lt;-</span> localMI_nonfun[,<span class="dv">1</span>]   </span>
+<span id="cb50-26"><a href="#cb50-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-27"><a href="#cb50-27" aria-hidden="true" tabindex="-1"></a>quadrant[DV <span class="sc">&lt;</span><span class="dv">0</span> <span class="sc">&amp;</span> LM_I<span class="sc">&gt;</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb50-28"><a href="#cb50-28" aria-hidden="true" tabindex="-1"></a>quadrant[DV <span class="sc">&gt;</span><span class="dv">0</span> <span class="sc">&amp;</span> LM_I<span class="sc">&lt;</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb50-29"><a href="#cb50-29" aria-hidden="true" tabindex="-1"></a>quadrant[DV <span class="sc">&lt;</span><span class="dv">0</span> <span class="sc">&amp;</span> LM_I<span class="sc">&lt;</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">3</span>  </span>
+<span id="cb50-30"><a href="#cb50-30" aria-hidden="true" tabindex="-1"></a>quadrant[DV <span class="sc">&gt;</span><span class="dv">0</span> <span class="sc">&amp;</span> LM_I<span class="sc">&gt;</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">4</span>    </span>
+<span id="cb50-31"><a href="#cb50-31" aria-hidden="true" tabindex="-1"></a>quadrant[localMI_fun[,<span class="dv">5</span>]<span class="sc">&gt;</span>signif] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb50-32"><a href="#cb50-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-33"><a href="#cb50-33" aria-hidden="true" tabindex="-1"></a>nga_wp_final.localMI_nonfun<span class="sc">$</span>quadrant <span class="ot">&lt;-</span> quadrant</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="plotting-the-lisa-for-pct_functional-and-pct_nonfunctional" class="level4">
 <h4 class="anchored" data-anchor-id="plotting-the-lisa-for-pct_functional-and-pct_nonfunctional">Plotting the LISA for <code>'pct_functional'</code> and <code>'pct_nonfunctional'</code></h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#ffffff"</span>, <span class="st">"#2c7bb6"</span>, <span class="st">"#abd9e9"</span>, <span class="st">"#fdae61"</span>, <span class="st">"#d7191c"</span>)</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>clusters <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"insignificant"</span>, <span class="st">"low-low"</span>, <span class="st">"low-high"</span>, <span class="st">"high-low"</span>, <span class="st">"high-high"</span>)</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>lisa_fun.map <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(nga_wp_final.localMI_fun) <span class="sc">+</span></span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">"quadrant"</span>, </span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">style =</span> <span class="st">"cat"</span>, </span>
-<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> colors[<span class="fu">c</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(quadrant)))<span class="sc">+</span><span class="dv">1</span>], </span>
-<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">labels =</span> clusters[<span class="fu">c</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(quadrant)))<span class="sc">+</span><span class="dv">1</span>],</span>
-<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">popup.vars =</span> <span class="fu">c</span>(<span class="st">""</span>)) <span class="sc">+</span></span>
-<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_view</span>(<span class="at">set.zoom.limits =</span> <span class="fu">c</span>(<span class="dv">11</span>,<span class="dv">17</span>)) <span class="sc">+</span></span>
-<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">alpha=</span><span class="fl">0.5</span>)</span>
-<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a>lisa_nonfun.map <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(nga_wp_final.localMI_nonfun) <span class="sc">+</span></span>
-<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">"quadrant"</span>, </span>
-<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>          <span class="at">style =</span> <span class="st">"cat"</span>, </span>
-<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> colors[<span class="fu">c</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(quadrant)))<span class="sc">+</span><span class="dv">1</span>], </span>
-<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a>          <span class="at">labels =</span> clusters[<span class="fu">c</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(quadrant)))<span class="sc">+</span><span class="dv">1</span>],</span>
-<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a>          <span class="at">popup.vars =</span> <span class="fu">c</span>(<span class="st">""</span>)) <span class="sc">+</span></span>
-<span id="cb50-19"><a href="#cb50-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_view</span>(<span class="at">set.zoom.limits =</span> <span class="fu">c</span>(<span class="dv">11</span>,<span class="dv">17</span>)) <span class="sc">+</span></span>
-<span id="cb50-20"><a href="#cb50-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">alpha=</span><span class="fl">0.5</span>)</span>
-<span id="cb50-21"><a href="#cb50-21" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb50-22"><a href="#cb50-22" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span>(lisa_fun.map, lisa_nonfun.map, <span class="at">asp=</span><span class="dv">1</span>, <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#ffffff"</span>, <span class="st">"#2c7bb6"</span>, <span class="st">"#abd9e9"</span>, <span class="st">"#fdae61"</span>, <span class="st">"#d7191c"</span>)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>clusters <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"insignificant"</span>, <span class="st">"low-low"</span>, <span class="st">"low-high"</span>, <span class="st">"high-low"</span>, <span class="st">"high-high"</span>)</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>lisa_fun.map <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(nga_wp_final.localMI_fun) <span class="sc">+</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">"quadrant"</span>, </span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">style =</span> <span class="st">"cat"</span>, </span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> colors[<span class="fu">c</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(quadrant)))<span class="sc">+</span><span class="dv">1</span>], </span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">labels =</span> clusters[<span class="fu">c</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(quadrant)))<span class="sc">+</span><span class="dv">1</span>],</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">popup.vars =</span> <span class="fu">c</span>(<span class="st">""</span>)) <span class="sc">+</span></span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_view</span>(<span class="at">set.zoom.limits =</span> <span class="fu">c</span>(<span class="dv">11</span>,<span class="dv">17</span>)) <span class="sc">+</span></span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Functional Water Points(%)"</span>, <span class="at">main.title.size =</span> <span class="fl">0.8</span>)</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>lisa_nonfun.map <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(nga_wp_final.localMI_nonfun) <span class="sc">+</span></span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">"quadrant"</span>, </span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a>          <span class="at">style =</span> <span class="st">"cat"</span>, </span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> colors[<span class="fu">c</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(quadrant)))<span class="sc">+</span><span class="dv">1</span>], </span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>          <span class="at">labels =</span> clusters[<span class="fu">c</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(quadrant)))<span class="sc">+</span><span class="dv">1</span>],</span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>          <span class="at">popup.vars =</span> <span class="fu">c</span>(<span class="st">""</span>)) <span class="sc">+</span></span>
+<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_view</span>(<span class="at">set.zoom.limits =</span> <span class="fu">c</span>(<span class="dv">11</span>,<span class="dv">17</span>)) <span class="sc">+</span></span>
+<span id="cb51-20"><a href="#cb51-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">alpha=</span><span class="fl">0.5</span>)<span class="sc">+</span> <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Non-Functional Water Points (%)"</span>, <span class="at">main.title.size =</span> <span class="fl">0.8</span>)</span>
+<span id="cb51-21"><a href="#cb51-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb51-22"><a href="#cb51-22" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span>(lisa_fun.map, lisa_nonfun.map, <span class="at">asp=</span><span class="dv">1</span>, <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid" width="672"></p>
+<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid" width="1152"></p>
+</div>
+</div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+FIRST IMPRESSIONS!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The following observations were made from the plots above:</p>
+<ul>
+<li><p>While the Northen side of Nigeria seems to have more functional water points, there are a few LGAs that have <strong>L-H Functional/H-L Non-Functional</strong> values meaning they are outliers. The <strong>H-H Functional/L-L Non-Functiona</strong>l LGAs may be able to extend services to their outlier neighbors to get the water points functioning again.</p></li>
+<li><p>The Eastern side of Nigeria is <strong>L-L Functional / L-L Non-Functional</strong> because these are the areas with unknown records.</p></li>
+<li><p>The Southern area of Nigeria seems to have more <strong>L-L Functional/H-H Non-Functional</strong> LGAs with a few <strong>H-L Functional</strong> outliers, particularly in the Southeastern area. Having more non-functional water points could be because of the current politcal climate in the area. There are a small number of LGAs in the edge of the Southern area that are <strong>H-H Functional/L-L Non-Functional</strong>. They seem to belong to the “Rivers” state, which is full of different freshwater sources.</p></li>
+</ul>
+<p>The image below was used as reference for regions.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.researchgate.net/publication/260023562/figure/fig1/AS:297066292105225@1447837531741/Map-of-Nigeria-showing-the-36-states-and-Federal-Capital-Territory-FCT-Abuja.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -910,55 +1045,36 @@ Moran I statistic       Expectation          Variance
 </section>
 <section id="hot-and-cold-spots-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="hot-and-cold-spots-analysis">Hot and Cold Spots Analysis</h2>
+<p>Using Getis and Ord’s G-statistics, determines statistically significant hot-spots in areas of high values that are also surrounded by areas with high values.</p>
 <section id="computing-g_i-statistics" class="level3">
 <h3 class="anchored" data-anchor-id="computing-g_i-statistics">Computing <span class="math inline">\(G_i\)</span> statistics</h3>
+<p>The function <code>localG()</code> generates the <span class="math inline">\(G_i\)</span> statistic using the variable and the spatial weights matrix. By using the <code>as.matrix()</code> function we can convert the list object into a dataframe that can be binded to our main dataframe ‘nga_wp_final’.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>gi.adaptive <span class="ot">&lt;-</span> <span class="fu">localG</span>(nga_wp_final<span class="sc">$</span>pct_functional, knn_lw)</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>nga_wp_final.gi_fun <span class="ot">&lt;-</span> <span class="fu">cbind</span>(nga_wp_final, <span class="fu">as.matrix</span>(gi.adaptive)) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">gstat_adaptive =</span> as.matrix.gi.adaptive.)</span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>gi.adaptive <span class="ot">&lt;-</span> <span class="fu">localG</span>(nga_wp_final<span class="sc">$</span>pct_nonfunctional, knn_lw)</span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>nga_wp_final.gi_nonfun <span class="ot">&lt;-</span> <span class="fu">cbind</span>(nga_wp_final, <span class="fu">as.matrix</span>(gi.adaptive)) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">gstat_adaptive =</span> as.matrix.gi.adaptive.)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Functional</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>gi.adaptive <span class="ot">&lt;-</span> <span class="fu">localG</span>(nga_wp_final<span class="sc">$</span>pct_functional, knn_lw)</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>nga_wp_final.gi_fun <span class="ot">&lt;-</span> <span class="fu">cbind</span>(nga_wp_final, <span class="fu">as.matrix</span>(gi.adaptive)) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">gstat_adaptive =</span> as.matrix.gi.adaptive.)</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Non-Functional</span></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>gi.adaptive <span class="ot">&lt;-</span> <span class="fu">localG</span>(nga_wp_final<span class="sc">$</span>pct_nonfunctional, knn_lw)</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>nga_wp_final.gi_nonfun <span class="ot">&lt;-</span> <span class="fu">cbind</span>(nga_wp_final, <span class="fu">as.matrix</span>(gi.adaptive)) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">gstat_adaptive =</span> as.matrix.gi.adaptive.)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="mapping-g_i-statistics" class="level3">
-<h3 class="anchored" data-anchor-id="mapping-g_i-statistics">Mapping <span class="math inline">\(G_i\)</span> statistics</h3>
+<section id="mapping-g_i-statistics-for-pct_functional" class="level3">
+<h3 class="anchored" data-anchor-id="mapping-g_i-statistics-for-pct_functional">Mapping <span class="math inline">\(G_i\)</span> statistics for <code>'pct_functional'</code></h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>pct_functional<span class="ot">&lt;-</span> <span class="fu">qtm</span>(nga_wp_final, <span class="st">"pct_functional"</span>)</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>Gimap_fun <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(nga_wp_final.gi_fun) <span class="sc">+</span> </span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">"gstat_adaptive"</span>, </span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">style =</span> <span class="st">"pretty"</span>, </span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette=</span><span class="st">"-RdBu"</span>, </span>
-<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">title =</span> <span class="st">"local Gi"</span>) <span class="sc">+</span> </span>
-<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>)</span>
-<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span>(pct_functional, </span>
-<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>             Gimap_fun, </span>
-<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">asp=</span><span class="dv">1</span>, </span>
-<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-</section>
-<section id="mapping-g_i-statistics-1" class="level3">
-<h3 class="anchored" data-anchor-id="mapping-g_i-statistics-1">Mapping <span class="math inline">\(G_i\)</span> statistics</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>pct_functional<span class="ot">&lt;-</span> <span class="fu">qtm</span>(nga_wp_final, <span class="st">"pct_nonfunctional"</span>)</span>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>pct_functional<span class="ot">&lt;-</span> <span class="fu">qtm</span>(nga_wp_final, <span class="st">"pct_functional"</span>, <span class="at">fill.palette =</span> <span class="st">"RdPu"</span>, <span class="at">fill.title =</span> <span class="st">"Percentage"</span>) <span class="sc">+</span> <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Functional (%)"</span>, <span class="at">main.title.size =</span> <span class="dv">1</span>, <span class="at">legend.height =</span> <span class="fl">0.6</span>)</span>
 <span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>Gimap_fun <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(nga_wp_final.gi_nonfun) <span class="sc">+</span> </span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">"gstat_adaptive"</span>, </span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">style =</span> <span class="st">"pretty"</span>, </span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette=</span><span class="st">"-RdBu"</span>, </span>
-<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">title =</span> <span class="st">"local Gi"</span>) <span class="sc">+</span> </span>
-<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>)</span>
-<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span>(pct_functional, </span>
-<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>             Gimap_fun, </span>
-<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">asp=</span><span class="dv">1</span>, </span>
-<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>Gimap_fun <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(nga_wp_final.gi_fun) <span class="sc">+</span> </span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">"gstat_adaptive"</span>, <span class="at">style =</span> <span class="st">"pretty"</span>, <span class="at">palette=</span><span class="st">"-RdBu"</span>, <span class="at">title =</span> <span class="st">"local Gi"</span>) <span class="sc">+</span> <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Functional Gi Map"</span>, <span class="at">main.title.size =</span> <span class="dv">1</span>, <span class="at">legend.height =</span> <span class="fl">0.6</span>)</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>pct_nonfunctional<span class="ot">&lt;-</span> <span class="fu">qtm</span>(nga_wp_final, <span class="st">"pct_nonfunctional"</span>, <span class="at">fill.palette =</span> <span class="st">"RdPu"</span>, <span class="at">fill.title =</span> <span class="st">"Percentage"</span>) <span class="sc">+</span> <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Non-Functional (%)"</span>, <span class="at">main.title.size =</span> <span class="dv">1</span>, <span class="at">legend.height =</span> <span class="fl">0.6</span>)</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>Gimap_nonfun <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(nga_wp_final.gi_nonfun) <span class="sc">+</span> </span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">"gstat_adaptive"</span>, <span class="at">style =</span> <span class="st">"pretty"</span>, <span class="at">palette=</span><span class="st">"-RdBu"</span>, <span class="at">title =</span> <span class="st">"local Gi"</span>) <span class="sc">+</span> <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Non-Functional Gi Map"</span>, <span class="at">main.title.size =</span> <span class="dv">1</span>, <span class="at">legend.height =</span> <span class="fl">0.6</span>)</span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span>(pct_functional, Gimap_fun, pct_nonfunctional, Gimap_nonfun, <span class="at">ncol=</span><span class="dv">2</span>, <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">widths =</span> <span class="fu">c</span>(<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid" width="672"></p>
+<p><img src="Take-home_Ex1_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
 
