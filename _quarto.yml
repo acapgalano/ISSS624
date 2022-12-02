@@ -32,10 +32,16 @@ website:
 
 format:
   html:
-    backgroundcolor: '#ffc5c0'
-    theme: journal
+    backgroundcolor: '#fec0ce'
+    theme: pulse
     css: styles.css
     toc: true
-
+    code-fold: show
+    code-overflow: wrap
+    code-tools:
+      source: true
+      toggle: true
+      caption: none
+    code-summary: "Press to toggle code"
 editor: visual
 
