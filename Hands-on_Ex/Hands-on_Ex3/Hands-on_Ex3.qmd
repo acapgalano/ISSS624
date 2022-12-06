@@ -1,0 +1,194 @@
+---
+title: "Hands-on Exercise 3: Geographical Segmentation with Spatially Constrained Clustering Techniques"
+editor: visual
+format: html
+execute:
+  warning: false
+---
+
+# Overview
+
+This is a hands-on exercise based on [Chapter 5](https://r4gdsa.netlify.app/chap05.html "R4GDSA: Geographical Segmentation with Spatially Constrained Clustering Techniques") of [R for Geospatial Data Science and Analytics](https://r4gdsa.netlify.app/) by Dr. Kam Tin Seong and is a requirement under the class ISS624: Geospatial Analytics and Applications.
+
+## Objectives
+
+The objective of this hands-on exercise is to learn how to delineate homogeneous regions using geographically referenced multivariate data. There are two major analysis, namely:
+
+-   hierarchical cluster analysis; and
+
+spatially constrained cluster analysis.
+
+By the end of this hands-on exercise, you will able:
+
+-   to convert GIS polygon data into R's simple feature data.frame by using appropriate functions of **sf** package of R;
+
+-   to convert simple feature data.frame into R's SpatialPolygonDataFrame object by using appropriate **sf** of package of R;
+
+-   to perform custer analysis by using *hclust()* of Base R;
+
+-   to perform spatially constrained cluster analysis using *skater()* of Base R; and
+
+-   to visualise the analysis output by using **ggplot2** and **tmap** package.
+
+## The Analytical Question
+
+In geobusiness and spatial policy, it is a common practice to delineate the market or planning area into homogeneous regions by using multivariate data. In this hands-on exercise, we are interested to delineate [Shan State](https://en.wikipedia.org/wiki/Shan_State), [Myanmar](https://en.wikipedia.org/wiki/Myanmar) into homogeneous regions by using multiple Information and Communication technology (ICT) measures, namely: Radio, Television, Land line phone, Mobile phone, Computer, and Internet at home.
+
+## The Datasets
+
+-   Myanmar Township Boundary Data (i.e. *myanmar_township_boundaries*) : This is a GIS data in ESRI shapefile format. It consists of township boundary information of Myanmar. The spatial data are captured in polygon features. Under GIS Resources \> MIMU Geospatial Data.
+
+-   *Shan-ICT.csv*: This is an extract of [**The 2014 Myanmar Population and Housing Census Myanmar**](https://myanmar.unfpa.org/en/publications/2014-population-and-housing-census-myanmar-data-sheet) at the township level.
+
+Both data sets are download from [Myanmar Information Management Unit (MIMU)](http://themimu.info/)
+
+# Getting Started
+
+## The Required R Packages
+
+The code chunk below installs and loads the different required packages for this exercise using `p_load()`:
+
+```{r}
+pacman::p_load(rgdal, spdep, tmap, sf, ggpubr, cluster, factoextra, NbClust, heatmaply, corrplot, psych, tidyverse)
+```
+
+::: {.callout-tip icon="false"}
+## 🎮 LEVEL UP!
+
+**NEW LIBRARIES UNLOCKED**!
+
+-   `rgdal`
+
+-   **`corrplot`**
+
+-   **`ggpubr`**
+
+-   **`heatmaply`**
+
+-   **`cluster`**
+
+-   **`NbClust`**
+
+-   **`factoextra`**
+
+-   **`psych`**
+:::
+
+## Importing the Data
+
+### Importing geospatial data into the R environment
+
+The code chunk below uses `st_read()` to import the shapefile containing the administrative boundaries of Myanmar.
+
+```{r}
+shan_sf <- st_read(dsn = "data/geospatial", layer = "myanmar_township_boundaries") %>% filter(ST %in% c("Shan (East)", "Shan (North)", "Shan (South)"))
+```
+
+::: callout-note
+## 💻 CODE REVIEW!
+
+**WHAT DOES THE OPERATOR `%in%` DO?**
+
+So in the context of the code chunk above, the records are filtered to only extract those with `'ST'` equals to either "Shan (East)", "Shan (North)", "Shan (South)".
+
+In the context of our data, `'ST'` refers to the state, region or union territory, which are the first level administrative boundaries of Myanmar. We are focusing on the "Shan" state of Myanmar.
+:::
+
+```{r}
+shan_sf
+```
+
+```{r}
+unique(shan_sf$TS)
+```
+
+As shown above we have 55 features, and each feature represents a township in Myanmar since the `'TS'` variable is unique for all records. The terms "feature", "polygon", and "township" will be used interchangeably in this exercise.
+
+### Importing aspatial data into the R environment
+
+The code chunk below uses `read_csv` to import
+
+```{r}
+ict <- read_csv("data/aspatial/Shan-ICT.csv")
+```
+
+```{r}
+summary(ict)
+```
+
+The summary above confirms that there are 55 townships.
+
+### Deriving new variables using **`dplyr`** package
+
+```{r}
+ict_derived <- ict %>% mutate(`RADIO_PR` = `Radio`/`Total households`*1000) %>% 
+  mutate(`TV_PR` = `Television`/`Total households`*1000) %>% 
+  mutate(`LLPHONE_PR` = `Land line phone`/`Total households`*1000) %>% 
+  mutate(`MPHONE_PR` = `Mobile phone`/`Total households`*1000) %>%
+  mutate(`COMPUTER_PR` = `Computer`/`Total households`*1000) %>% 
+  mutate(`INTERNET_PR` = `Internet at home`/`Total households`*1000)
+```
+
+```{r}
+ict_derived <- ict_derived  %>%  
+  rename(`DT_PCODE` =`District Pcode`,
+         `DT`=`District Name`,
+         `TS_PCODE`=`Township Pcode`, 
+         `TS`=`Township Name`,
+         `TT_HOUSEHOLDS`=`Total households`, 
+         `RADIO`=`Radio`, 
+         `TV`=`Television`, 
+         `LLPHONE`=`Land line phone`, 
+         `MPHONE`=`Mobile phone`,
+         `COMPUTER`=`Computer`, 
+         `INTERNET`=`Internet at home`) 
+```
+
+```{r}
+summary(ict_derived)
+```
+
+The new variables we created two code chunks ago (`'RADIO_PR'`, `'TV_PR'`, `'LLPHONE_PR'`, `'MPHONE_PR'`, `'COMPUTER_PR'`, and `'INTERNET_PR'`) are now in our new dataframe 'ict_derived'.
+
+# Exploratory Data Analysis
+
+## Original `'RADIO'` Distribution
+
+```{r}
+ggplot(data=ict_derived, 
+       aes(x=`RADIO`)) + 
+geom_histogram(bins=20, 
+               color="#704276", 
+               fill="#e3879e")
+```
+
+```{r}
+ggplot(data=ict_derived, 
+       aes(x=`RADIO`)) + 
+geom_boxplot(color="#704276", 
+             fill="#e3879e")
+```
+
+::: {.callout-important icon="false"}
+## 🌸 FIRST IMPRESSIONS!
+
+Based on the histogram above, it seems that most townships have around 10,000 households with radios, but there are a few townships that have around 30,000 households with radios. The data on households with radios looks skewed to the right.\
+The succeeding bloxplot shows that there are 2 townships that are minor outliers and 1 township is a major outlier affecting the observed skewness from the histogram.
+:::
+
+## Derived `'RADIO_PR'` Distribution
+
+```{r}
+ggplot(data=ict_derived, 
+       aes(x=`RADIO_PR`)) +
+  geom_histogram(bins=20, 
+                 color="#704276", 
+                 fill="#e3879e")
+```
+
+```{r}
+ggplot(data=ict_derived, 
+       aes(x=`RADIO_PR`)) + 
+geom_boxplot(color="#704276", 
+             fill="#e3879e")
+```
