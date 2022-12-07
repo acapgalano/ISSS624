@@ -123,8 +123,13 @@ img{
 
 code{
   color: var(--contrast2);
+  border-radius: .25rem;
 }
 
 a{
   color: var(--contrast2);
+}
+
+p {
+  font-size: 1.1em;
 }
