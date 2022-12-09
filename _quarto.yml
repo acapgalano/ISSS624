@@ -34,7 +34,8 @@ website:
     right:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - href: about.qmd
+        text: About
 
 format:
   html:
@@ -50,4 +51,3 @@ format:
       caption: none
     code-summary: "Press to toggle code"
 editor: visual
-

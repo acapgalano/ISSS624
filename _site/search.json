@@ -348,5 +348,19 @@
     "title": "Take-home Exercise 1: Geospatial Analytics for Social Good",
     "section": "Hot and Cold Spots Analysis",
     "text": "Hot and Cold Spots Analysis\nUsing Getis and Ord’s G-statistics, determines statistically significant hot-spots in areas of high values that are also surrounded by areas with high values.\n\nComputing \\(G_i\\) statistics\nThe function localG() generates the \\(G_i\\) statistic using the variable and the spatial weights matrix. By using the as.matrix() function we can convert the list object into a dataframe that can be binded to our main dataframe ‘nga_wp_final’.\n\n\nPress to toggle code\n#Functional\ngi.adaptive <- localG(nga_wp_final$pct_functional, knn_lw)\nnga_wp_final.gi_fun <- cbind(nga_wp_final, as.matrix(gi.adaptive)) %>% rename(gstat_adaptive = as.matrix.gi.adaptive.)\n\n#Non-Functional\ngi.adaptive <- localG(nga_wp_final$pct_nonfunctional, knn_lw)\nnga_wp_final.gi_nonfun <- cbind(nga_wp_final, as.matrix(gi.adaptive)) %>% rename(gstat_adaptive = as.matrix.gi.adaptive.)\n\n\n\n\nMapping \\(G_i\\) statistics for 'pct_functional'\n\n\nPress to toggle code\npct_functional<- qtm(nga_wp_final, \"pct_functional\", fill.palette = \"RdPu\", fill.title = \"Percentage\") + tm_layout(main.title = \"Functional (%)\", main.title.size = 1, legend.height = 0.6)\n\nGimap_fun <- tm_shape(nga_wp_final.gi_fun) + \n  tm_fill(col = \"gstat_adaptive\", style = \"pretty\", palette=\"-RdBu\", title = \"local Gi\") + tm_borders(alpha = 0.5) + tm_layout(main.title = \"Functional Gi Map\", main.title.size = 1, legend.height = 0.6)\n\npct_nonfunctional<- qtm(nga_wp_final, \"pct_nonfunctional\", fill.palette = \"RdPu\", fill.title = \"Percentage\") + tm_layout(main.title = \"Non-Functional (%)\", main.title.size = 1, legend.height = 0.6)\n\nGimap_nonfun <- tm_shape(nga_wp_final.gi_nonfun) + \n  tm_fill(col = \"gstat_adaptive\", style = \"pretty\", palette=\"-RdBu\", title = \"local Gi\") + tm_borders(alpha = 0.5) + tm_layout(main.title = \"Non-Functional Gi Map\", main.title.size = 1, legend.height = 0.6)\n\ntmap_arrange(pct_functional, Gimap_fun, pct_nonfunctional, Gimap_nonfun, ncol=2, nrow = 2, widths = c(0.5,0.5,0.5,0.5))"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ISSS624",
+    "section": "",
+    "text": "In this webpage, I am going to share with you my learning journey of geospatial analytics."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "CourseProfessorStudent\n\n\nISSS624 Applied Geospatial Analytics"
   }
 ]
