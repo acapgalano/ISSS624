@@ -185,7 +185,7 @@ Using the code chunk below we can verify that the `'ADM2_EN'` names have been mo
 nga_bounds$ADM2_EN[duplicate_rows]
 ```
 
-![](images/paste-E510F73A.png)
+![](images/paste-E510F73A.png){fig-align="center"}
 
 The code chunk below also verifies that there are no more duplicates in the column `'ADM2_EN'` because the only returned value from `duplicated()` is FALSE.
 
@@ -326,7 +326,7 @@ ggplot(data=nga_wp, aes(x = status_cat)) +
             plot.title = element_text(size = 20))
 ```
 
-![](images/paste-506E870A.png){fig-align="center"}
+![](images/paste-506E870A.png){fig-align="center" width="1000"}
 
 The three big groups are "Functional", "Non-Functional" and "Unknown". Looking at the other status categories, we can see that they fall under the same status umbrella of either "Functional" or "Non-Functional"; they just contain extra information. We can instead group these minor statuses with their corresponding major category from the three big largest count groups. The code chunk below groups and filters all "Functional", "Non-Functional" and "Unknown" water points.
 
@@ -358,7 +358,7 @@ ggplot(data=nga_wp, aes(x = water_tech_cat)) +
             plot.title = element_text(size = 20))
 ```
 
-![](images/paste-6FE6C8E9.png){fig-align="center"}
+![](images/paste-6FE6C8E9.png){fig-align="center" width="800"}
 
 From the graph above, we see that the water technology "Hand Pump" has the larges count and is the majority water technology since it is around 62% of all water points. Because of that, let's filter the water points that make use of hand pumps. Later on, we'll use this to get the percentage of hand pumps in each LGA.
 
@@ -395,7 +395,7 @@ ggplot(data=nga_wp, aes(x = is_urban)) +
       scale_x_discrete(labels= c("Rural", "Urban"))
 ```
 
-![](images/paste-5940254B.png){fig-align="center"}
+![](images/paste-5940254B.png){fig-align="center" width="800"}
 
 Based on the distribution above, we see that most of the water points are found in rural areas. The code chunk below filters the water points that are found in rural areas.
 
@@ -423,7 +423,7 @@ ggplot(data=nga_wp, aes(x = reorder(as.character(usage_cap), usage_cap))) +
             plot.title = element_text(size = 20))
 ```
 
-![](images/paste-30AB568F.png)
+![](images/paste-30AB568F.png){fig-align="center" width="800"}
 
 The distribution above shows that most water points have a usage capacity of 300. However, since 1000 is the highest possible number of theoretical maximum users, it is the most ideal. We then divide the water points between those with usage capacity of 1000 and those with below 1000 using the code chunk below.
 
@@ -450,7 +450,7 @@ ggplot(data=nga_wp, aes(x = press_score)) +
             plot.title = element_text(size = 20))
 ```
 
-![](images/paste-6A874719.png)
+![](images/paste-6A874719.png){fig-align="center" width="800"}
 
 Because of the range of values, the distribution can't be properly visualized in the histogram above. Instead, given the context of the variable, it may be better to separate the values into categories. Since we know that the pressure score pertains to the ratio of the population assigned to the water point over the theoretical maximum users, we can define having a pressure score above 1 or 100% as a water point that is overused or under a lot of use pressure. A new distribution using a bar graph can be found below.
 
@@ -713,6 +713,7 @@ ggarrange(wpt_functional.hist,
 
 ```{r}
 #| fig-width: 12
+#| fig-height: 12
 #| code-fold: true
 wpt_functional.map <- qtm(nga_wp_final, 
                           "wpt_functional",
