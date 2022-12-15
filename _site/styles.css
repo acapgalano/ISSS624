@@ -133,3 +133,16 @@ a{
 p {
   font-size: 1.1em;
 }
+
+tr:nth-child(even) {
+  background-color: #e3879e;
+}
+
+tr.header{
+  background-color: #e3879e;
+}
+
+th, td {
+  font-size: 0.8em;
+  vertical-align: middle;
+}

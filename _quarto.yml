@@ -33,6 +33,8 @@ website:
         menu:
           - text: Take-home Exercise 1 (Geospatial Analytics for Social Good)
             href: Take-home_Ex/Take-home_Ex1/Take-home_Ex1.qmd
+          - text: Take-home Exercise 2 (Regionalization with Spatially Constrained Clustering Methods)
+            href: Take-home_Ex/Take-home_Ex2/Take-home_Ex2.qmd
     right:
       - href: index.qmd
         text: Home
