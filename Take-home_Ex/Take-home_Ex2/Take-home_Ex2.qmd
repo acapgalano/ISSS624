@@ -64,7 +64,7 @@ pacman::p_load(rgdal, spdep, tmap, sf, ClustGeo,
                heatmaply, corrplot, tidyverse, GGally)
 ```
 
-::: callout-note
+::: {.callout-note icon="false"}
 ## 💻 CODE REVIEW!
 
 **What is the purpose of each package?**
@@ -237,7 +237,7 @@ NA_vals
 
 Based on the result above, we can see that `'status_cat'` , `'water_tech_cat'` and `'press_score'` have 10,656, 10,055 and 6,879 NA values respectively. Fortunately `'usage_cap'` and `'is_urban'` have no NA values.
 
-::: callout-note
+::: {.callout-note icon="false"}
 ## 💻 CODE REVIEW!
 
 While not relevant to the analytical process, the function `setNames()` is useful for visualizing values in a vector or list. It is used to set the name (or index value) of an object. For the code chunk above, I used it to easily show the pertaining number of NA values to the corresponding column name.
