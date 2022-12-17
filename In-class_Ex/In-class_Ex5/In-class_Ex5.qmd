@@ -1,0 +1,465 @@
+---
+title: "In-class Exercise 5"
+editor: visual
+execute: 
+  warning: false
+---
+
+# Overview
+
+This is an In-class Exercise that focuses on geographically weighted logistic regression.
+
+# Getting Started
+
+## Loading the Packages
+
+```{r}
+pacman::p_load(sf, tidyverse, funModeling, blorr, corrplot,
+               ggpubr, spdep, GWmodel, tmap, skimr, caret)
+```
+
+::: {.callout-note icon="false"}
+## 🎮 LEVEL UP!
+
+NEW PACKAGE UNLOCKED:
+
+-   [`blorr`](https://cran.r-project.org/web/packages/blorr/vignettes/introduction.html) - contains tools for building and validating binary logistic regression models
+
+-   [`skimr`](https://cran.r-project.org/web/packages/skimr/vignettes/skimr.html) - provides summary statistics
+
+-   [`caret`](https://www.stat.colostate.edu/~jah/talks_public_html/isec2020/caret_package.html#:~:text=Caret%20is%20a%20one%2Dstop,deep%20learning%20and%20much%20more.) - usually used for machine learning; used for error metrics in this exercise
+:::
+
+## Importing the Data
+
+### Importing the analytical data
+
+Using `read_rds()` we import the analytical data into the R environment.
+
+```{r}
+
+osun <- read_rds("data/Osun.rds")
+
+osun_wp_sf <- read_rds("data/Osun_wp_sf.rds")
+```
+
+We then produce the following simple feature objects:
+
+-   **\`'osun***' ('Osun.rds*') - the polygon data containing the boundaries of Osun
+-   **'osun_wp_sf'** *('Osun_wp_sf.rds'* ) - the data of water points found in Osun
+
+# Exploratory Data Analysis
+
+## Distribution of `'status'`
+
+```{r}
+osun_wp_sf %>% freq(input = 'status')
+```
+
+We do this to check our dependent variable. Since later on we will be doing logistic regression, we need to make sure our data isn't biased to one outcome.
+
+## Summary Statistics with `skimr`
+
+The function `skim()` provides a comprehensive summary of our variables as shown below.
+
+```{r}
+osun_wp_sf %>% skim()
+```
+
+As observed, `'water_point_population'` and `'local_population_1km'` have 4 missing values. We can easily remove these datapoints since the count is
+
+We also observed that `'usage_capacity'` is numerical. However, we know that there are only 2 possible values, 300 and 1000. Given the context of the variable, this is a categorical variable.
+
+The code chunk below removes any records that have NA values and converts the data type of `'usage_capacity'` to factor.
+
+```{r}
+osun_wp_sf_clean <- osun_wp_sf %>% 
+  # Removes NAs
+  filter_at(vars(status,
+                 distance_to_primary_road,
+                 distance_to_secondary_road,
+                 distance_to_tertiary_road,
+                 distance_to_city,
+                 distance_to_town,
+                 water_point_population,
+                 local_population_1km,
+                 usage_capacity,
+                 is_urban,
+                 water_source_clean), 
+            all_vars(!is.na(.))) %>% 
+  # Changes usage_capacity to categorical value
+  mutate(usage_capacity = as.factor(usage_capacity))
+
+```
+
+As shown in the screenshot below, our new clean sf object has 4 less records.
+
+![](images/paste-3AFCBD27.png){fig-align="center"}
+
+# Correlation Analysis
+
+The code chunk below extracts our independent variables and drops the geometry feature of our sf object.
+
+```{r}
+osun_wp <- osun_wp_sf_clean %>% 
+  select(c(7,35:39, 42:43, 46:47, 57)) %>% 
+  st_set_geometry(NULL)
+```
+
+The code chunk below uses `corrplot.mixed()` to create the correlation graph.
+
+```{r}
+#| output: false
+cluster_vars.cor = cor(
+  osun_wp[,2:7])
+
+corrplot.mixed(cluster_vars.cor,
+               lower = "ellipse",
+               upper = "number",
+               tl.pos = "lt",
+               diag = "l",
+               tl.col = "black")
+```
+
+![](images/paste-AF6BCF96.png)
+
+Fortunately, we have no correlated independent variables.
+
+# Logistic Regression Model (Take 1)
+
+The function `glm()` is used to calibrate a logistic regression for the water point status.
+
+```{r}
+model <- glm(status ~ distance_to_primary_road + 
+                 distance_to_secondary_road + 
+                 distance_to_tertiary_road +
+                 distance_to_city +
+                 distance_to_town +
+                 water_point_population +
+                 local_population_1km +
+                 usage_capacity +
+                 is_urban +
+                 water_source_clean,
+             data = osun_wp_sf_clean,
+             family = binomial(link = 'logit'))
+```
+
+The code chunk below uses `blr_regress()` to create a report from the modeling result.
+
+```{r}
+
+blr_regress(model)
+```
+
+From the report above, we find that given a confidence of 95%, the variables `'distance_to primary_road'` and `'distance_to_secondary_road'` are not statistically significant since their p-values are above 0.05. For now, we will keep it in our model.
+
+The code chunk below creates a confusion matrix using the function `blr_confusion_matrix()`.
+
+```{r}
+blr_confusion_matrix(model, cutoff = 0.5)
+```
+
+::: {.callout-note icon="false"}
+## 📖 LECTURE REVIEW!
+
+![](images/paste-76FE5905.png){fig-align="center"}
+:::
+
+As observed from the results above, our model's accuracy is 67.39%, sensitivity is 72.07% and specificity is 61.54 %. Our model can flag True Positives better than True Negatives.
+
+Can we make a better model?
+
+# Geographically Weighted Logistic Regression Model (Take 1)
+
+## Convert `sf` to `sp`
+
+Because `gwmodel` can only perform functions on sp objects, we need to convert our sf object using `as_Spatial()`.
+
+```{r}
+osun_wp_sp <- osun_wp_sf_clean %>% 
+  select(c(status,
+           distance_to_primary_road,
+           distance_to_secondary_road,
+           distance_to_tertiary_road,
+           distance_to_city,
+           distance_to_town,
+           water_point_population,
+           local_population_1km,
+           is_urban,
+           usage_capacity,
+           water_source_clean)) %>% 
+  as_Spatial()
+
+osun_wp_sp
+```
+
+## Building Fixed Bandwidth
+
+```{r}
+bw.fixed <- bw.ggwr(status ~
+                 distance_to_primary_road + 
+                 distance_to_secondary_road + 
+                 distance_to_tertiary_road +
+                 distance_to_city +
+                 distance_to_town +
+                 water_point_population +
+                 local_population_1km +
+                 usage_capacity +
+                 is_urban +
+                 water_source_clean,
+                 data = osun_wp_sp,
+                 family = "binomial",
+                 approach = "AIC",
+                 kernel = "gaussian",
+                 adaptive = FALSE,
+                 longlat = FALSE)
+        # since our data is projected, set longlat = FALSE
+```
+
+```{r}
+bw.fixed
+```
+
+The result is 2599.67 km.
+
+```{r}
+gwlr.fixed <- ggwr.basic(status ~ 
+                 distance_to_primary_road + 
+                 distance_to_secondary_road + 
+                 distance_to_tertiary_road +
+                 distance_to_city +
+                 distance_to_town +
+                 water_point_population +
+                 local_population_1km +
+                 usage_capacity +
+                 is_urban +
+                 water_source_clean,
+                 data = osun_wp_sp,
+                 bw = bw.fixed,
+                 family = "binomial",
+                 kernel = "gaussian",
+                 adaptive = FALSE,
+                 longlat = FALSE)
+
+gwlr.fixed
+```
+
+As observed from above, the AIC values dropped down from **5712.10 to 4414.6**1.
+
+## Converting SDF into sf data.frame
+
+```{r}
+gwr.fixed <- as.data.frame(gwlr.fixed$SDF)
+```
+
+Since `'yhat'` is probability, we need to create a new logical column called `'most'` to label as 1 or 0 if the `'yhat'` is greater or equal to 0.5.
+
+```{r}
+gwr.fixed <- gwr.fixed %>% 
+  mutate(most = ifelse(
+    gwr.fixed$yhat >= 0.5, T, F))
+```
+
+The code chunk below creates the confustion matrix of the model.
+
+```{r}
+gwr.fixed$y <- as.factor(gwr.fixed$y)
+
+gwr.fixed$most <- as.factor(gwr.fixed$most)
+
+CM <- confusionMatrix(data = gwr.fixed$most, reference = gwr.fixed$y)
+
+CM
+```
+
+```{r}
+osun_wp_sf_selected <- osun_wp_sf_clean %>% 
+  select(c(ADM2_EN, ADM2_PCODE,
+           ADM1_EN, ADM1_PCODE,
+           status))
+```
+
+The logistic regression model has accuracy of **88.37%**, sensitivity of **86.28%**, and specificity of **90.05%**.
+
+The code chunk below combines our water point data and model.
+
+```{r}
+gwr_sf.fixed <- cbind(osun_wp_sf_selected, gwr.fixed)
+```
+
+## Visualizing Coefficient Estimates
+
+The code chunk below creates an interactive point map of the probability.
+
+```{r}
+#| fig-width: 12
+tmap_mode("view")
+prob_T <- tm_shape(osun) + 
+  tm_polygons(alpha = 0.1) + 
+  tm_shape(gwr_sf.fixed) + 
+  tm_dots(col = "yhat",
+          palette = "RdPu",
+          border.col = "#704276",
+          border.lwd = 1) +
+  tm_view(set.zoom.limits = c(8,14))
+
+prob_T
+```
+
+# Logistic Regression Model (Take 2)
+
+Now, let's try making the model without the two variables that were not significant `'distance_to_primary_road'` and `'distance_to_secondary_road'`.
+
+```{r}
+model2 <- glm(status ~ distance_to_tertiary_road +
+                 distance_to_city +
+                 distance_to_town +
+                 water_point_population +
+                 local_population_1km +
+                 usage_capacity +
+                 is_urban +
+                 water_source_clean,
+             data = osun_wp_sf_clean,
+             family = binomial(link = 'logit'))
+```
+
+The code chunk below uses `blr_regress()` to create a report from the modeling result.
+
+```{r}
+
+blr_regress(model2)
+```
+
+All variables are now significant.
+
+The code chunk below creates a confusion matrix using the function `blr_confusion_matrix()`.
+
+```{r}
+blr_confusion_matrix(model2, cutoff = 0.5)
+```
+
+Despite removing the two variables, the accuracy, sensitivity and specificity did not improve and did not change much. The small change in its value actually got worse by a few decimal values. Accuracy dropped by 0.13%, sensitivity dropped by 0.19% and specificity dropped by 0.05%.
+
+# Geographically Weighted Logistic Regression Model (Take 2)
+
+## Convert `sf` to `sp`
+
+Because `gwmodel` can only perform functions on sp objects, we need to convert our sf object using `as_Spatial()` but without the two not statistically significant variables.
+
+```{r}
+osun_wp_sp2 <- osun_wp_sf_clean %>% 
+  select(c(status,
+           distance_to_tertiary_road,
+           distance_to_city,
+           distance_to_town,
+           water_point_population,
+           local_population_1km,
+           is_urban,
+           usage_capacity,
+           water_source_clean)) %>% 
+  as_Spatial()
+
+osun_wp_sp2
+```
+
+## Building Fixed Bandwidth
+
+```{r}
+bw.fixed2 <- bw.ggwr(status ~ 
+                 distance_to_tertiary_road +
+                 distance_to_city +
+                 distance_to_town +
+                 water_point_population +
+                 local_population_1km +
+                 usage_capacity +
+                 is_urban +
+                 water_source_clean,
+                 data = osun_wp_sp2,
+                 family = "binomial",
+                 approach = "AIC",
+                 kernel = "gaussian",
+                 adaptive = FALSE,
+                 longlat = FALSE)
+        # since our data is projected, set longlat = FALSE
+```
+
+```{r}
+bw.fixed2
+```
+
+The result is 2377.371 km.
+
+```{r}
+gwlr.fixed2 <- ggwr.basic(status ~  
+                 distance_to_tertiary_road +
+                 distance_to_city +
+                 distance_to_town +
+                 water_point_population +
+                 local_population_1km +
+                 usage_capacity +
+                 is_urban +
+                 water_source_clean,
+                 data = osun_wp_sp2,
+                 bw = bw.fixed2,
+                 family = "binomial",
+                 kernel = "gaussian",
+                 adaptive = FALSE,
+                 longlat = FALSE)
+
+gwlr.fixed2
+```
+
+As observed from above, the AIC values dropped down from **5708.923 to 4418.776** which is still higher than the that of the first geographically weighted logistic regression with AIC at **4414.6**1.
+
+## Converting SDF into sf data.frame
+
+```{r}
+gwr.fixed2 <- as.data.frame(gwlr.fixed2$SDF)
+```
+
+Since `'yhat'` is probability, we need to create a new logical column called `'most'` to label as 1 or 0 if the `'yhat'` is greater or equal to 0.5.
+
+```{r}
+gwr.fixed2 <- gwr.fixed2 %>% 
+  mutate(most = ifelse(
+    gwr.fixed2$yhat >= 0.5, T, F))
+```
+
+The code chunk below creates the confusion matrix of the model.
+
+```{r}
+gwr.fixed2$y <- as.factor(gwr.fixed2$y)
+
+gwr.fixed2$most <- as.factor(gwr.fixed2$most)
+
+CM2 <- confusionMatrix(data = gwr.fixed2$most, reference = gwr.fixed2$y)
+
+CM2
+```
+
+The accuracy is 88.46%, the sensitivity is 86.71% and the specificity is 89.86%. While the accuracy increased by 0.09% and the sensitivity increased by 0.33%, the specificity decreased by 0.19%. The improvement is quite negligible, but there is more improvement here than the simple logistic model.
+
+The code chunk below combines our water point data and model.
+
+```{r}
+gwr_sf.fixed2 <- cbind(osun_wp_sf_selected, gwr.fixed2)
+```
+
+## Visualizing Coefficient Estimates
+
+The code chunk below creates an interactive point map of the probability.
+
+```{r}
+#| fig-width: 12
+tmap_mode("view")
+prob_T2 <- tm_shape(osun) + 
+  tm_polygons(alpha = 0.1) + 
+  tm_shape(gwr_sf.fixed2) + 
+  tm_dots(col = "yhat",
+          palette = "RdPu",
+          border.col = "#704276",
+          border.lwd = 1) +
+  tm_view(set.zoom.limits = c(8,14))
+
+prob_T2
+```

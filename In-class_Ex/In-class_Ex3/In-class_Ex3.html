@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ISSS624 - In-class Exercise 3: Spatially Constrained Clustering with ClustGeo</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">ISSS624</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-hands-on-exercises" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Hands-on Exercises</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-hands-on-exercises">    
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex0.html">
+ <span class="dropdown-text">Hands-on Exercise 0 (Introduction to Quarto)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1-1.html">
+ <span class="dropdown-text">Hands-on Exercise 1.1 (Geospatial Data Wrangling with R)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1-2.html">
+ <span class="dropdown-text">Hands-on Exercise 1.2 (Chloropleth Mapping with R)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex2/Hands-on_Ex2.html">
+ <span class="dropdown-text">Hands-on Exercise 2 (Global and Local Measures of Spatial Autocorrelation)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex3/Hands-on_Ex3.html">
+ <span class="dropdown-text">Hands-on Exercise 3 (Geographical Segmentation with Spatially Constrained Clustering Techniques)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex4/Hands-on_Ex4.html">
+ <span class="dropdown-text">Hands-on Exercise 4 (Calibrating Hedonic Pricing Model with GWR Method)</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-in-class-exercises" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">In-class Exercises</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-in-class-exercises">    
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex1/In-class_Ex1.html">
+ <span class="dropdown-text">In-class Exercise 1 (Spatial Weights and Applications)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex2/In-class_Ex2.html">
+ <span class="dropdown-text">In-class Exercise 2 (Do functionally similar water points positively co-occur in Nigeria?)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex3/In-class_Ex3.html">
+ <span class="dropdown-text">In-class_Exercise 3 (Spatially Constrainted Clustering with ClustGeo)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex4/In-class_Ex4.html">
+ <span class="dropdown-text">In-class Exercise 4 (Calibrating Hedonic Pricing Model with GWR Method - Updated)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex5/In-class_Ex5.html">
+ <span class="dropdown-text">In-class Exercise 5</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-take-home-exercises" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Take-home Exercises</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-take-home-exercises">    
+        <li>
+    <a class="dropdown-item" href="../../Take-home_Ex/Take-home_Ex1/Take-home_Ex1.html">
+ <span class="dropdown-text">Take-home Exercise 1 (Geospatial Analytics for Social Good)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Take-home_Ex/Take-home_Ex2/Take-home_Ex2.html">
+ <span class="dropdown-text">Take-home Exercise 2 (Regionalization with Spatially Constrained Clustering Methods)</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
+  <ul class="collapse">
+  <li><a href="#previously-on-hands-on-exercise-3" id="toc-previously-on-hands-on-exercise-3" class="nav-link" data-scroll-target="#previously-on-hands-on-exercise-3">Previously on Hands-on Exercise 3…</a></li>
+  </ul></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting Started</a>
+  <ul class="collapse">
+  <li><a href="#loading-the-packages" id="toc-loading-the-packages" class="nav-link" data-scroll-target="#loading-the-packages">Loading the Packages</a></li>
+  <li><a href="#importing-the-rds-file" id="toc-importing-the-rds-file" class="nav-link" data-scroll-target="#importing-the-rds-file">Importing the RDS File</a></li>
+  <li><a href="#repeating-some-steps" id="toc-repeating-some-steps" class="nav-link" data-scroll-target="#repeating-some-steps">Repeating Some Steps</a>
+  <ul class="collapse">
+  <li><a href="#extracting-cluster-variables" id="toc-extracting-cluster-variables" class="nav-link" data-scroll-target="#extracting-cluster-variables">Extracting cluster variables</a></li>
+  </ul></li>
+  <li><a href="#getting-the-proximity-matrix" id="toc-getting-the-proximity-matrix" class="nav-link" data-scroll-target="#getting-the-proximity-matrix">Getting the proximity matrix</a></li>
+  </ul></li>
+  <li><a href="#spatially-constrained-clustering-clustgeo" id="toc-spatially-constrained-clustering-clustgeo" class="nav-link" data-scroll-target="#spatially-constrained-clustering-clustgeo">Spatially Constrained Clustering: ClustGeo</a>
+  <ul class="collapse">
+  <li><a href="#ward-like-hierarchical-clustering-clustgeo" id="toc-ward-like-hierarchical-clustering-clustgeo" class="nav-link" data-scroll-target="#ward-like-hierarchical-clustering-clustgeo">Ward-like Hierarchical Clustering: ClustGeo</a>
+  <ul class="collapse">
+  <li><a href="#mapping-the-clusters-formed" id="toc-mapping-the-clusters-formed" class="nav-link" data-scroll-target="#mapping-the-clusters-formed">Mapping the clusters formed</a></li>
+  </ul></li>
+  <li><a href="#spatially-constrained-hierarchical-clustering" id="toc-spatially-constrained-hierarchical-clustering" class="nav-link" data-scroll-target="#spatially-constrained-hierarchical-clustering">Spatially Constrained Hierarchical Clustering</a></li>
+  </ul></li>
+  <li><a href="#visualizing-the-clusters" id="toc-visualizing-the-clusters" class="nav-link" data-scroll-target="#visualizing-the-clusters">Visualizing the Clusters</a>
+  <ul class="collapse">
+  <li><a href="#visualizing-individual-cluster-variables" id="toc-visualizing-individual-cluster-variables" class="nav-link" data-scroll-target="#visualizing-individual-cluster-variables">Visualizing Individual Cluster Variables</a></li>
+  <li><a href="#multivariate-visualization" id="toc-multivariate-visualization" class="nav-link" data-scroll-target="#multivariate-visualization">Multivariate Visualization</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">In-class Exercise 3: Spatially Constrained Clustering with ClustGeo</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i></button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="overview" class="level1">
+<h1>Overview</h1>
+<p>This is an in-class exercise is a continuation of <a href="https://acapgeolano.netlify.app/hands-on_ex/hands-on_ex3/hands-on_ex3" title="Hands-on Exercise 3">Hands-on Exercise 3</a>, based on the last two sections of <a href="https://r4gdsa.netlify.app/chap05.html" title="R4GDSA: Geographical Segmentation with Spatially Constrained Clustering Techniques">Chapter 5</a> of <a href="https://r4gdsa.netlify.app/">R for Geospatial Data Science and Analytics</a> by Dr.&nbsp;Kam Tin Seong and is a requirement under the class ISS624: Geospatial Analytics and Applications.</p>
+<section id="previously-on-hands-on-exercise-3" class="level2">
+<h2 class="anchored" data-anchor-id="previously-on-hands-on-exercise-3">Previously on Hands-on Exercise 3…</h2>
+<p>The analytical objective of the exercise was to delineate <a href="https://en.wikipedia.org/wiki/Shan_State">Shan State</a>, <a href="https://en.wikipedia.org/wiki/Myanmar">Myanmar</a> into homogeneous regions by using multiple Information and Communication technology (ICT) measures, namely: Radio, Television, Landline phone, Mobile phone, Computer, and Internet at home.</p>
+<p>The first clustering result visually showed very fragmented groupings. And so, we started to look into spatially constrained clustering algorithms. Specifically, we tackled the SKATER ("<strong>S</strong>patial <strong>K</strong>luster <strong>A</strong>nalysis by <strong>T</strong>ree <strong>E</strong>dge <strong>R</strong>emoval") method which constructs the minimum spanning tree from the adjacency matrix and cuts the tree to achieve maximum internal homogeneity. In this in-class exercise, we explore another method: hierarchical clustering with spatial constraints.</p>
+</section>
+</section>
+<section id="getting-started" class="level1">
+<h1>Getting Started</h1>
+<section id="loading-the-packages" class="level2">
+<h2 class="anchored" data-anchor-id="loading-the-packages">Loading the Packages</h2>
+<p>The code chunk below installs and loads the packages from Hands-on Exercise 3,but with the addition of <strong><code>ClustGeo</code></strong> ,using <code>p_load()</code>:</p>
+<div class="cell">
+<details open="">
+<summary>Press to toggle code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(rgdal, spdep, tmap, sf, ggpubr, cluster, factoextra, NbClust, heatmaply, corrplot, psych, tidyverse, ClustGeo, GGally)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+🎮 LEVEL UP!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>NEW LIBRARY UNLOCKED:</strong> <a href="https://cran.r-project.org/web/packages/ClustGeo/" title="ClustGeo package"><strong><code>ClustGeo</code></strong></a></p>
+<p>This is the focus for this exercise as this package provides the method to be used in spatial clustering. The special function in particular is <code>hclustgeo()</code> uses a Ward-like hierarchical clustering algorithm while taking into account geographical constraints.</p>
+<p><strong>NEW LIBRARY UNLOCKED: <a href="https://ggobi.github.io/ggally/"><code>GGally</code></a></strong></p>
+<p>This is an extension of <strong><code>ggplot2</code></strong> that adds several functions to reduce the complexity of combining geoms with transformed data.</p>
+</div>
+</div>
+</section>
+<section id="importing-the-rds-file" class="level2">
+<h2 class="anchored" data-anchor-id="importing-the-rds-file">Importing the RDS File</h2>
+<p>For our data, we’ll be using the RDS file saved from the previous exercise which contains the simple features dataframe that has all the geospatial data and clustering variables. The code chunk below imports the RDS file using <code>st_read()</code>.</p>
+<div class="cell">
+<details open="">
+<summary>Press to toggle code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>shan_sf <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">'data/shan_sf.rds'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="repeating-some-steps" class="level2">
+<h2 class="anchored" data-anchor-id="repeating-some-steps">Repeating Some Steps</h2>
+<section id="extracting-cluster-variables" class="level3">
+<h3 class="anchored" data-anchor-id="extracting-cluster-variables">Extracting cluster variables</h3>
+<p>The code chunk below extracts our clustering variables into a dataframe <em>‘shan_ict’</em>.</p>
+<div class="cell">
+<details open="">
+<summary>Press to toggle code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>cluster_vars <span class="ot">&lt;-</span> shan_sf <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_set_geometry</span>(<span class="cn">NULL</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">"TS.x"</span>, <span class="st">"RADIO_PR"</span>, <span class="st">"TV_PR"</span>, <span class="st">"LLPHONE_PR"</span>, <span class="st">"MPHONE_PR"</span>, <span class="st">"COMPUTER_PR"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(cluster_vars) <span class="ot">&lt;-</span> cluster_vars<span class="sc">$</span><span class="st">"TS.x"</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>shan_ict <span class="ot">&lt;-</span> <span class="fu">select</span>(cluster_vars, <span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>))</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(shan_ict, <span class="at">n=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>         RADIO_PR    TV_PR LLPHONE_PR MPHONE_PR COMPUTER_PR
+Mongmit  286.1852 554.1313   35.30618  260.6944    12.15939
+Pindaya  417.4647 505.1300   19.83584  162.3917    12.88190
+Ywangan  484.5215 260.5734   11.93591  120.2856     4.41465
+Pinlaung 231.6499 541.7189   28.54454  249.4903    13.76255
+Mabein   449.4903 708.6423   72.75255  392.6089    16.45042</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="getting-the-proximity-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="getting-the-proximity-matrix">Getting the proximity matrix</h2>
+<p>The code chunk below uses <code>dist()</code> to create a proximity matrix using the '<strong>euclidean' method</strong>.</p>
+<div class="cell">
+<details open="">
+<summary>Press to toggle code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>proxmat <span class="ot">&lt;-</span> <span class="fu">dist</span>(shan_ict, <span class="at">method =</span> <span class="st">'euclidean'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><img src="images/paste-7FAB1839.png" class="img-fluid"></p>
+</section>
+</section>
+<section id="spatially-constrained-clustering-clustgeo" class="level1">
+<h1>Spatially Constrained Clustering: ClustGeo</h1>
+<p>The following is an excerpt from <a href="https://r4gdsa.netlify.app/chap05.html#a-short-note-about-clustgeo-package">Chapter 5 of R for Geospatial Data Science and Analytics</a> which explains the algorithm:</p>
+<blockquote class="blockquote">
+<p>In the nutshell, the algorithm uses two dissimilarity matrices <span class="math inline">\(D_0\)</span> and <span class="math inline">\(D_1\)</span> along with a mixing parameter alpha, whereby the value of alpha must be a real number between [0, 1]. <span class="math inline">\(D_0\)</span> can be non-Euclidean and the weights of the observations can be non-uniform. It gives the dissimilarities in the <strong>attribute/clustering variable space</strong>. <span class="math inline">\(D_1\)</span>, on the other hand, gives the dissimilarities in the constraint space. The criterion minimized at each stage is a convex combination of the homogeneity criterion calculated with <span class="math inline">\(D_0\)</span> and the homogeneity criterion calculated with <span class="math inline">\(D_1\)</span>.</p>
+<p>The idea is then to determine a value of alpha which increases the spatial contiguity without deteriorating too much the quality of the solution based on the variables of interest. This need is supported by a function called <code>choicealpha()</code>.</p>
+</blockquote>
+<section id="ward-like-hierarchical-clustering-clustgeo" class="level2">
+<h2 class="anchored" data-anchor-id="ward-like-hierarchical-clustering-clustgeo">Ward-like Hierarchical Clustering: ClustGeo</h2>
+<p>The <strong><code>ClustGeo</code></strong> package provides function called <code>hclustgeo()</code> to perform a typical Ward-like hierarchical clustering just like <code>hclust()</code> we learned in Hands-on Exercise 3.</p>
+<p>To perform non-spatially constrained hierarchical clustering, we only need to provide the function a dissimilarity matrix ‘proxmat’ as shown in the code chunk below.</p>
+<div class="cell">
+<details open="">
+<summary>Press to toggle code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>nongeo_cluster <span class="ot">&lt;-</span> <span class="fu">hclustgeo</span>(proxmat)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(nongeo_cluster, <span class="at">cex =</span> <span class="fl">0.5</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rect.hclust</span>(nongeo_cluster, </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">k =</span> <span class="dv">6</span>, </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">border =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="In-class_Ex3_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="1152"></p>
+</div>
+</div>
+<section id="mapping-the-clusters-formed" class="level3">
+<h3 class="anchored" data-anchor-id="mapping-the-clusters-formed">Mapping the clusters formed</h3>
+<div class="cell">
+<details open="">
+<summary>Press to toggle code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>groups <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(<span class="fu">cutree</span>(nongeo_cluster, <span class="at">k=</span><span class="dv">6</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>shan_sf_ngeo_cluster <span class="ot">&lt;-</span> <span class="fu">cbind</span>(shan_sf, <span class="fu">as.matrix</span>(groups)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">CLUSTER</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">as.matrix.groups.</span><span class="st">`</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">qtm</span>(shan_sf_ngeo_cluster, <span class="st">"CLUSTER"</span>, <span class="at">fill.palette =</span> <span class="st">"Pastel1"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="In-class_Ex3_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="1152"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="spatially-constrained-hierarchical-clustering" class="level2">
+<h2 class="anchored" data-anchor-id="spatially-constrained-hierarchical-clustering">Spatially Constrained Hierarchical Clustering</h2>
+<p>Before we can performed spatially constrained hierarchical clustering, a spatial distance matrix will be derived by using <a href="https://r-spatial.github.io/sf/reference/geos_measures.html"><code>st_distance()</code></a>.</p>
+<div class="cell">
+<details open="">
+<summary>Press to toggle code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>dist <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(shan_sf, shan_sf)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>distmat <span class="ot">&lt;-</span> <span class="fu">as.dist</span>(dist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Notice that <code>as.dist()</code> is used to convert the data frame into a matrix.</p>
+<p>Next, <code>choicealpha()</code> will be used to determine a suitable value for the mixing parameter alpha as shown in the code chunk below.</p>
+<div class="cell">
+<details open="">
+<summary>Press to toggle code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>cr <span class="ot">&lt;-</span> <span class="fu">choicealpha</span>(proxmat, </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                  distmat, </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">range.alpha =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.1</span>), </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">K=</span><span class="dv">6</span>, </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">graph =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/paste-71D47CE4.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/paste-59C2BD13.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+<p>The graphs show that the intersection happens around alpha = 0.3. Because of that, we will set the argument <code>'alpha'</code> to 0.3 and run the same function <code>hclustgeo()</code>.</p>
+<div class="cell">
+<details open="">
+<summary>Press to toggle code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>clustG <span class="ot">&lt;-</span> <span class="fu">hclustgeo</span>(proxmat, distmat, <span class="at">alpha =</span> <span class="fl">0.3</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>groups <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(<span class="fu">cutree</span>(clustG, <span class="at">k=</span><span class="dv">6</span>))</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>shan_sf_Gcluster <span class="ot">&lt;-</span> <span class="fu">cbind</span>(shan_sf, <span class="fu">as.matrix</span>(groups)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">CLUSTER</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">as.matrix.groups.</span><span class="st">`</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">qtm</span>(shan_sf_Gcluster, <span class="st">"CLUSTER"</span>, <span class="at">fill.palette =</span> <span class="st">"Pastel1"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="In-class_Ex3_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="1152"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="visualizing-the-clusters" class="level1">
+<h1>Visualizing the Clusters</h1>
+<section id="visualizing-individual-cluster-variables" class="level2">
+<h2 class="anchored" data-anchor-id="visualizing-individual-cluster-variables">Visualizing Individual Cluster Variables</h2>
+<p>The code chunk below is used to reveal the distribution of a clustering variable (i.e RADIO_PR) by cluster.</p>
+<div class="cell">
+<details open="">
+<summary>Press to toggle code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> shan_sf_ngeo_cluster,</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> CLUSTER, <span class="at">y =</span> RADIO_PR, <span class="at">fill =</span> CLUSTER)) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#fec0ce"</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"#e3879e"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"#cb6a82"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"#704276"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"#af7cb6"</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"#e7d8e9"</span>)) <span class="sc">+</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="In-class_Ex3_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="1152"></p>
+</div>
+</div>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+🌸 NEW OBSERVATION!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Based on the graph above, it seems that Cluster 3 have the highest ‘RADIO_PR’ and Cluster 5 and 6 are on the lower end of ‘RADIO_PR’.</p>
+</div>
+</div>
+</section>
+<section id="multivariate-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="multivariate-visualization">Multivariate Visualization</h2>
+<p>Past studies shown that parallel coordinate plot can be used to reveal clustering variables by cluster very effectively. The code chunk below uses <code>ggparcoord()</code> to create said plot for the ICT variables.</p>
+<div class="cell">
+<details open="">
+<summary>Press to toggle code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggparcoord</span>(<span class="at">data =</span> shan_sf_ngeo_cluster, </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">columns =</span> <span class="fu">c</span>(<span class="dv">17</span><span class="sc">:</span><span class="dv">21</span>), </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">scale =</span> <span class="st">"globalminmax"</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">alphaLines =</span> <span class="fl">0.2</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">boxplot =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">title =</span> <span class="st">"Multiple Parallel Coordinates Plots of ICT Variables by Cluster"</span>) <span class="sc">+</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span> CLUSTER) <span class="sc">+</span> </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">30</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="In-class_Ex3_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="1152"></p>
+</div>
+</div>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+🌸 NEW OBSERVATION!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>With this method of visualization, we can see all the variable patterns for the different clusters. Cluster 4 townships tend to own the highest number of TV and mobile-phone. On the other hand, households in Cluster 5 tends to own the lowest of all the five ICT.</p>
+</div>
+</div>
+<p>In the code chunk below, <code>group_by()</code> and <code>summarise()</code> are used to derive mean values of the clustering variables.</p>
+<div class="cell">
+<details open="">
+<summary>Press to toggle code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>shan_sf_ngeo_cluster <span class="sc">%&gt;%</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_set_geometry</span>(<span class="cn">NULL</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(CLUSTER) <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_RADIO_PR =</span> <span class="fu">mean</span>(RADIO_PR),</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean_TV_PR =</span> <span class="fu">mean</span>(TV_PR),</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean_LLPHONE_PR =</span> <span class="fu">mean</span>(LLPHONE_PR),</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean_MPHONE_PR =</span> <span class="fu">mean</span>(MPHONE_PR),</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean_COMPUTER_PR =</span> <span class="fu">mean</span>(COMPUTER_PR))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 6
+  CLUSTER mean_RADIO_PR mean_TV_PR mean_LLPHONE_PR mean_MPHONE_PR mean_COMPUTE…¹
+  &lt;chr&gt;           &lt;dbl&gt;      &lt;dbl&gt;           &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;
+1 1               221.        521.            44.2           246.          20.5 
+2 2               237.        402.            23.9           134.          11.5 
+3 3               300.        611.            52.2           392.          29.0 
+4 4               196.        744.            99.0           651.          65.5 
+5 5               124.        224.            38.0           132.           6.68
+6 6                98.6       499.            74.5           468.          21.0 
+# … with abbreviated variable name ¹​mean_COMPUTER_PR</code></pre>
+</div>
+</div>
+
+
+<!-- -->
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb15" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "In-class Exercise 3: Spatially Constrained Clustering with ClustGeo"</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="an">editor:</span><span class="co"> visual</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu"># Overview</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>This is an in-class exercise is a continuation of <span class="co">[</span><span class="ot">Hands-on Exercise 3</span><span class="co">](https://acapgeolano.netlify.app/hands-on_ex/hands-on_ex3/hands-on_ex3 "Hands-on Exercise 3")</span>, based on the last two sections of <span class="co">[</span><span class="ot">Chapter 5</span><span class="co">](https://r4gdsa.netlify.app/chap05.html "R4GDSA: Geographical Segmentation with Spatially Constrained Clustering Techniques")</span> of <span class="co">[</span><span class="ot">R for Geospatial Data Science and Analytics</span><span class="co">](https://r4gdsa.netlify.app/)</span> by Dr. Kam Tin Seong and is a requirement under the class ISS624: Geospatial Analytics and Applications.</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="fu">## Previously on Hands-on Exercise 3...</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>The analytical objective of the exercise was to delineate <span class="co">[</span><span class="ot">Shan State</span><span class="co">](https://en.wikipedia.org/wiki/Shan_State)</span>, <span class="co">[</span><span class="ot">Myanmar</span><span class="co">](https://en.wikipedia.org/wiki/Myanmar)</span> into homogeneous regions by using multiple Information and Communication technology (ICT) measures, namely: Radio, Television, Landline phone, Mobile phone, Computer, and Internet at home.</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>The first clustering result visually showed very fragmented groupings. And so, we started to look into spatially constrained clustering algorithms. Specifically, we tackled the SKATER (\"**S**patial **K**luster **A**nalysis by **T**ree **E**dge **R**emoval\") method which constructs the minimum spanning tree from the adjacency matrix and cuts the tree to achieve maximum internal homogeneity. In this in-class exercise, we explore another method: hierarchical clustering with spatial constraints.</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="fu"># Getting Started</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="fu">## Loading the Packages </span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>The code chunk below installs and loads the packages from Hands-on Exercise 3,but with the addition of **`ClustGeo`** ,using <span class="in">`p_load()`</span>:</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(rgdal, spdep, tmap, sf, ggpubr, cluster, factoextra, NbClust, heatmaply, corrplot, psych, tidyverse, ClustGeo, GGally)</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>::: {.callout-note icon="false"}</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🎮 LEVEL UP!</span></span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>**NEW LIBRARY UNLOCKED:** [**`ClustGeo`**](https://cran.r-project.org/web/packages/ClustGeo/ "ClustGeo package")</span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>This is the focus for this exercise as this package provides the method to be used in spatial clustering. The special function in particular is <span class="in">`hclustgeo()`</span> uses a Ward-like hierarchical clustering algorithm while taking into account geographical constraints.</span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>**NEW LIBRARY UNLOCKED: [`GGally`](https://ggobi.github.io/ggally/)**</span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>This is an extension of **`ggplot2`** that adds several functions to reduce the complexity of combining geoms with transformed data.</span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a><span class="fu">## Importing the RDS File </span></span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>For our data, we'll be using the RDS file saved from the previous exercise which contains the simple features dataframe that has all the geospatial data and clustering variables. The code chunk below imports the RDS file using <span class="in">`st_read()`</span>.</span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a>shan_sf <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">'data/shan_sf.rds'</span>)</span>
+<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a><span class="fu">## Repeating Some Steps</span></span>
+<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a><span class="fu">### Extracting cluster variables</span></span>
+<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a>The code chunk below extracts our clustering variables into a dataframe *'shan_ict'*.</span>
+<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a>cluster_vars <span class="ot">&lt;-</span> shan_sf <span class="sc">%&gt;%</span></span>
+<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_set_geometry</span>(<span class="cn">NULL</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">"TS.x"</span>, <span class="st">"RADIO_PR"</span>, <span class="st">"TV_PR"</span>, <span class="st">"LLPHONE_PR"</span>, <span class="st">"MPHONE_PR"</span>, <span class="st">"COMPUTER_PR"</span>)</span>
+<span id="cb15-62"><a href="#cb15-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-63"><a href="#cb15-63" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(cluster_vars) <span class="ot">&lt;-</span> cluster_vars<span class="sc">$</span><span class="st">"TS.x"</span></span>
+<span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-65"><a href="#cb15-65" aria-hidden="true" tabindex="-1"></a>shan_ict <span class="ot">&lt;-</span> <span class="fu">select</span>(cluster_vars, <span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>))</span>
+<span id="cb15-66"><a href="#cb15-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-67"><a href="#cb15-67" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(shan_ict, <span class="at">n=</span><span class="dv">5</span>)</span>
+<span id="cb15-68"><a href="#cb15-68" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-69"><a href="#cb15-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-70"><a href="#cb15-70" aria-hidden="true" tabindex="-1"></a><span class="fu">## Getting the proximity matrix</span></span>
+<span id="cb15-71"><a href="#cb15-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-72"><a href="#cb15-72" aria-hidden="true" tabindex="-1"></a>The code chunk below uses <span class="in">`dist()`</span> to create a proximity matrix using the \'**euclidean\' method**.</span>
+<span id="cb15-73"><a href="#cb15-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-76"><a href="#cb15-76" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-77"><a href="#cb15-77" aria-hidden="true" tabindex="-1"></a>proxmat <span class="ot">&lt;-</span> <span class="fu">dist</span>(shan_ict, <span class="at">method =</span> <span class="st">'euclidean'</span>)</span>
+<span id="cb15-78"><a href="#cb15-78" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-79"><a href="#cb15-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-80"><a href="#cb15-80" aria-hidden="true" tabindex="-1"></a><span class="al">![](images/paste-7FAB1839.png)</span></span>
+<span id="cb15-81"><a href="#cb15-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-82"><a href="#cb15-82" aria-hidden="true" tabindex="-1"></a><span class="fu"># Spatially Constrained Clustering: ClustGeo</span></span>
+<span id="cb15-83"><a href="#cb15-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-84"><a href="#cb15-84" aria-hidden="true" tabindex="-1"></a>The following is an excerpt from <span class="co">[</span><span class="ot">Chapter 5 of R for Geospatial Data Science and Analytics</span><span class="co">](https://r4gdsa.netlify.app/chap05.html#a-short-note-about-clustgeo-package)</span> which explains the algorithm:</span>
+<span id="cb15-85"><a href="#cb15-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-86"><a href="#cb15-86" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; In the nutshell, the algorithm uses two dissimilarity matrices $D_0$ and $D_1$ along with a mixing parameter alpha, whereby the value of alpha must be a real number between </span><span class="sc">\[</span><span class="at">0, 1</span><span class="sc">\]</span><span class="at">. $D_0$ can be non-Euclidean and the weights of the observations can be non-uniform. It gives the dissimilarities in the **attribute/clustering variable space**. $D_1$, on the other hand, gives the dissimilarities in the constraint space. The criterion minimized at each stage is a convex combination of the homogeneity criterion calculated with $D_0$ and the homogeneity criterion calculated with $D_1$.</span></span>
+<span id="cb15-87"><a href="#cb15-87" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb15-88"><a href="#cb15-88" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; The idea is then to determine a value of alpha which increases the spatial contiguity without deteriorating too much the quality of the solution based on the variables of interest. This need is supported by a function called </span><span class="in">`choicealpha()`</span><span class="at">.</span></span>
+<span id="cb15-89"><a href="#cb15-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-90"><a href="#cb15-90" aria-hidden="true" tabindex="-1"></a><span class="fu">## Ward-like Hierarchical Clustering: ClustGeo</span></span>
+<span id="cb15-91"><a href="#cb15-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-92"><a href="#cb15-92" aria-hidden="true" tabindex="-1"></a>The **`ClustGeo`** package provides function called <span class="in">`hclustgeo()`</span> to perform a typical Ward-like hierarchical clustering just like <span class="in">`hclust()`</span> we learned in Hands-on Exercise 3.</span>
+<span id="cb15-93"><a href="#cb15-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-94"><a href="#cb15-94" aria-hidden="true" tabindex="-1"></a>To perform non-spatially constrained hierarchical clustering, we only need to provide the function a dissimilarity matrix 'proxmat' as shown in the code chunk below.</span>
+<span id="cb15-95"><a href="#cb15-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-98"><a href="#cb15-98" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-99"><a href="#cb15-99" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 12</span></span>
+<span id="cb15-100"><a href="#cb15-100" aria-hidden="true" tabindex="-1"></a>nongeo_cluster <span class="ot">&lt;-</span> <span class="fu">hclustgeo</span>(proxmat)</span>
+<span id="cb15-101"><a href="#cb15-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-102"><a href="#cb15-102" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(nongeo_cluster, <span class="at">cex =</span> <span class="fl">0.5</span>)</span>
+<span id="cb15-103"><a href="#cb15-103" aria-hidden="true" tabindex="-1"></a><span class="fu">rect.hclust</span>(nongeo_cluster, </span>
+<span id="cb15-104"><a href="#cb15-104" aria-hidden="true" tabindex="-1"></a>            <span class="at">k =</span> <span class="dv">6</span>, </span>
+<span id="cb15-105"><a href="#cb15-105" aria-hidden="true" tabindex="-1"></a>            <span class="at">border =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>)</span>
+<span id="cb15-106"><a href="#cb15-106" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-107"><a href="#cb15-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-108"><a href="#cb15-108" aria-hidden="true" tabindex="-1"></a><span class="fu">### Mapping the clusters formed</span></span>
+<span id="cb15-109"><a href="#cb15-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-112"><a href="#cb15-112" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-113"><a href="#cb15-113" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 12</span></span>
+<span id="cb15-114"><a href="#cb15-114" aria-hidden="true" tabindex="-1"></a>groups <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(<span class="fu">cutree</span>(nongeo_cluster, <span class="at">k=</span><span class="dv">6</span>))</span>
+<span id="cb15-115"><a href="#cb15-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-116"><a href="#cb15-116" aria-hidden="true" tabindex="-1"></a>shan_sf_ngeo_cluster <span class="ot">&lt;-</span> <span class="fu">cbind</span>(shan_sf, <span class="fu">as.matrix</span>(groups)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-117"><a href="#cb15-117" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">CLUSTER</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">as.matrix.groups.</span><span class="st">`</span>)</span>
+<span id="cb15-118"><a href="#cb15-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-119"><a href="#cb15-119" aria-hidden="true" tabindex="-1"></a><span class="fu">qtm</span>(shan_sf_ngeo_cluster, <span class="st">"CLUSTER"</span>, <span class="at">fill.palette =</span> <span class="st">"Pastel1"</span>)</span>
+<span id="cb15-120"><a href="#cb15-120" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-121"><a href="#cb15-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-122"><a href="#cb15-122" aria-hidden="true" tabindex="-1"></a><span class="fu">## Spatially Constrained Hierarchical Clustering</span></span>
+<span id="cb15-123"><a href="#cb15-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-124"><a href="#cb15-124" aria-hidden="true" tabindex="-1"></a>Before we can performed spatially constrained hierarchical clustering, a spatial distance matrix will be derived by using <span class="co">[</span><span class="ot">`st_distance()`</span><span class="co">](https://r-spatial.github.io/sf/reference/geos_measures.html)</span>.</span>
+<span id="cb15-125"><a href="#cb15-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-128"><a href="#cb15-128" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-129"><a href="#cb15-129" aria-hidden="true" tabindex="-1"></a>dist <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(shan_sf, shan_sf)</span>
+<span id="cb15-130"><a href="#cb15-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-131"><a href="#cb15-131" aria-hidden="true" tabindex="-1"></a>distmat <span class="ot">&lt;-</span> <span class="fu">as.dist</span>(dist)</span>
+<span id="cb15-132"><a href="#cb15-132" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-133"><a href="#cb15-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-134"><a href="#cb15-134" aria-hidden="true" tabindex="-1"></a>Notice that <span class="in">`as.dist()`</span> is used to convert the data frame into a matrix.</span>
+<span id="cb15-135"><a href="#cb15-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-136"><a href="#cb15-136" aria-hidden="true" tabindex="-1"></a>Next, <span class="in">`choicealpha()`</span> will be used to determine a suitable value for the mixing parameter alpha as shown in the code chunk below.</span>
+<span id="cb15-137"><a href="#cb15-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-140"><a href="#cb15-140" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-141"><a href="#cb15-141" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb15-142"><a href="#cb15-142" aria-hidden="true" tabindex="-1"></a>cr <span class="ot">&lt;-</span> <span class="fu">choicealpha</span>(proxmat, </span>
+<span id="cb15-143"><a href="#cb15-143" aria-hidden="true" tabindex="-1"></a>                  distmat, </span>
+<span id="cb15-144"><a href="#cb15-144" aria-hidden="true" tabindex="-1"></a>                  <span class="at">range.alpha =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.1</span>), </span>
+<span id="cb15-145"><a href="#cb15-145" aria-hidden="true" tabindex="-1"></a>                  <span class="at">K=</span><span class="dv">6</span>, </span>
+<span id="cb15-146"><a href="#cb15-146" aria-hidden="true" tabindex="-1"></a>                  <span class="at">graph =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-147"><a href="#cb15-147" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-148"><a href="#cb15-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-149"><a href="#cb15-149" aria-hidden="true" tabindex="-1"></a><span class="al">![](images/paste-71D47CE4.png)</span>{fig-align="center"}</span>
+<span id="cb15-150"><a href="#cb15-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-151"><a href="#cb15-151" aria-hidden="true" tabindex="-1"></a><span class="al">![](images/paste-59C2BD13.png)</span>{fig-align="center"}</span>
+<span id="cb15-152"><a href="#cb15-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-153"><a href="#cb15-153" aria-hidden="true" tabindex="-1"></a>The graphs show that the intersection happens around alpha = 0.3. Because of that, we will set the argument <span class="in">`'alpha'`</span> to 0.3 and run the same function <span class="in">`hclustgeo()`</span>.</span>
+<span id="cb15-154"><a href="#cb15-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-157"><a href="#cb15-157" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-158"><a href="#cb15-158" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 12</span></span>
+<span id="cb15-159"><a href="#cb15-159" aria-hidden="true" tabindex="-1"></a>clustG <span class="ot">&lt;-</span> <span class="fu">hclustgeo</span>(proxmat, distmat, <span class="at">alpha =</span> <span class="fl">0.3</span>)</span>
+<span id="cb15-160"><a href="#cb15-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-161"><a href="#cb15-161" aria-hidden="true" tabindex="-1"></a>groups <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(<span class="fu">cutree</span>(clustG, <span class="at">k=</span><span class="dv">6</span>))</span>
+<span id="cb15-162"><a href="#cb15-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-163"><a href="#cb15-163" aria-hidden="true" tabindex="-1"></a>shan_sf_Gcluster <span class="ot">&lt;-</span> <span class="fu">cbind</span>(shan_sf, <span class="fu">as.matrix</span>(groups)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-164"><a href="#cb15-164" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">CLUSTER</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">as.matrix.groups.</span><span class="st">`</span>)</span>
+<span id="cb15-165"><a href="#cb15-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-166"><a href="#cb15-166" aria-hidden="true" tabindex="-1"></a><span class="fu">qtm</span>(shan_sf_Gcluster, <span class="st">"CLUSTER"</span>, <span class="at">fill.palette =</span> <span class="st">"Pastel1"</span>)</span>
+<span id="cb15-167"><a href="#cb15-167" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-168"><a href="#cb15-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-169"><a href="#cb15-169" aria-hidden="true" tabindex="-1"></a><span class="fu"># Visualizing the Clusters</span></span>
+<span id="cb15-170"><a href="#cb15-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-171"><a href="#cb15-171" aria-hidden="true" tabindex="-1"></a><span class="fu">## Visualizing Individual Cluster Variables</span></span>
+<span id="cb15-172"><a href="#cb15-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-173"><a href="#cb15-173" aria-hidden="true" tabindex="-1"></a>The code chunk below is used to reveal the distribution of a clustering variable (i.e RADIO_PR) by cluster.</span>
+<span id="cb15-174"><a href="#cb15-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-177"><a href="#cb15-177" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-178"><a href="#cb15-178" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 12</span></span>
+<span id="cb15-179"><a href="#cb15-179" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> shan_sf_ngeo_cluster,</span>
+<span id="cb15-180"><a href="#cb15-180" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> CLUSTER, <span class="at">y =</span> RADIO_PR, <span class="at">fill =</span> CLUSTER)) <span class="sc">+</span></span>
+<span id="cb15-181"><a href="#cb15-181" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#fec0ce"</span>,</span>
+<span id="cb15-182"><a href="#cb15-182" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"#e3879e"</span>,</span>
+<span id="cb15-183"><a href="#cb15-183" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"#cb6a82"</span>,</span>
+<span id="cb15-184"><a href="#cb15-184" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"#704276"</span>,</span>
+<span id="cb15-185"><a href="#cb15-185" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"#af7cb6"</span>,</span>
+<span id="cb15-186"><a href="#cb15-186" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"#e7d8e9"</span>)) <span class="sc">+</span></span>
+<span id="cb15-187"><a href="#cb15-187" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span>
+<span id="cb15-188"><a href="#cb15-188" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-189"><a href="#cb15-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-190"><a href="#cb15-190" aria-hidden="true" tabindex="-1"></a>::: {.callout-note icon="false"}</span>
+<span id="cb15-191"><a href="#cb15-191" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🌸 NEW OBSERVATION!</span></span>
+<span id="cb15-192"><a href="#cb15-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-193"><a href="#cb15-193" aria-hidden="true" tabindex="-1"></a>Based on the graph above, it seems that Cluster 3 have the highest 'RADIO_PR' and Cluster 5 and 6 are on the lower end of 'RADIO_PR'.</span>
+<span id="cb15-194"><a href="#cb15-194" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb15-195"><a href="#cb15-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-196"><a href="#cb15-196" aria-hidden="true" tabindex="-1"></a><span class="fu">## Multivariate Visualization</span></span>
+<span id="cb15-197"><a href="#cb15-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-198"><a href="#cb15-198" aria-hidden="true" tabindex="-1"></a>Past studies shown that parallel coordinate plot can be used to reveal clustering variables by cluster very effectively. The code chunk below uses <span class="in">`ggparcoord()`</span> to create said plot for the ICT variables.</span>
+<span id="cb15-199"><a href="#cb15-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-202"><a href="#cb15-202" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-203"><a href="#cb15-203" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 12</span></span>
+<span id="cb15-204"><a href="#cb15-204" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 12</span></span>
+<span id="cb15-205"><a href="#cb15-205" aria-hidden="true" tabindex="-1"></a><span class="fu">ggparcoord</span>(<span class="at">data =</span> shan_sf_ngeo_cluster, </span>
+<span id="cb15-206"><a href="#cb15-206" aria-hidden="true" tabindex="-1"></a>           <span class="at">columns =</span> <span class="fu">c</span>(<span class="dv">17</span><span class="sc">:</span><span class="dv">21</span>), </span>
+<span id="cb15-207"><a href="#cb15-207" aria-hidden="true" tabindex="-1"></a>           <span class="at">scale =</span> <span class="st">"globalminmax"</span>,</span>
+<span id="cb15-208"><a href="#cb15-208" aria-hidden="true" tabindex="-1"></a>           <span class="at">alphaLines =</span> <span class="fl">0.2</span>,</span>
+<span id="cb15-209"><a href="#cb15-209" aria-hidden="true" tabindex="-1"></a>           <span class="at">boxplot =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb15-210"><a href="#cb15-210" aria-hidden="true" tabindex="-1"></a>           <span class="at">title =</span> <span class="st">"Multiple Parallel Coordinates Plots of ICT Variables by Cluster"</span>) <span class="sc">+</span></span>
+<span id="cb15-211"><a href="#cb15-211" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span> CLUSTER) <span class="sc">+</span> </span>
+<span id="cb15-212"><a href="#cb15-212" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">30</span>))</span>
+<span id="cb15-213"><a href="#cb15-213" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-214"><a href="#cb15-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-215"><a href="#cb15-215" aria-hidden="true" tabindex="-1"></a>::: {.callout-note icon="false"}</span>
+<span id="cb15-216"><a href="#cb15-216" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🌸 NEW OBSERVATION!</span></span>
+<span id="cb15-217"><a href="#cb15-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-218"><a href="#cb15-218" aria-hidden="true" tabindex="-1"></a>With this method of visualization, we can see all the variable patterns for the different clusters. Cluster 4 townships tend to own the highest number of TV and mobile-phone. On the other hand, households in Cluster 5 tends to own the lowest of all the five ICT.</span>
+<span id="cb15-219"><a href="#cb15-219" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb15-220"><a href="#cb15-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-221"><a href="#cb15-221" aria-hidden="true" tabindex="-1"></a>In the code chunk below, <span class="in">`group_by()`</span> and <span class="in">`summarise()`</span> are used to derive mean values of the clustering variables.</span>
+<span id="cb15-222"><a href="#cb15-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-225"><a href="#cb15-225" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-226"><a href="#cb15-226" aria-hidden="true" tabindex="-1"></a>shan_sf_ngeo_cluster <span class="sc">%&gt;%</span> </span>
+<span id="cb15-227"><a href="#cb15-227" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_set_geometry</span>(<span class="cn">NULL</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-228"><a href="#cb15-228" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(CLUSTER) <span class="sc">%&gt;%</span></span>
+<span id="cb15-229"><a href="#cb15-229" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_RADIO_PR =</span> <span class="fu">mean</span>(RADIO_PR),</span>
+<span id="cb15-230"><a href="#cb15-230" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean_TV_PR =</span> <span class="fu">mean</span>(TV_PR),</span>
+<span id="cb15-231"><a href="#cb15-231" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean_LLPHONE_PR =</span> <span class="fu">mean</span>(LLPHONE_PR),</span>
+<span id="cb15-232"><a href="#cb15-232" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean_MPHONE_PR =</span> <span class="fu">mean</span>(MPHONE_PR),</span>
+<span id="cb15-233"><a href="#cb15-233" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean_COMPUTER_PR =</span> <span class="fu">mean</span>(COMPUTER_PR))</span>
+<span id="cb15-234"><a href="#cb15-234" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+</body></html>
